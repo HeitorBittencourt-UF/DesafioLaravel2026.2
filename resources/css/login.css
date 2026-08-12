@@ -40,11 +40,11 @@
 .login-input:focus + .login-label,
 .login-input:valid + .login-label,
 .login-input:user-invalid + .login-label {
-    @apply -top-[8px] translate-y-0 text-xs text-[#42B9A6] outline-none ring-0;         /*Quando tiver em foco e tiver com escritas faz com que o label diminua, troque de cor e suba*/
+    @apply -top-[8px] translate-y-0 text-xs text-[#42B9A6];         /*Quando tiver em foco e tiver com escritas faz com que o label diminua, troque de cor e suba*/
 }
 
 .login-input {
-    @apply flex w-[80%] rounded-[8px] outline-none bg-transparent border-[1px] border-solid border-white;
+    @apply flex w-[80%] rounded-[8px] outline-none bg-transparent border-[1px] border-solid border-white text-white;
 }
 
 .login-input:focus{ 
