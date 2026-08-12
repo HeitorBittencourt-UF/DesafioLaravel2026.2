@@ -19,11 +19,11 @@
 }
 
 .login-mid{
-    @apply flex flex-col w-[100%]  gap-[30px];
+    @apply flex flex-col w-[100%]  gap-[30px] items-center;
 }
 
 .login-fields{
-    @apply flex flex-col items-center relative;
+    @apply flex flex-col w-[100%] items-center relative;
 }
 
 .login-label {
@@ -49,4 +49,65 @@
 
 .login-input:focus{ 
     @apply border-[#42B9A6] outline-none
+}
+
+.login-esqueceu{
+    @apply flex justify-end text-[#42B9A6] px-[10%]
+}
+
+.login-password-group{
+    @apply flex flex-col gap-[8px] w-[100%];
+}
+
+.login-check{
+    @apply flex w-[80%] justify-start
+}
+
+.login-check-label {
+    @apply flex items-center cursor-pointer select-none;
+}
+
+.login-check-text {
+    font-family: 'Montserrat', sans-serif;
+    @apply ms-2 text-sm text-gray-400 transition-colors duration-200;
+}
+
+.login-check-box:checked + .login-check-text {
+    @apply text-white;
+}
+
+.login-check-box {
+    appearance: none;
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: transparent;
+    box-shadow: none;
+    @apply w-5 h-5 rounded border border-gray-600 bg-[#042434] 
+           focus:outline-none focus:ring-0 focus:ring-offset-0 focus:border-gray-600
+           transition-all duration-200 cursor-pointer relative;
+}
+
+.login-check-box:focus,
+.login-check-box:active,
+.login-check-box:focus-visible {
+    box-shadow: none;
+    @apply outline-none ring-0 ring-offset-0 border-gray-600;
+}
+
+.login-check-box:hover {
+    @apply border-[#42B9A6];
+}
+
+.login-check-box:checked {
+    @apply bg-[#42B9A6] border-[#42B9A6];
+}
+
+.login-check-box:checked:focus,
+.login-check-box:checked:active {
+    @apply bg-[#42B9A6] border-[#42B9A6];
+}
+
+.login-check-box:checked::after {
+    content: '✓';
+    @apply text-white text-xs font-bold absolute 
+           top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
 }

@@ -23,32 +23,33 @@
 
             </div>
 
-            <!-- Password -->
-            <div class="login-fields">
 
-                
-                <x-text-input  class="login-input" id="password" type="password" name="password" required autocomplete="current-password" />
-                <x-input-label for="password" :value="__('Senha')" class="login-label"/>
-                
-                <x-input-error :messages="$errors->get('password')" class="mt-2" />
+            <div class="login-password-group">
+                <!-- Password -->
+                <div class="login-fields">
 
+                    <x-text-input  class="login-input" id="password" type="password" name="password" required autocomplete="current-password" />
+                    <x-input-label for="password" :value="__('Senha')" class="login-label"/>
+                    <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                    
+                </div>
+                <div class="login-esqueceu">
+                    @if (Route::has('password.request'))
+                    <a class="" href="{{ route('password.request') }}">
+                        {{ __('Esqueceu a senha?') }}
+                    </a>
+                    @endif
+                </div>
             </div>
 
             <!-- Continue Conectado -->
-            <div class="block mt-4">
-                <label for="remember_me" class="inline-flex items-center">
-                    <input id="remember_me" type="checkbox" class="" name="remember">
-                    <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Continue Conectado') }}</span>
+            <div class="login-check">
+                <label for="remember_me" class="login-check-label">
+                    <input id="remember_me" type="checkbox" class="login-check-box" name="remember">
+                    <span class="login-check-text">{{ __('Continue Conectado') }}</span>
                 </label>
             </div>
 
-            <div class="flex items-center justify-end mt-4">
-                @if (Route::has('password.request'))
-                <a class="" href="{{ route('password.request') }}">
-                    {{ __('Esqueceu a senha?') }}
-                </a>
-                @endif
-            </div>
         </div>
             <x-primary-button class="ms-3">
                 {{ __('Log in') }}
