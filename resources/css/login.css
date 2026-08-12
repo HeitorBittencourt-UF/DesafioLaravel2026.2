@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-.guest-body {
-    @apply ;
+.login-signin {
+    @apply flex flex-col w-[50%] h-[100%] bg-[#42B9A6] rounded-l-[3%];
 }
+
+.login-form {
+    @apply flex flex-col w-[50%] h-[100%] bg-[#042434] rounded-r-[3%];
+} 

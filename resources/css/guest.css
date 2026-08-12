@@ -19,5 +19,5 @@
 }
 
 .guest-card {
-    @apply w-[45vw] h-[70vh]  bg-white rounded-[2%];
+    @apply flex flex-row w-[45vw] h-[70vh]  bg-white rounded-[3%] shadow-[0_0_60px_rgba(66,185,166,0.45)];;
 }
