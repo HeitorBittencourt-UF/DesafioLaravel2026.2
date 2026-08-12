@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=League+Gothic&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -7,5 +10,43 @@
 }
 
 .login-form {
-    @apply flex flex-col w-[50%] h-[100%] bg-[#042434] rounded-r-[3%];
+    @apply flex flex-col w-[50%] h-[100%] bg-[#042434] rounded-r-[3%] items-center justify-between py-[50px];
 } 
+
+.login-tittle {
+    font-family: 'League Gothic', sans-serif;
+    @apply text-[#42B9A6] text-[60px];
+}
+
+.login-mid{
+    @apply flex flex-col w-[100%]  gap-[30px];
+}
+
+.login-fields{
+    @apply flex flex-col items-center relative;
+}
+
+.login-label {
+    font-family: 'Montserrat', sans-serif;                                                                  /*Deixando o label no meio com position absolute*/
+    @apply absolute top-[50%] left-[18%] -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-all duration-300 bg-[#042434] px-[5px] text-gray-500;
+}
+
+.login-input:focus,
+.login-input:focus-visible {
+    @apply outline-none ring-0 border-[#42B9A6];          /* Serve para tirar a borda nativa da estilizacao*/
+    
+}
+
+.login-input:focus + .login-label,
+.login-input:valid + .login-label,
+.login-input:user-invalid + .login-label {
+    @apply -top-[8px] translate-y-0 text-xs text-[#42B9A6] outline-none ring-0;         /*Quando tiver em foco e tiver com escritas faz com que o label diminua, troque de cor e suba*/
+}
+
+.login-input {
+    @apply flex w-[80%] rounded-[8px] outline-none bg-transparent border-[1px] border-solid border-white;
+}
+
+.login-input:focus{ 
+    @apply border-[#42B9A6] outline-none
+}
