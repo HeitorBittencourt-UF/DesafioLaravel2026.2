@@ -1,52 +1,58 @@
 <x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
+    <!-- Session Status -->
+    <x-auth-session-status class="mb-4" :status="session('status')" />
+
+    
+    <form method="POST" action="{{ route('register') }}" class="register-form">
         @csrf
-
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+        
+        <h1 class="register-tittle">CRIE SUA CONTA</h1>
+        
+        <div class="register-mid">
+            <!-- Email Address -->
+            <div class="register-fields">
+                
+                <x-text-input class="register-input" id="email" type="email" name="email" :value="old('email')" placeholder=" " required autofocus autocomplete="username" />
+                <x-input-label for="email" :value="__('Email')" class="register-label"/>
+                
+                <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                
+            </div>
+            
+            
+            <div class="register-password-group">
+                <!-- Password -->
+                <div class="register-fields">
+                    
+                    <x-text-input  class="register-input" id="password" type="password" name="password" placeholder=" " required autocomplete="current-password" />
+                    <x-input-label for="password" :value="__('Senha')" class="register-label"/>
+                    <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                    
+                </div>
+                
+            </div>
+            
+            <!-- Continue Conectado -->
+            <div class="register-check">
+                <label for="remember_me" class="register-check-label">
+                    <input id="remember_me" type="checkbox" class="register-check-box" name="remember">
+                    <span class="register-check-text">{{ __('Continue Conectado') }}</span>
+                </label>
+            </div>
+            
         </div>
-
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
-
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
-        </div>
+        <x-primary-button class="register-btn">
+            {{ __('Criar') }}
+        </x-primary-button>
     </form>
+
+    <div class="register-signin">
+        <h1 class="register-signin-tittle">Seja Bem-Vindo!</h1>
+        <span class="register-signin-text">Já possui uma conta? Conecte-se para obter os benefícios!</span>
+        <x-primary-button class="register-signin-btn">
+            <a class="" href="{{ route('login') }}">
+                {{ __('Login') }}
+            </a>
+        </x-primary-button>
+    </div>
 </x-guest-layout>

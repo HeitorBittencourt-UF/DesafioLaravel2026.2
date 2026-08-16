@@ -5,97 +5,97 @@
 @tailwind components;
 @tailwind utilities;
 
-.login-signin {
-    @apply flex flex-col w-[50%] h-[100%] bg-[#42B9A6] rounded-l-[3%] items-center justify-start py-[50px] gap-[30px];
+.register-signin {
+    @apply flex flex-col w-[50%] h-[100%] bg-[#42B9A6] rounded-r-[3%] items-center justify-start py-[50px] gap-[30px];
 }
 
-.login-signin-tittle{
+.register-signin-tittle{
     font-family: 'League Gothic', sans-serif;
     @apply text-white text-[60px];
 }
 
-.login-signin-text{
+.register-signin-text{
     font-family: 'Montserrat', sans-serif;
     @apply text-white text-[35px] text-center font-semibold px-[30px] pb-[30px];
 }
 
-.login-signin-btn{
+.register-signin-btn{
     font-family: 'Montserrat', sans-serif;
     @apply  bg-transparent text-[15px] font-bold border border-white
 }
 
-.login-signin-btn:hover{
+.register-signin-btn:hover{
     @apply scale-110 bg-white text-[#42B9A6]
 }
 
-.login-form {
-    @apply flex flex-col w-[50%] h-[100%] bg-[#042434] rounded-r-[3%] items-center justify-between py-[50px];
+.register-form {
+    @apply flex flex-col w-[50%] h-[100%] bg-[#042434] rounded-l-[3%] items-center justify-between py-[50px];
 } 
 
-.login-tittle {
+.register-tittle {
     font-family: 'League Gothic', sans-serif;
     @apply text-[#42B9A6] text-[60px];
 }
 
-.login-mid{
+.register-mid{
     @apply flex flex-col w-[100%]  gap-[30px] items-center;
 }
 
-.login-fields{
+.register-fields{
     @apply flex flex-col w-[100%] items-center relative;
 }
 
-.login-label {
+.register-label {
     font-family: 'Montserrat', sans-serif;                                                                  /*Deixando o label no meio com position absolute*/
     @apply absolute top-[50%] left-[18%] -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-all duration-300 bg-[#042434] px-[5px] text-gray-500;
 }
 
-.login-input:focus, .login-input:focus-visible {
+.register-input:focus, .register-input:focus-visible {
     @apply outline-none ring-0 border-[#42B9A6];          /* Serve para tirar a borda nativa da estilizacao*/
     
 }
 
 
-.login-input:focus + .login-label, .login-input:not(:placeholder-shown) + .login-label {    /*Quando tiver em foco e tiver com escritas faz com que o label diminua, troque de cor e suba*/
+.register-input:focus + .register-label, .register-input:not(:placeholder-shown) + .register-label {    /*Quando tiver em foco e tiver com escritas faz com que o label diminua, troque de cor e suba*/
   @apply -top-[8px] translate-y-0 text-xs text-[#42B9A6];
 }
 
-.login-input {
+.register-input {
     @apply flex w-[80%] rounded-[8px] outline-none bg-transparent border-[1px] border-solid border-white text-white;
 }
 
-.login-input:focus{ 
+.register-input:focus{ 
     @apply border-[#42B9A6] outline-none
 }
 
-.login-esqueceu{
+.register-esqueceu{
     font-family: 'Montserrat', sans-serif;
     @apply flex justify-end text-[#42B9A6] px-[10%] text-sm transition-all duration-300 ease-in-out hover:scale-105 hover:underline hover:text-[#52d6c1] ;
 
 }
 
-.login-password-group{
+.register-password-group{
     @apply flex flex-col gap-[8px] w-[100%];
 }
 
-.login-check{
+.register-check{
     @apply flex w-[80%] justify-start
 }
 
-.login-check-label {
+.register-check-label {
     @apply flex items-center cursor-pointer select-none;
 }
 
-.login-check-text {
+.register-check-text {
     font-family: 'Montserrat', sans-serif;
     @apply ms-2 text-sm text-gray-400 transition-colors duration-200;
 }
 
-.login-check-box:checked + .login-check-text {
+.register-check-box:checked + .register-check-text {
     @apply text-white;
 }
 
-.login-check-box {
+.register-check-box {
     appearance: none;
     -webkit-appearance: none;    /* tira a estilizacao padrao */
     -webkit-tap-highlight-color: transparent;       /* tira o quadradinho que aparecia */
@@ -103,33 +103,33 @@
     @apply w-5 h-5 rounded border border-gray-600 bg-[#042434] focus:outline-none focus:ring-0 focus:ring-offset-0 focus:border-gray-600 transition-all duration-200 cursor-pointer relative;    
 }
 
-.login-check-box:focus, .login-check-box:active, .login-check-box:focus-visible {
+.register-check-box:focus, .register-check-box:active, .register-check-box:focus-visible {
     box-shadow: none;
     @apply outline-none ring-0 ring-offset-0 border-gray-600;
 }
 
-.login-check-box:hover {
+.register-check-box:hover {
     @apply border-[#42B9A6];
 }
 
-.login-check-box:checked {
+.register-check-box:checked {
     @apply bg-[#42B9A6] border-[#42B9A6];
 }
 
-.login-check-box:checked:focus, .login-check-box:checked:active {
+.register-check-box:checked:focus, .register-check-box:checked:active {
     @apply bg-[#42B9A6] border-[#42B9A6];
 }
 
-.login-check-box:checked::after {
+.register-check-box:checked::after {
     content: '✓';
     @apply text-white text-xs font-bold absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
 }
 
-.login-btn{
+.register-btn{
     font-family: 'Montserrat', sans-serif;
     @apply  bg-[#42B9A6] text-[15px] font-bold transition-all duration-300 ease-in-out
 }
 
-.login-btn:hover{
+.register-btn:hover{
     @apply scale-110 bg-[#52C8B5]
 }
