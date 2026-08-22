@@ -5,11 +5,11 @@
     <div class="login-signin">
         <h1 class="login-signin-tittle">Não possui uma conta?</h1>
         <span class="login-signin-text">Venha fazer parte desta comunidade incrível, junte-se a nós por aqui!</span>
-        <x-primary-button class="login-signin-btn">
+        <x-painted-area-button class="login-signin-btn">
             <a class="" href="{{ route('register') }}">
                 {{ __('Criar Conta') }}
             </a>
-        </x-primary-button>
+        </x-painted-area-button>
     </div>
 
     <form method="POST" action="{{ route('login') }}" class="login-form">
@@ -57,8 +57,8 @@
             </div>
 
         </div>
-        <x-primary-button class="login-btn">
+        <x-nonpainted-area-button class="login-btn">
             {{ __('Entrar') }}
-        </x-primary-button>
+        </x-nonpainted-area-button>
     </form>
 </x-guest-layout>

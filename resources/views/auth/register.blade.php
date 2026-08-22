@@ -41,18 +41,18 @@
             </div>
             
         </div>
-        <x-primary-button class="register-btn">
+        <x-nonpainted-area-button class="register-btn">
             {{ __('Criar') }}
-        </x-primary-button>
+        </x-nonpainted-area-button>
     </form>
 
     <div class="register-signin">
         <h1 class="register-signin-tittle">Seja Bem-Vindo!</h1>
         <span class="register-signin-text">Já possui uma conta? Conecte-se para obter os benefícios!</span>
-        <x-primary-button class="register-signin-btn">
+        <x-x-painted-area-button class="register-signin-btn">
             <a class="" href="{{ route('login') }}">
                 {{ __('Login') }}
             </a>
-        </x-primary-button>
+        </x-x-painted-area-button>
     </div>
 </x-guest-layout>
