@@ -21,3 +21,129 @@
 .guest-card {
     @apply flex flex-row w-[45vw] h-[60vh]  bg-white rounded-[3%] shadow-[0_0_60px_rgba(66,185,166,0.45)];;
 }
+
+/* LOGIN E REGISTER */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Painéis principais e variação de borda para lados alternados */
+.guest-signin {
+    @apply flex flex-col w-[50%] h-[100%] bg-[#42B9A6] items-center justify-start py-[50px] gap-[30px];
+}
+
+.guest-signin-left {
+    @apply rounded-l-[3%];
+}
+
+.guest-signin-right {
+    @apply rounded-r-[3%];
+}
+
+.guest-form {
+    @apply flex flex-col w-[50%] h-[100%] bg-[#042434] items-center justify-between py-[50px];
+} 
+
+.guest-form-left {
+    @apply rounded-l-[3%];
+}
+
+.guest-form-right {
+    @apply rounded-r-[3%];
+}
+
+/* Títulos e textos dos painéis */
+.guest-signin-tittle {
+    @apply font-league text-white text-[60px];
+}
+
+.guest-signin-text {
+    @apply font-montserrat text-white text-[35px] text-center font-semibold px-[30px] pb-[30px];
+}
+
+.guest-tittle {
+    @apply font-league text-[#42B9A6] text-[60px];
+}
+
+/* Estrutura do formulário */
+.guest-mid {
+    @apply flex flex-col w-[100%] gap-[30px] items-center;
+}
+
+.guest-fields {
+    @apply flex flex-col w-[100%] items-center relative;
+}
+
+.guest-label {
+    @apply font-montserrat absolute top-[50%] left-[18%] -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-all duration-300 bg-[#042434] px-[5px] text-gray-500;
+}
+
+/* Inputs e estados de foco */
+.guest-input {
+    @apply flex w-[80%] rounded-[8px] outline-none bg-transparent border-[1px] border-solid border-white text-white;
+}
+
+.guest-input:focus, .guest-input:focus-visible {
+    @apply outline-none ring-0 border-[#42B9A6];
+}
+
+.guest-input:focus + .guest-label, .guest-input:not(:placeholder-shown) + .guest-label {
+    @apply -top-[8px] translate-y-0 text-xs text-[#42B9A6];
+}
+
+/* Links adicionais */
+.guest-esqueceu {
+    @apply font-montserrat flex justify-end text-[#42B9A6] px-[10%] text-sm transition-all duration-300 ease-in-out hover:scale-105 hover:underline hover:text-[#52d6c1];
+}
+
+.guest-password-group {
+    @apply flex flex-col gap-[8px] w-[100%];
+}
+
+/* Checkbox estilizado */
+.guest-check {
+    @apply flex w-[80%] justify-start;
+}
+
+.guest-check-label {
+    @apply flex items-center cursor-pointer select-none;
+}
+
+.guest-check-text {
+    @apply font-montserrat ms-2 text-sm text-gray-400 transition-colors duration-200;
+}
+
+.guest-check-box:checked + .guest-check-text {
+    @apply text-white;
+}
+
+.guest-check-box {
+    appearance: none;
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: transparent;
+    box-shadow: none;
+    @apply w-5 h-5 rounded border border-gray-600 bg-[#042434] focus:outline-none focus:ring-0 focus:ring-offset-0 focus:border-gray-600 transition-all duration-200 cursor-pointer relative;    
+}
+
+.guest-check-box:focus, .guest-check-box:active, .guest-check-box:focus-visible {
+    box-shadow: none;
+    @apply outline-none ring-0 ring-offset-0 border-gray-600;
+}
+
+.guest-check-box:hover {
+    @apply border-[#42B9A6];
+}
+
+.guest-check-box:checked {
+    @apply bg-[#42B9A6] border-[#42B9A6];
+}
+
+.guest-check-box:checked:focus, .guest-check-box:checked:active {
+    @apply bg-[#42B9A6] border-[#42B9A6];
+}
+
+.guest-check-box:checked::after {
+    content: '✓';
+    @apply text-white text-xs font-bold absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+}

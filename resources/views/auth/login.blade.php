@@ -2,44 +2,37 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <div class="login-signin">
-        <h1 class="login-signin-tittle">Não possui uma conta?</h1>
-        <span class="login-signin-text">Venha fazer parte desta comunidade incrível, junte-se a nós por aqui!</span>
-        <x-painted-area-button class="login-signin-btn">
+    <div class="guest-signin guest-signin-left">
+        <h1 class="guest-signin-tittle">Não possui uma conta?</h1>
+        <span class="guest-signin-text">Venha fazer parte desta comunidade incrível, junte-se a nós por aqui!</span>
+        <x-painted-area-button class="font-montserrat bg-transparent text-[15px] font-bold border border-white transition-all duration-200 hover:scale-110 hover:bg-white hover:text-[#42B9A6]">
             <a class="" href="{{ route('register') }}">
                 {{ __('Criar Conta') }}
             </a>
         </x-painted-area-button>
     </div>
 
-    <form method="POST" action="{{ route('login') }}" class="login-form">
+    <form method="POST" action="{{ route('login') }}" class="guest-form guest-form-right">
         @csrf
 
-        <h1 class="login-tittle">CONECTE-SE</h1>
+        <h1 class="guest-tittle">CONECTE-SE</h1>
 
-        <div class="login-mid">
+        <div class="guest-mid">
             <!-- Email Address -->
-            <div class="login-fields">
-
-
-                <x-text-input class="login-input" id="email" type="email" name="email" :value="old('email')" placeholder=" " required autofocus autocomplete="username" />
-                <x-input-label for="email" :value="__('Email')" class="login-label" />
-
+            <div class="guest-fields">
+                <x-text-input class="guest-input" id="email" type="email" name="email" :value="old('email')" placeholder=" " required autofocus autocomplete="username" />
+                <x-input-label for="email" :value="__('Email')" class="guest-label" />
                 <x-input-error :messages="$errors->get('email')" class="mt-2" />
-
             </div>
 
-
-            <div class="login-password-group">
+            <div class="guest-password-group">
                 <!-- Password -->
-                <div class="login-fields">
-
-                    <x-text-input class="login-input" id="password" type="password" name="password" placeholder=" " required autocomplete="current-password" />
-                    <x-input-label for="password" :value="__('Senha')" class="login-label" />
+                <div class="guest-fields">
+                    <x-text-input class="guest-input" id="password" type="password" name="password" placeholder=" " required autocomplete="current-password" />
+                    <x-input-label for="password" :value="__('Senha')" class="guest-label" />
                     <x-input-error :messages="$errors->get('password')" class="mt-2" />
-
                 </div>
-                <div class="login-esqueceu">
+                <div class="guest-esqueceu">
                     @if (Route::has('password.request'))
                     <a class="" href="{{ route('password.request') }}">
                         {{ __('Esqueceu a senha?') }}
@@ -49,15 +42,15 @@
             </div>
 
             <!-- Continue Conectado -->
-            <div class="login-check">
-                <label for="remember_me" class="login-check-label">
-                    <input id="remember_me" type="checkbox" class="login-check-box" name="remember">
-                    <span class="login-check-text">{{ __('Continue Conectado') }}</span>
+            <div class="guest-check">
+                <label for="remember_me" class="guest-check-label">
+                    <input id="remember_me" type="checkbox" class="guest-check-box" name="remember">
+                    <span class="guest-check-text">{{ __('Continue Conectado') }}</span>
                 </label>
             </div>
 
         </div>
-        <x-nonpainted-area-button class="login-btn">
+        <x-nonpainted-area-button class="font-montserrat bg-[#42B9A6] text-[15px] font-bold transition-all duration-300 ease-in-out hover:scale-110 hover:bg-[#52C8B5]">
             {{ __('Entrar') }}
         </x-nonpainted-area-button>
     </form>
