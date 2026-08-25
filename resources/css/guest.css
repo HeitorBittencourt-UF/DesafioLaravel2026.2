@@ -29,15 +29,15 @@
 @tailwind utilities;
 
 /* Painéis principais e variação de borda para lados alternados */
-.guest-signin {
+.guest-overlay {
     @apply flex flex-col w-[50%] h-[100%] bg-[#42B9A6] items-center justify-start py-[50px] gap-[30px];
 }
 
-.guest-signin-left {
+.overlay-left {
     @apply rounded-l-[3%];
 }
 
-.guest-signin-right {
+.overlay-right {
     @apply rounded-r-[3%];
 }
 
@@ -54,11 +54,11 @@
 }
 
 /* Títulos e textos dos painéis */
-.guest-signin-tittle {
+.overlay-tittle {
     @apply font-league text-white text-[60px];
 }
 
-.guest-signin-text {
+.overlay-text {
     @apply font-montserrat text-white text-[35px] text-center font-semibold px-[30px] pb-[30px];
 }
 

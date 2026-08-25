@@ -41,7 +41,7 @@
     <div class="guest-signin guest-signin-right">
         <h1 class="guest-signin-tittle">Seja Bem-Vindo!</h1>
         <span class="guest-signin-text">Já possui uma conta? Conecte-se para obter os benefícios!</span>
-        <x-painted-area-button class="font-montserrat bg-transparent text-[15px] font-bold border border-white transition-all duration-200 hover:scale-110 hover:bg-white hover:text-[#42B9A6]">
+        <x-painted-area-button>
             <a class="" href="{{ route('login') }}">
                 {{ __('Login') }}
             </a>
