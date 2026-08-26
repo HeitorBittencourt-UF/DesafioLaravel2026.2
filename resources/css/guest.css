@@ -19,26 +19,27 @@
 }
 
 .guest-card {
-    @apply flex flex-row w-[45vw] h-[60vh]  bg-white rounded-[3%] shadow-[0_0_60px_rgba(66,185,166,0.45)];;
+    @apply relative w-[45vw] h-[60vh]  bg-white overflow-hidden rounded-[3%] shadow-[0_0_60px_rgba(66,185,166,0.45)];;
 }
 
 /* LOGIN E REGISTER */
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 /* Painéis principais e variação de borda para lados alternados */
+.guest-overlay-container {
+    @apply absolute top-0 left-1/2 w-1/2 h-full overflow-hidden transition-transform duration-[600ms] ease-in-out z-[100];
+}
+
 .guest-overlay {
-    @apply flex flex-col w-[50%] h-[100%] bg-[#42B9A6] items-center justify-start py-[50px] gap-[30px];
+    @apply relative w-[200%] h-[100%] bg-[#42B9A6] gap-[30px] translate-x-0 transition-transform duration-[600ms] ease-in-out flex flex-row; 
 }
 
 .overlay-left {
-    @apply rounded-l-[3%];
+    @apply  top-0 h-[100%] w-[50%] rounded-l-[3%] flex flex-col items-center justify-start py-[50px] gap-[30px];
 }
 
 .overlay-right {
-    @apply rounded-r-[3%];
+    @apply  top-0 h-[100%] w-[50%] rounded-r-[3%] flex flex-col items-center justify-start py-[50px] gap-[30px];
 }
 
 .guest-form {
