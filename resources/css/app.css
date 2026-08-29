@@ -2,17 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+/* .lading-body{
+  @apply w-[100%] h-[100%] ;
+} */
+
 .navbar {
-  @apply absolute w-screen bg-[#042434] flex items-center justify-between px-16 py-4 top-0 left-0;
+  @apply  w-screen bg-[#042434] flex items-center justify-between px-16 py-4 top-0 left-0;
 }
 
-.navbar svg {
-    @apply w-[60px] h-[60px];
+.navbar svg{
+  @apply w-10 h-10;
+}
+.navbar-icons svg {
+  @apply w-6 h-6;
 }
 
-.navbar-logo {
-  @apply text-green-400 font-bold text-xl;
-}
 
 .navbar-links {
   @apply w-[100%] font-montserrat text-[24px] text-white flex justify-between font-light px-[60px];
@@ -24,4 +28,80 @@
 
 .navbar-icons {
   @apply flex space-x-4 text-white;
+}
+
+
+.footer {
+    @apply  bg-[#041d28] text-white w-screen px-8 pt-12 pb-6 border-t border-[#0d2b3a];
+}
+
+.footer-container {
+    @apply max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 pb-12 border-b border-[#0d3446];
+}
+
+/* Coluna 1: Logo e Redes */
+.footer-brand {
+    @apply md:col-span-6 flex flex-col space-y-6 pr-6;
+}
+
+.footer-logo {
+    @apply flex items-center space-x-3;
+}
+
+.footer-logo-icon {
+    @apply w-12 h-12 text-[#32d7a0];
+}
+
+.footer-logo-text h2 {
+    @apply text-xl font-bold text-[#32d7a0] tracking-wide leading-tight;
+}
+
+.footer-logo-text p {
+    @apply text-xs text-slate-300;
+}
+
+.footer-description {
+    @apply text-slate-300 text-sm max-w-md leading-relaxed;
+}
+
+.footer-socials {
+    @apply flex space-x-4 pt-2;
+}
+
+.social-icon {
+    @apply w-10 h-10 border border-[#32d7a0] rounded-lg flex items-center justify-center text-[#32d7a0] hover:bg-[#32d7a0] hover:text-[#041d28] transition-colors duration-200;
+}
+
+.social-icon svg {
+    @apply w-5 h-5;
+}
+
+/* Navegação (Empresa e Áreas) */
+.footer-nav-col {
+    @apply md:col-span-3 flex flex-col space-y-4;
+}
+
+.footer-nav-col h3 {
+    @apply text-lg font-semibold text-white tracking-wide;
+}
+
+.footer-nav-col ul {
+    @apply space-y-3;
+}
+
+.footer-nav-col a {
+    @apply text-slate-300 text-sm hover:text-[#32d7a0] transition-colors duration-200;
+}
+
+/* Barra Inferior */
+.footer-bottom {
+    @apply max-w-7xl mx-auto pt-6 flex flex-col md:flex-row items-center justify-between text-xs text-slate-400 gap-4;
+}
+
+.footer-bottom-links {
+    @apply flex flex-wrap justify-center gap-6;
+}
+
+.footer-bottom-links a {
+    @apply hover:text-white transition-colors duration-200;
 }
