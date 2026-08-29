@@ -1521,7 +1521,7 @@
 </head>
 
 <body class=" ">
-    <header class="w-full lg:max-w-4xl max-w-[335px] text-sm mb-6 not-has-[nav]:hidden">
+    <header class="not-has-[nav]:hidden">
         @if (Route::has('login'))
 
         <nav class="navbar">
@@ -1792,7 +1792,7 @@
 
     <div class="lading-container">
         <div class="lading-hero">
-
+            <x-hero-hypestore/>
         </div>
         <div></div>
         <div></div>
