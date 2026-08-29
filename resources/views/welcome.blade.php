@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Laravel</title>
+    <title>{{ config('app.name', 'Laravel') }}</title>
+    <link rel="icon" type="image/png" href="{{ asset('assets/Logo-1.png') }}">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -1519,7 +1520,7 @@
     @endif
 </head>
 
-<body class="lading-body">
+<body class=" ">
     <header class="w-full lg:max-w-4xl max-w-[335px] text-sm mb-6 not-has-[nav]:hidden">
         @if (Route::has('login'))
 
@@ -1790,7 +1791,9 @@
         </div> -->
 
     <div class="lading-container">
-        <div class="lading-"></div>
+        <div class="lading-hero">
+
+        </div>
         <div></div>
         <div></div>
     </div>
