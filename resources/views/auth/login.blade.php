@@ -1,11 +1,11 @@
 <x-guest-layout>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
-
+    /
     <div class="guest-signin guest-signin-left">
         <h1 class="guest-signin-tittle">Não possui uma conta?</h1>
         <span class="guest-signin-text">Venha fazer parte desta comunidade incrível, junte-se a nós por aqui!</span>
-        <x-painted-area-button class="font-montserrat bg-transparent text-[15px] font-bold border border-white transition-all duration-200 hover:scale-110 hover:bg-white hover:text-[#42B9A6]">
+        <x-painted-area-button>
             <a class="" href="{{ route('register') }}">
                 {{ __('Criar Conta') }}
             </a>
