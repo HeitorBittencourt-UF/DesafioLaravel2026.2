@@ -1,14 +1,14 @@
 <x-guest-layout>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
-
+    <!-- Parte Formulário : Criar Conta -->
     <form method="POST" action="{{ route('register') }}" class="guest-form guest-form-left">
         @csrf
 
         <h1 class="guest-tittle">CRIE SUA CONTA</h1>
 
         <div class="guest-mid">
-            <!-- Email Address -->
+            <!-- Email  -->
             <div class="guest-fields">
                 <x-text-input class="guest-input" id="email" type="email" name="email" :value="old('email')" placeholder=" " required autofocus autocomplete="username" />
                 <x-input-label for="email" :value="__('Email')" class="guest-label" />
@@ -16,7 +16,7 @@
             </div>
 
             <div class="guest-password-group">
-                <!-- Password -->
+                <!-- Senha -->
                 <div class="guest-fields">
                     <x-text-input class="guest-input" id="password" type="password" name="password" placeholder=" " required autocomplete="current-password" />
                     <x-input-label for="password" :value="__('Senha')" class="guest-label" />
@@ -37,7 +37,7 @@
             {{ __('Criar') }}
         </x-nonpainted-area-button>
     </form>
-
+    <!-- Parte Escrita : Login -->
     <div class="guest-signin guest-signin-right">
         <h1 class="guest-signin-tittle">Seja Bem-Vindo!</h1>
         <span class="guest-signin-text">Já possui uma conta? Conecte-se para obter os benefícios!</span>

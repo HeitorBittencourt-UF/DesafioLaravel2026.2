@@ -1,7 +1,7 @@
 <x-guest-layout>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
-    /
+    <!-- Parte escrita : Criar Conta -->
     <div class="guest-signin guest-signin-left">
         <h1 class="guest-signin-tittle">Não possui uma conta?</h1>
         <span class="guest-signin-text">Venha fazer parte desta comunidade incrível, junte-se a nós por aqui!</span>
@@ -11,14 +11,14 @@
             </a>
         </x-painted-area-button>
     </div>
-
+    <!-- Parte de formulário : Logar -->
     <form method="POST" action="{{ route('login') }}" class="guest-form guest-form-right">
         @csrf
 
         <h1 class="guest-tittle">CONECTE-SE</h1>
 
         <div class="guest-mid">
-            <!-- Email Address -->
+            <!-- Email -->
             <div class="guest-fields">
                 <x-text-input class="guest-input" id="email" type="email" name="email" :value="old('email')" placeholder=" " required autofocus autocomplete="username" />
                 <x-input-label for="email" :value="__('Email')" class="guest-label" />
@@ -26,12 +26,13 @@
             </div>
 
             <div class="guest-password-group">
-                <!-- Password -->
+                <!-- Senha -->
                 <div class="guest-fields">
                     <x-text-input class="guest-input" id="password" type="password" name="password" placeholder=" " required autocomplete="current-password" />
                     <x-input-label for="password" :value="__('Senha')" class="guest-label" />
                     <x-input-error :messages="$errors->get('password')" class="mt-2" />
                 </div>
+                <!-- Esqueceu a senha -->
                 <div class="guest-esqueceu">
                     @if (Route::has('password.request'))
                     <a class="" href="{{ route('password.request') }}">
@@ -41,7 +42,7 @@
                 </div>
             </div>
 
-            <!-- Continue Conectado -->
+            <!-- Continuar Conectado -->
             <div class="guest-check">
                 <label for="remember_me" class="guest-check-label">
                     <input id="remember_me" type="checkbox" class="guest-check-box" name="remember">
