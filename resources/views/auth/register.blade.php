@@ -8,11 +8,33 @@
         <h1 class="guest-tittle">CRIE SUA CONTA</h1>
 
         <div class="guest-mid">
+
+            <!-- Nome -->
+            <div class="guest-fields">
+                <x-text-input class="guest-input" id="nome" type="text" name="nome" :value="old('nome')" placeholder=" " required autofocus autocomplete="name" />
+                <x-input-label for="nome" :value="__('Nome')" class="guest-label" />
+                <x-input-error :messages="$errors->get('nome')" class="mt-2" />
+            </div>
+
+            <!-- CPF -->
+            <div class="guest-fields">
+                <x-text-input class="guest-input" id="cpf" type="text" name="cpf" :value="old('cpf')" placeholder=" " required autocomplete="off" maxlength="14" />
+                <x-input-label for="cpf" :value="__('CPF')" class="guest-label" />
+                <x-input-error :messages="$errors->get('cpf')" class="mt-2" />
+            </div>
+
             <!-- Email  -->
             <div class="guest-fields">
                 <x-text-input class="guest-input" id="email" type="email" name="email" :value="old('email')" placeholder=" " required autofocus autocomplete="username" />
                 <x-input-label for="email" :value="__('Email')" class="guest-label" />
                 <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            </div>
+
+            <!-- Telefone -->
+            <div class="guest-fields">
+                <x-text-input class="guest-input" id="telefone" type="tel" name="telefone" :value="old('telefone')" placeholder=" " required autocomplete="tel" maxlength="15" />
+                <x-input-label for="telefone" :value="__('Telefone')" class="guest-label" />
+                <x-input-error :messages="$errors->get('telefone')" class="mt-2" />
             </div>
 
             <div class="guest-password-group">

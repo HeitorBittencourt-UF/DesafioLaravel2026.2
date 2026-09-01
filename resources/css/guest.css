@@ -67,7 +67,7 @@
 
 /* Estrutura do formulário */
 .guest-mid {
-    @apply flex flex-col w-[100%] gap-[30px] items-center;
+    @apply flex flex-col w-[100%] gap-[25px] items-center;
 }
 
 .guest-fields {
@@ -75,7 +75,7 @@
 }
 
 .guest-label {
-    @apply font-montserrat absolute top-[50%] left-[18%] -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-all duration-300 bg-[#042434] px-[5px] text-gray-500;
+    @apply font-montserrat absolute top-[50%] left-[14%] -translate-x-0 -translate-y-1/2 pointer-events-none transition-all duration-300 bg-[#042434] px-[5px] text-gray-500;
 }
 
 /* Inputs e variantes do mesmo */
