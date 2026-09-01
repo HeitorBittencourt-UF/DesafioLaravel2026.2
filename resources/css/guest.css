@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Guest padrão */
+
 .guest-body {
     @apply w-screen h-screen bg-[#042434] flex flex-col items-center justify-start;
 }
@@ -9,7 +11,7 @@
 .guest-container{
     @apply flex flex-col items-center justify-center gap-[40px] pt-[20px];
 }
-
+/* Logo em cima do Card */
 .guest-logo-a{
     @apply flex w-[106.52px] h-[106.52px];
 }
@@ -17,18 +19,15 @@
 .guest-logo {
     @apply w-20 h-20;
 }
-
+/* Efeitos de luz do card(sombras claras) */
 .guest-card {
     @apply flex flex-row w-[45vw] h-[60vh]  bg-white rounded-[3%] shadow-[0_0_60px_rgba(66,185,166,0.45)];;
 }
 
 /* LOGIN E REGISTER */
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* Painéis principais e variação de borda para lados alternados */
+/*  Divisao dos lados */
+/* Parte Colorida */
 .guest-signin {
     @apply flex flex-col w-[50%] h-[100%] bg-[#42B9A6] items-center justify-start py-[50px] gap-[30px];
 }
@@ -40,7 +39,7 @@
 .guest-signin-right {
     @apply rounded-r-[3%];
 }
-
+/* Parte de Formulario */
 .guest-form {
     @apply flex flex-col w-[50%] h-[100%] bg-[#042434] items-center justify-between py-[50px];
 } 
@@ -79,16 +78,16 @@
     @apply font-montserrat absolute top-[50%] left-[18%] -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-all duration-300 bg-[#042434] px-[5px] text-gray-500;
 }
 
-/* Inputs e estados de foco */
+/* Inputs e variantes do mesmo */
 .guest-input {
     @apply flex w-[80%] rounded-[8px] outline-none bg-transparent border-[1px] border-solid border-white text-white;
 }
 
-.guest-input:focus, .guest-input:focus-visible {
+.guest-input:focus, .guest-input:focus-visible {    /*Faz com que tire a bordinha que vem por padrao*/
     @apply outline-none ring-0 border-[#42B9A6];
 }
 
-.guest-input:focus + .guest-label, .guest-input:not(:placeholder-shown) + .guest-label {
+.guest-input:focus + .guest-label, .guest-input:not(:placeholder-shown) + .guest-label { /*Modo para fazer com que caso o placeholder nao esteja aparecendo o label suba */
     @apply -top-[8px] translate-y-0 text-xs text-[#42B9A6];
 }
 
@@ -101,7 +100,7 @@
     @apply flex flex-col gap-[8px] w-[100%];
 }
 
-/* Checkbox estilizado */
+/* Checkbox */
 .guest-check {
     @apply flex w-[80%] justify-start;
 }
@@ -114,11 +113,11 @@
     @apply font-montserrat ms-2 text-sm text-gray-400 transition-colors duration-200;
 }
 
-.guest-check-box:checked + .guest-check-text {
+.guest-check-box:checked + .guest-check-text {  /*Muda o texto para branco quando checado*/
     @apply text-white;
 }
 
-.guest-check-box {
+.guest-check-box {  /*tira o webkit padrao / muda o cursor / tira as estilzacoes padroes de focus*/
     appearance: none;
     -webkit-appearance: none;
     -webkit-tap-highlight-color: transparent;
@@ -126,7 +125,7 @@
     @apply w-5 h-5 rounded border border-gray-600 bg-[#042434] focus:outline-none focus:ring-0 focus:ring-offset-0 focus:border-gray-600 transition-all duration-200 cursor-pointer relative;    
 }
 
-.guest-check-box:focus, .guest-check-box:active, .guest-check-box:focus-visible {
+.guest-check-box:focus, .guest-check-box:active, .guest-check-box:focus-visible {   /*Tira as coisas padroes de marcacao*/
     box-shadow: none;
     @apply outline-none ring-0 ring-offset-0 border-gray-600;
 }
@@ -143,7 +142,7 @@
     @apply bg-[#42B9A6] border-[#42B9A6];
 }
 
-.guest-check-box:checked::after {
+.guest-check-box:checked::after {   /*Muda o conteudo para o certinho bonitinho / centralizando o meio dele no meio real do pai*/
     content: '✓';
     @apply text-white text-xs font-bold absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
 }
