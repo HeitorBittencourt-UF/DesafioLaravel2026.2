@@ -29,7 +29,7 @@
 /*  Divisao dos lados */
 /* Parte Colorida */
 .guest-signin {
-    @apply flex flex-col w-[50%] h-[100%] bg-[#42B9A6] items-center justify-start py-[50px] gap-[30px];
+    @apply flex flex-col w-[50%] h-[100%] bg-[#42B9A6] items-center justify-start py-[40px] gap-[30px];
 }
 
 .guest-signin-left {
@@ -41,11 +41,11 @@
 }
 /* Parte de Formulario */
 .guest-form {
-    @apply flex flex-col w-[50%] h-[100%] bg-[#042434] items-center justify-between py-[50px];
+    @apply flex flex-col w-[50%] h-[100%] bg-[#042434] items-center justify-between py-[40px];
 } 
 
 .guest-form-left {
-    @apply rounded-l-[3%];
+    @apply rounded-l-[3%] py-[];
 }
 
 .guest-form-right {
@@ -67,7 +67,7 @@
 
 /* Estrutura do formulário */
 .guest-mid {
-    @apply flex flex-col w-[100%] gap-[25px] items-center;
+    @apply flex flex-col w-[100%] gap-[20px] items-center;
 }
 
 .guest-fields {

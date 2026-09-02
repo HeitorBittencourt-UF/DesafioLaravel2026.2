@@ -1,6 +1,7 @@
 <x-guest-layout>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
+
     <!-- Parte Formulário : Criar Conta -->
     <form method="POST" action="{{ route('register') }}" class="guest-form guest-form-left">
         @csrf
@@ -23,9 +24,9 @@
                 <x-input-error :messages="$errors->get('cpf')" class="mt-2" />
             </div>
 
-            <!-- Email  -->
+            <!-- Email -->
             <div class="guest-fields">
-                <x-text-input class="guest-input" id="email" type="email" name="email" :value="old('email')" placeholder=" " required autofocus autocomplete="username" />
+                <x-text-input class="guest-input" id="email" type="email" name="email" :value="old('email')" placeholder=" " required autocomplete="username" />
                 <x-input-label for="email" :value="__('Email')" class="guest-label" />
                 <x-input-error :messages="$errors->get('email')" class="mt-2" />
             </div>
@@ -37,33 +38,41 @@
                 <x-input-error :messages="$errors->get('telefone')" class="mt-2" />
             </div>
 
+            <!-- Data de Nascimento -->
+            <div class="guest-fields">
+                <x-text-input class="guest-input" id="data_nascimento" type="date" name="data_nascimento" :value="old('data_nascimento')" required />
+                <x-input-label for="data_nascimento" :value="__('Data de Nascimento')" class="guest-label" />
+                <x-input-error :messages="$errors->get('data_nascimento')" class="mt-2" />
+            </div>
+
             <div class="guest-password-group">
                 <!-- Senha -->
                 <div class="guest-fields">
-                    <x-text-input class="guest-input" id="password" type="password" name="password" placeholder=" " required autocomplete="current-password" />
+                    <x-text-input class="guest-input" id="password" type="password" name="password" placeholder=" " required autocomplete="new-password" />
                     <x-input-label for="password" :value="__('Senha')" class="guest-label" />
                     <x-input-error :messages="$errors->get('password')" class="mt-2" />
                 </div>
-            </div>
 
-            <!-- Continue Conectado -->
-            <div class="guest-check">
-                <label for="remember_me" class="guest-check-label">
-                    <input id="remember_me" type="checkbox" class="guest-check-box" name="remember">
-                    <span class="guest-check-text">{{ __('Continue Conectado') }}</span>
-                </label>
+                <!-- Confirmar Senha -->
+                <div class="guest-fields mt-4">
+                    <x-text-input class="guest-input" id="password_confirmation" type="password" name="password_confirmation" placeholder=" " required autocomplete="new-password" />
+                    <x-input-label for="password_confirmation" :value="__('Confirmar Senha')" class="guest-label" />
+                    <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+                </div>
             </div>
 
         </div>
-        <x-nonpainted-area-button class="font-montserrat bg-[#42B9A6] text-[15px] font-bold transition-all duration-300 ease-in-out hover:scale-110 hover:bg-[#52C8B5]">
+
+        <x-nonpainted-area-button>
             {{ __('Criar') }}
         </x-nonpainted-area-button>
     </form>
+
     <!-- Parte Escrita : Login -->
     <div class="guest-signin guest-signin-right">
         <h1 class="guest-signin-tittle">Seja Bem-Vindo!</h1>
         <span class="guest-signin-text">Já possui uma conta? Conecte-se para obter os benefícios!</span>
-        <x-painted-area-button class="font-montserrat bg-transparent text-[15px] font-bold border border-white transition-all duration-200 hover:scale-110 hover:bg-white hover:text-[#42B9A6]">
+        <x-painted-area-button>
             <a class="" href="{{ route('login') }}">
                 {{ __('Login') }}
             </a>

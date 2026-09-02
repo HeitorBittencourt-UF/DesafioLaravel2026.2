@@ -18,7 +18,7 @@ class Usuario extends Authenticatable
      * @var string
      */
     protected $table = 'Usuarios';
-
+    protected $primaryKey = 'id';
     /**
      * Os atributos que podem ser preenchidos em massa.
      *
