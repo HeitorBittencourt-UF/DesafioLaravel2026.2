@@ -160,3 +160,21 @@
 .guest-forgot-text {
     @apply font-montserrat text-white text-[18px] text-center px-[30px] leading-relaxed;
 }
+
+/* RESET PASSWORD*/
+
+.guest-reset-card {
+    @apply flex flex-row w-[45vw] h-[60vh] bg-white rounded-[3%] shadow-[0_0_60px_rgba(66,185,166,0.45)];
+}
+
+.guest-reset-info {
+    @apply flex flex-col w-[50%] h-[100%] bg-[#42B9A6] items-center justify-start py-[40px] gap-[30px] rounded-l-[3%];
+}
+
+.guest-reset-form {
+    @apply flex flex-col w-[50%] h-[100%] bg-[#042434] items-center justify-between py-[40px] rounded-r-[3%];
+}
+
+.guest-reset-mid {
+    @apply flex flex-col w-[100%] gap-[50px] items-center;
+}
