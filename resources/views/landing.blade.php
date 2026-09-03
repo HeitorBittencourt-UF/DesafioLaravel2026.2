@@ -25,7 +25,7 @@
         <!-- Logo -->
         <nav class="navbar">
             <div class="navbar-logo">
-                <x-application-logo></x-application-logo>
+                
             </div>
             <!-- Ancoragens da navbar -->
             <ul class="navbar-links">
