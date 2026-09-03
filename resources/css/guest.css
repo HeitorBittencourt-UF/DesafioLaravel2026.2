@@ -146,3 +146,17 @@
     content: '✓';
     @apply text-white text-xs font-bold absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
 }
+
+/* FORGOT */
+
+.guest-forgot-info {
+    @apply flex flex-col w-[50%] h-[100%] bg-[#42B9A6] items-center justify-start py-[40px] gap-[30px] rounded-l-[3%];
+}
+
+.guest-forgot-form {
+    @apply flex flex-col w-[50%] h-[100%] bg-[#042434] items-center justify-between py-[40px] rounded-r-[3%];
+}
+
+.guest-forgot-text {
+    @apply font-montserrat text-white text-[18px] text-center px-[30px] leading-relaxed;
+}

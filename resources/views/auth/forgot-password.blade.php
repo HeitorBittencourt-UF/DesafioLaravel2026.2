@@ -1,25 +1,39 @@
 <x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-        {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+    <!-- Colorido: Voltar -->
+    <div class="guest-forgot-info">
+        <h1 class="guest-signin-tittle">Lembrou a Senha?</h1>
+        <span class="guest-signin-text">Se você lembrou de suas credenciais, volte para a página de login!</span>
+        <x-painted-area-button>
+            <a href="{{ route('login') }}">
+                {{ __('Voltar ao Login') }}
+            </a>
+        </x-painted-area-button>
     </div>
 
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
-
-    <form method="POST" action="{{ route('password.email') }}">
+    <!--Formulário:Envio de E-mail -->
+    <form method="POST" action="{{ route('password.email') }}" class="guest-forgot-form">
         @csrf
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        <h1 class="guest-tittle">RECUPERAR</h1>
+
+        <span class="guest-forgot-text">
+            Esqueceu sua senha? Sem problemas. Informe seu endereço de e-mail e enviaremos um link para você redefiní-la.
+        </span>
+
+        <!-- Aviso de e-mail enviado -->
+        <x-auth-session-status :status="session('status')" />
+
+        <div class="guest-mid">
+            <!-- E-mail -->
+            <div class="guest-fields">
+                <x-text-input id="email" class="guest-input" type="email" name="email" :value="old('email')" required autofocus placeholder=" " />
+                <x-input-label for="email" :value="__('Email')" class="guest-label" />
+                <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            </div>
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <x-nonpainted-area-button>
-                {{ __('Email Password Reset Link') }}
-            </x-nonpainted-area-button>
-        </div>
+        <x-nonpainted-area-button>
+            {{ __('Enviar Link') }}
+        </x-nonpainted-area-button>
     </form>
 </x-guest-layout>
