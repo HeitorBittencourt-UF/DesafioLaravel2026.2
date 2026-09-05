@@ -301,3 +301,62 @@ html{
 .footer-bottom-links a {
     @apply hover:text-white transition-colors duration-200;
 }
+
+
+/* DASHBOARD */
+
+.dash-body {
+    @apply min-h-screen bg-[#042434] text-white font-montserrat flex flex-col;
+}
+
+.dash-navbar {
+    @apply w-full bg-[#042434] border-b border-gray-800 px-8 py-4 flex items-center justify-between shadow-md;
+}
+
+.dash-main {
+    @apply flex-1 p-8 max-w-7xl w-full mx-auto flex flex-col gap-8;
+}
+
+.dash-header-title {
+    @apply font-league text-4xl text-[#42B9A6] tracking-wide;
+}
+
+.dash-card-grid {
+    @apply grid grid-cols-1 md:grid-cols-3 gap-6;
+}
+
+.dash-stat-card {
+    @apply bg-white text-gray-800 p-6 rounded-xl shadow-[0_0_20px_rgba(66,185,166,0.2)] flex flex-col justify-between transition-all duration-300 hover:scale-105;
+}
+
+.dash-stat-title {
+    @apply text-sm text-gray-500 font-semibold uppercase tracking-wider;
+}
+
+.dash-stat-value {
+    @apply font-league text-3xl font-bold text-[#042434] my-2;
+}
+
+.dash-stat-badge {
+    @apply text-xs font-bold text-[#42B9A6] bg-[#42B9A6]/10 px-2.5 py-1 rounded-full w-fit;
+}
+
+.dash-panel {
+    @apply bg-[#031c29] border border-gray-800 rounded-xl p-6 shadow-lg;
+}
+
+.dash-table {
+    @apply w-full text-left text-sm text-gray-300;
+}
+
+.dash-table th {
+    @apply pb-4 text-[#42B9A6] border-b border-gray-800 font-bold uppercase text-xs tracking-wider;
+}
+
+.dash-table td {
+    @apply py-4 border-b border-gray-800/50;
+}
+
+.dash-btn {
+    @apply bg-[#42B9A6] text-[#042434] font-bold px-4 py-2 rounded-lg transition-all duration-300 hover:bg-[#52C8B5] hover:scale-105;
+}
