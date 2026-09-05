@@ -42,14 +42,6 @@
                 </div>
             </div>
 
-            <!-- Continuar Conectado -->
-            <div class="guest-check">
-                <label for="remember_me" class="guest-check-label">
-                    <input id="remember_me" type="checkbox" class="guest-check-box" name="remember">
-                    <span class="guest-check-text">{{ __('Continue Conectado') }}</span>
-                </label>
-            </div>
-
         </div>
         <x-nonpainted-area-button class="font-montserrat bg-[#42B9A6] text-[15px] font-bold transition-all duration-300 ease-in-out hover:scale-110 hover:bg-[#52C8B5]">
             {{ __('Entrar') }}

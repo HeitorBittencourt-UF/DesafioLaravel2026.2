@@ -100,53 +100,6 @@
     @apply flex flex-col gap-[8px] w-[100%];
 }
 
-/* Checkbox */
-.guest-check {
-    @apply flex w-[80%] justify-start;
-}
-
-.guest-check-label {
-    @apply flex items-center cursor-pointer select-none;
-}
-
-.guest-check-text {
-    @apply font-montserrat ms-2 text-sm text-gray-400 transition-colors duration-200;
-}
-
-.guest-check-box:checked + .guest-check-text {  /*Muda o texto para branco quando checado*/
-    @apply text-white;
-}
-
-.guest-check-box {  /*tira o webkit padrao / muda o cursor / tira as estilzacoes padroes de focus*/
-    appearance: none;
-    -webkit-appearance: none;
-    -webkit-tap-highlight-color: transparent;
-    box-shadow: none;
-    @apply w-5 h-5 rounded border border-gray-600 bg-[#042434] focus:outline-none focus:ring-0 focus:ring-offset-0 focus:border-gray-600 transition-all duration-200 cursor-pointer relative;    
-}
-
-.guest-check-box:focus, .guest-check-box:active, .guest-check-box:focus-visible {   /*Tira as coisas padroes de marcacao*/
-    box-shadow: none;
-    @apply outline-none ring-0 ring-offset-0 border-gray-600;
-}
-
-.guest-check-box:hover {
-    @apply border-[#42B9A6];
-}
-
-.guest-check-box:checked {
-    @apply bg-[#42B9A6] border-[#42B9A6];
-}
-
-.guest-check-box:checked:focus, .guest-check-box:checked:active {
-    @apply bg-[#42B9A6] border-[#42B9A6];
-}
-
-.guest-check-box:checked::after {   /*Muda o conteudo para o certinho bonitinho / centralizando o meio dele no meio real do pai*/
-    content: '✓';
-    @apply text-white text-xs font-bold absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
-}
-
 /* FORGOT */
 
 .guest-forgot-info {
