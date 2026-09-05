@@ -7,6 +7,8 @@ window.Alpine = Alpine;
 
 Alpine.start();
 
+
+
 document.addEventListener('DOMContentLoaded', () => {
     const cpfInput = document.getElementById('cpf');
 
@@ -173,4 +175,45 @@ document.addEventListener('DOMContentLoaded', () => { //carrega so dps do HTML
         },
         plugins: [valueLabelsPlugin],      //Faz mostrar os valores em cima
     });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const telefoneInput = document.getElementById('telefone');
+
+    if (!telefoneInput) {
+        return;
+    }
+
+    function formatarTelefone(valor) {
+        // Remove tudo que não for número
+        valor = valor.replace(/\D/g, '');
+
+        // Limita em 11 números
+        valor = valor.slice(0, 11);
+
+        // Começa o DDD
+        if (valor.length <= 2) {
+            return valor.length > 0 ? `(${valor}` : '';
+        }
+
+        // DDD + começo do número
+        if (valor.length <= 6) {
+            return `(${valor.slice(0, 2)}) ${valor.slice(2)}`;
+        }
+
+        // Telefone fixo: (32) 9999-9999
+        if (valor.length <= 10) {
+            return `(${valor.slice(0, 2)}) ${valor.slice(2, 6)}-${valor.slice(6)}`;
+        }
+
+        // Celular: (32) 99999-9999
+        return `(${valor.slice(0, 2)}) ${valor.slice(2, 7)}-${valor.slice(7)}`;
+    }
+
+    telefoneInput.addEventListener('input', function () {
+        this.value = formatarTelefone(this.value);
+    });
+
+    // Formata valor que já veio do Laravel/banco
+    telefoneInput.value = formatarTelefone(telefoneInput.value);
 });

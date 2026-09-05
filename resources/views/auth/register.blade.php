@@ -33,9 +33,9 @@
 
             <!-- Telefone -->
             <div class="guest-fields">
-                <x-text-input class="guest-input" id="telefone" type="tel" name="telefone" :value="old('telefone')" placeholder=" " required autocomplete="tel" maxlength="15" />
-                <x-input-label for="telefone" :value="__('Telefone')" class="guest-label" />
-                <x-input-error :messages="$errors->get('telefone')" class="mt-2" />
+                <x-text-input class="guest-input" id="telefone" type="tel" name="telefone" :value="old('telefone')" placeholder=" " required autocomplete="tel" maxlength="20" inputmode="numeric"/>
+                <x-input-label for="telefone" :value="__('Telefone')" class="guest-label"/>
+                <x-input-error :messages="$errors->get('telefone')" class="mt-2"/>
             </div>
 
             <!-- Data de Nascimento -->

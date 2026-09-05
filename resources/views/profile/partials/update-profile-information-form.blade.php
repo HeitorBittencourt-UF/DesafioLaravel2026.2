@@ -1,3 +1,4 @@
+
 <section
     class="profile-section"
     aria-labelledby="profile-information-title"
@@ -27,7 +28,7 @@
             </h2>
 
             <p class="profile-card-description">
-                Atualize o nome e o e-mail vinculados à sua conta.
+                Atualize o nome, e-mail e telefone vinculados à sua conta.
             </p>
         </div>
     </header>
@@ -48,6 +49,7 @@
         @csrf
         @method('patch')
 
+        {{-- NOME --}}
         <div class="profile-field">
             <label for="nome" class="profile-label">
                 Nome completo
@@ -86,6 +88,8 @@
             />
         </div>
 
+
+        {{-- E-MAIL --}}
         <div class="profile-field">
             <label for="email" class="profile-label">
                 E-mail
@@ -147,6 +151,52 @@
             @endif
         </div>
 
+
+        {{-- TELEFONE --}}
+        <div class="profile-field">
+            <label for="telefone" class="profile-label">
+                Telefone
+            </label>
+
+            <div class="profile-input-wrapper">
+
+                {{-- Ícone de telefone --}}
+                <svg
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.8"
+                        d="M2.25 4.5A2.25 2.25 0 014.5 2.25h2.25a1.5 1.5 0 011.423 1.026l1.125 3.375a1.5 1.5 0 01-.376 1.538L7.5 9.611a15.75 15.75 0 006.889 6.889l1.422-1.422a1.5 1.5 0 011.538-.376l3.375 1.125a1.5 1.5 0 011.026 1.423v2.25a2.25 2.25 0 01-2.25 2.25H18C9.302 21.75 2.25 14.698 2.25 6V4.5z"
+                    />
+                </svg>
+
+                <input
+                    id="telefone"
+                    name="telefone"
+                    type="tel"
+                    class="profile-input"
+                    value="{{ old('telefone', $user->telefone) }}"
+                    required
+                    autocomplete="tel"
+                    maxlength="15"
+                    inputmode="numeric"
+                    placeholder="(00) 00000-0000"
+                >
+            </div>
+
+            <x-input-error
+                class="profile-error"
+                :messages="$errors->get('telefone')"
+            />
+        </div>
+
+
+        {{-- BOTÃO SALVAR --}}
         <div class="profile-form-actions">
             <button
                 type="submit"

@@ -41,7 +41,7 @@ class UsuarioFactory extends Factory
             'tipo' => $this->faker->randomElement(['administrador', 'usuario']),    // Para gerar usuarios aleatorios entre administrador e usuario
             'cpf' => $this->faker->numerify('###########'), //cria com a quantidade ideal do cpf
             'data_nascimento' => $this->faker->dateTimeBetween('-65 years', '-18 years'),   //cria entre as idades de 65 e 18 anos
-            'telefone' => $this->faker->numerify('##9####-####'), // Cria com DDD e o 9 na frente 
+            'telefone' => '+55' . $this->faker->numerify('##9########'), // +55 + Cria com DDD e o 9 na frente 
             'saldo' => $this->faker->randomFloat(2, 0, 5000), // Cria um fake de valor entre 0 e 5000 com 2 casas
             'foto' => null,
             'criador_id' => null,
