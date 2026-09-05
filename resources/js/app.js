@@ -7,6 +7,43 @@ window.Alpine = Alpine;
 
 Alpine.start();
 
+document.addEventListener('DOMContentLoaded', () => {
+    const cpfInput = document.getElementById('cpf');
+
+    // Se não estiver em uma página que possui CPF skippa
+    if (!cpfInput) {
+        return;
+    }
+
+    function formatarCpf(valor) {
+        // Remove tudo que não for número
+        let cpf = valor.replace(/\D/g, '');
+
+        // Permite no máximo 11 números
+        cpf = cpf.slice(0, 11);
+
+        // Primeiro ponto
+        cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
+
+        // Segundo ponto
+        cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
+
+        // Tracinho
+        cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+
+        return cpf;
+    }
+
+    // Formata também caso o Laravel tenha preenchido  o campo com old('cpf')
+    cpfInput.value = formatarCpf(cpfInput.value);
+
+    // Formata enquanto o usuário digita
+    cpfInput.addEventListener('input', (event) => {
+        event.target.value = formatarCpf(event.target.value);
+    });
+
+});
+
 document.addEventListener('DOMContentLoaded', () => { //carrega so dps do HTML
     const canvas = document.getElementById('products-by-month-chart');  
 

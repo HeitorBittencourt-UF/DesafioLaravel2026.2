@@ -7,7 +7,7 @@
                 <span class="dash-header-title">HYPESTORE</span>
             </div>
             <div class="flex items-center gap-4">
-                <span class="text-sm text-gray-300">Olá, <strong class="text-[#42B9A6]">{{ Auth::user()->name ?? 'Usuário' }}</strong></span>
+                <span class="text-sm text-gray-300">Olá, <strong class="text-[#42B9A6]">{{ Auth::user()->nome ?? 'Usuário' }}</strong></span>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="text-xs text-gray-400 hover:text-white underline transition-colors">

@@ -19,9 +19,9 @@
 
             <!-- CPF -->
             <div class="guest-fields">
-                <x-text-input class="guest-input" id="cpf" type="text" name="cpf" :value="old('cpf')" placeholder=" " required autocomplete="off" maxlength="14" />
-                <x-input-label for="cpf" :value="__('CPF')" class="guest-label" />
-                <x-input-error :messages="$errors->get('cpf')" class="mt-2" />
+                <x-text-input class="guest-input" id="cpf" type="text" name="cpf" :value="old('cpf')" placeholder=" " required autocomplete="off" maxlength="14" inputmode="numeric"/>
+                <x-input-label for="cpf" :value="__('CPF')" class="guest-label"/>
+                <x-input-error :messages="$errors->get('cpf')" class="mt-2"/>
             </div>
 
             <!-- Email -->

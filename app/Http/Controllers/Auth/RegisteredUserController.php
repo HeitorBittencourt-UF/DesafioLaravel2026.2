@@ -26,9 +26,12 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        $request->merge([
+        'cpf' => preg_replace('/\D/', '', (string) $request->cpf),
+        ]);
         $request->validate([
             'nome' => ['required', 'string', 'max:255'],
-            'cpf' => ['required', 'string', 'max:14', 'unique:' . Usuario::class],
+            'cpf' => ['required', 'string', 'max:11', 'unique:' . Usuario::class],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . Usuario::class],
             'telefone' => ['required', 'string', 'max:15'],
             'data_nascimento' => ['required', 'date'],
