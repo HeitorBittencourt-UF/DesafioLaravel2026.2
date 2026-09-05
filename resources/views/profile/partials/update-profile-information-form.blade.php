@@ -1,63 +1,185 @@
-<section>
-    <header>
-        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-            {{ __('Profile Information') }}
-        </h2>
+<section
+    class="profile-section"
+    aria-labelledby="profile-information-title"
+>
+    <header class="profile-card-header">
+        <div class="profile-card-icon" aria-hidden="true">
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+            >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.8"
+                    d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.1a7.5 7.5 0 0115 0A17.9 17.9 0 0112 21.75a17.9 17.9 0 01-7.5-1.65z"
+                />
+            </svg>
+        </div>
 
-        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            {{ __("Update your account's profile information and email address.") }}
-        </p>
+        <div>
+            <h2
+                id="profile-information-title"
+                class="profile-card-title"
+            >
+                INFORMAÇÕES PESSOAIS
+            </h2>
+
+            <p class="profile-card-description">
+                Atualize o nome e o e-mail vinculados à sua conta.
+            </p>
+        </div>
     </header>
 
-    <form id="send-verification" method="post" action="{{ route('verification.send') }}">
+    <form
+        id="send-verification"
+        method="post"
+        action="{{ route('verification.send') }}"
+    >
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form
+        method="post"
+        action="{{ route('profile.update') }}"
+        class="profile-form"
+    >
         @csrf
         @method('patch')
 
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
-            <x-input-error class="mt-2" :messages="$errors->get('name')" />
+        <div class="profile-field">
+            <label for="nome" class="profile-label">
+                Nome completo
+            </label>
+
+            <div class="profile-input-wrapper">
+                <svg
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.8"
+                        d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.1a7.5 7.5 0 0115 0A17.9 17.9 0 0112 21.75a17.9 17.9 0 01-7.5-1.65z"
+                    />
+                </svg>
+
+                <input
+                    id="nome"
+                    name="nome"
+                    type="text"
+                    class="profile-input"
+                    value="{{ old('nome', $user->nome) }}"
+                    required
+                    autofocus
+                    autocomplete="name"
+                >
+            </div>
+
+            <x-input-error
+                class="profile-error"
+                :messages="$errors->get('nome')"
+            />
         </div>
 
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
-            <x-input-error class="mt-2" :messages="$errors->get('email')" />
+        <div class="profile-field">
+            <label for="email" class="profile-label">
+                E-mail
+            </label>
 
-            @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
-                <div>
-                    <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
-                        {{ __('Your email address is unverified.') }}
+            <div class="profile-input-wrapper">
+                <svg
+                    aria-hidden="true"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.8"
+                        d="M21.75 6.75v10.5A2.25 2.25 0 0119.5 19.5h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0l-8.5 5.67a2.25 2.25 0 01-2.5 0l-8.5-5.67"
+                    />
+                </svg>
 
-                        <button form="send-verification" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
-                            {{ __('Click here to re-send the verification email.') }}
-                        </button>
+                <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    class="profile-input"
+                    value="{{ old('email', $user->email) }}"
+                    required
+                    autocomplete="username"
+                >
+            </div>
+
+            <x-input-error
+                class="profile-error"
+                :messages="$errors->get('email')"
+            />
+
+            @if (
+                $user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail
+                && ! $user->hasVerifiedEmail()
+            )
+                <div class="profile-verification-warning">
+                    <p>
+                        Seu endereço de e-mail ainda não foi verificado.
                     </p>
 
-                    @if (session('status') === 'verification-link-sent')
-                        <p class="mt-2 font-medium text-sm text-green-600 dark:text-green-400">
-                            {{ __('A new verification link has been sent to your email address.') }}
-                        </p>
-                    @endif
+                    <button
+                        form="send-verification"
+                        type="submit"
+                    >
+                        Reenviar e-mail de verificação
+                    </button>
                 </div>
+
+                @if (session('status') === 'verification-link-sent')
+                    <p class="profile-success-message">
+                        Um novo link de verificação foi enviado.
+                    </p>
+                @endif
             @endif
         </div>
 
-        <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Save') }}</x-primary-button>
+        <div class="profile-form-actions">
+            <button
+                type="submit"
+                class="profile-primary-button"
+            >
+                Salvar alterações
+            </button>
 
             @if (session('status') === 'profile-updated')
                 <p
                     x-data="{ show: true }"
                     x-show="show"
                     x-transition
-                    x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600 dark:text-gray-400"
-                >{{ __('Saved.') }}</p>
+                    x-init="setTimeout(() => show = false, 2500)"
+                    class="profile-saved-message"
+                    role="status"
+                >
+                    <svg
+                        aria-hidden="true"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M4.5 12.75l6 6 9-13.5"
+                        />
+                    </svg>
+
+                    Dados salvos
+                </p>
             @endif
         </div>
     </form>

@@ -1,29 +1,93 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Profile') }}
-        </h2>
-    </x-slot>
+    @php
+        $displayName = $user->nome ?? $user->name ?? 'Usuário';
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-profile-information-form')
-                </div>
-            </div>
+        $initial = \Illuminate\Support\Str::upper(
+            \Illuminate\Support\Str::substr($displayName, 0, 1)
+        );
 
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-password-form')
-                </div>
-            </div>
+        $accountType = ($user->tipo ?? 'usuario') === 'administrador'
+            ? 'Administrador'
+            : 'Cliente';
+    @endphp
 
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.delete-user-form')
+    <div class="profile-page">
+        <main class="profile-shell">
+            <header class="profile-page-header">
+                <div>
+                    <span class="profile-eyebrow">MINHA CONTA</span>
+
+                    <h1 class="profile-page-title">PERFIL</h1>
+
+                    <p class="profile-page-subtitle">
+                        Gerencie seus dados pessoais, sua senha e as configurações da conta.
+                    </p>
                 </div>
+
+                <a href="{{ route('dashboard') }}" class="profile-back-link">
+                    <svg
+                        aria-hidden="true"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M15 19l-7-7 7-7"
+                        />
+                    </svg>
+
+                    Voltar ao painel
+                </a>
+            </header>
+
+            <section class="profile-summary" aria-label="Resumo da conta">
+                <div class="profile-avatar" aria-hidden="true">
+                    {{ $initial }}
+                </div>
+
+                <div class="profile-summary-info">
+                    <span class="profile-summary-label">
+                        CONTA HYPESTORE
+                    </span>
+
+                    <h2>{{ $displayName }}</h2>
+                    <p>{{ $user->email }}</p>
+                </div>
+
+                <div class="profile-account-badges">
+                    <span class="profile-account-type">
+                        {{ $accountType }}
+                    </span>
+
+                    <span class="profile-account-status">
+                        <span aria-hidden="true"></span>
+                        Conta ativa
+                    </span>
+                </div>
+            </section>
+
+            <div class="profile-grid">
+                <article class="profile-card">
+                    @include(
+                        'profile.partials.update-profile-information-form'
+                    )
+                </article>
+
+                <article class="profile-card">
+                    @include(
+                        'profile.partials.update-password-form'
+                    )
+                </article>
+
+                <article class="profile-card profile-card-danger">
+                    @include(
+                        'profile.partials.delete-user-form'
+                    )
+                </article>
             </div>
-        </div>
+        </main>
     </div>
 </x-app-layout>

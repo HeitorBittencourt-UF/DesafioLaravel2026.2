@@ -345,6 +345,30 @@ html{
     @apply bg-[#031c29] border border-gray-800 rounded-xl p-6 shadow-lg;
 }
 
+.dash-chart-panel {
+    @apply min-w-0;
+}
+
+.dash-chart-header {
+    @apply mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between;
+}
+
+.dash-chart-title {
+    @apply font-league text-2xl tracking-wide text-white;
+}
+
+.dash-chart-period {
+    @apply w-fit rounded-full bg-[#42B9A6] px-4 py-1.5 text-xs font-bold text-[#042434];
+}
+
+.dash-chart-scroll {
+    @apply w-full overflow-x-auto pb-2;
+}
+
+.dash-chart-wrapper {
+    @apply relative h-[360px] min-w-[720px] md:min-w-0;
+}
+
 .dash-table {
     @apply w-full text-left text-sm text-gray-300;
 }
@@ -359,4 +383,260 @@ html{
 
 .dash-btn {
     @apply bg-[#42B9A6] text-[#042434] font-bold px-4 py-2 rounded-lg transition-all duration-300 hover:bg-[#52C8B5] hover:scale-105;
+}
+/* PROFILE */
+
+.profile-page-title,
+.profile-summary-info h2,
+.profile-card-title,
+.profile-modal-title {
+    color: #ffffff !important;
+}
+
+.profile-page {
+    @apply min-h-screen bg-[#042434] px-4 py-10 text-white font-montserrat sm:px-6 lg:px-8;
+}
+
+.profile-shell {
+    @apply mx-auto flex w-full max-w-7xl flex-col gap-6;
+}
+
+.profile-page-header {
+    @apply flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between;
+}
+
+.profile-eyebrow {
+    @apply mb-1 block text-xs font-bold uppercase tracking-[0.24em] text-[#42B9A6];
+}
+
+.profile-page-title {
+    @apply font-league text-5xl tracking-wide text-white sm:text-6xl;
+}
+
+.profile-page-subtitle {
+    @apply mt-1 max-w-2xl text-sm leading-6 text-slate-400;
+}
+
+.profile-back-link {
+    @apply inline-flex w-fit items-center gap-2 rounded-lg border border-[#42B9A6]/40 px-4 py-2.5 text-sm font-semibold text-[#42B9A6] transition-all duration-200 hover:border-[#42B9A6] hover:bg-[#42B9A6]/10 hover:text-[#52C8B5] focus:outline-none focus:ring-2 focus:ring-[#42B9A6] focus:ring-offset-2 focus:ring-offset-[#042434];
+}
+
+.profile-back-link svg {
+    @apply h-4 w-4;
+}
+
+.profile-summary {
+    @apply relative flex flex-col items-start gap-5 overflow-hidden rounded-2xl border border-[#42B9A6]/30 bg-[#031c29] p-6 shadow-[0_0_30px_rgba(66,185,166,0.12)] sm:flex-row sm:items-center;
+
+    background-image: radial-gradient(
+        circle at top right,
+        rgba(66, 185, 166, 0.18),
+        transparent 34%
+    );
+}
+
+.profile-avatar {
+    @apply flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl border border-[#42B9A6]/50 bg-[#42B9A6]/15 font-league text-5xl text-[#42B9A6] shadow-[0_0_24px_rgba(66,185,166,0.18)];
+}
+
+.profile-summary-info {
+    @apply min-w-0 flex-1;
+}
+
+.profile-summary-label {
+    @apply text-[11px] font-bold uppercase tracking-[0.2em] text-[#42B9A6];
+}
+
+.profile-summary-info h2 {
+    @apply mt-1 truncate text-xl font-bold text-white sm:text-2xl;
+}
+
+.profile-summary-info p {
+    @apply mt-1 truncate text-sm text-slate-400;
+}
+
+.profile-account-badges {
+    @apply flex flex-wrap items-center gap-2 sm:justify-end;
+}
+
+.profile-account-type,
+.profile-account-status {
+    @apply inline-flex items-center rounded-full px-3 py-1.5 text-xs font-bold;
+}
+
+.profile-account-type {
+    @apply bg-[#42B9A6] text-[#042434];
+}
+
+.profile-account-status {
+    @apply gap-2 border border-slate-700 bg-[#042434]/80 text-slate-300;
+}
+
+.profile-account-status span {
+    @apply h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)];
+}
+
+.profile-grid {
+    @apply grid grid-cols-1 gap-6 lg:grid-cols-2;
+}
+
+.profile-card {
+    @apply rounded-2xl border border-slate-700/80 bg-[#031c29] p-5 shadow-lg transition-colors duration-200 hover:border-[#42B9A6]/40 sm:p-7;
+}
+
+.profile-card-danger {
+    @apply border-red-500/20 lg:col-span-2;
+}
+
+.profile-card-danger:hover {
+    @apply border-red-500/40;
+}
+
+.profile-section {
+    @apply flex h-full flex-col;
+}
+
+.profile-card-header {
+    @apply mb-7 flex items-start gap-4;
+}
+
+.profile-card-icon {
+    @apply flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#42B9A6]/10 text-[#42B9A6];
+}
+
+.profile-card-icon svg {
+    @apply h-6 w-6;
+}
+
+.profile-card-icon-danger {
+    @apply bg-red-500/10 text-red-400;
+}
+
+.profile-card-title {
+    @apply font-league text-2xl tracking-wide text-white;
+}
+
+.profile-card-description {
+    @apply mt-1 max-w-2xl text-sm leading-6 text-slate-400;
+}
+
+.profile-form {
+    @apply flex flex-1 flex-col gap-5;
+}
+
+.profile-password-grid {
+    @apply grid grid-cols-1 gap-5 xl:grid-cols-2;
+}
+
+.profile-field {
+    @apply flex flex-col gap-2;
+}
+
+.profile-label {
+    @apply text-xs font-bold uppercase tracking-wider text-slate-300;
+}
+
+.profile-input-wrapper {
+    @apply relative;
+}
+
+.profile-input-wrapper > svg {
+    @apply pointer-events-none absolute left-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-500 transition-colors duration-200;
+}
+
+.profile-input {
+    @apply w-full rounded-xl border border-slate-700 bg-[#042434] px-4 py-3 text-sm text-white outline-none transition-all duration-200 placeholder:text-slate-600 focus:border-[#42B9A6] focus:ring-2 focus:ring-[#42B9A6]/20;
+}
+
+.profile-input-wrapper .profile-input {
+    @apply pl-11;
+}
+
+.profile-input-wrapper:focus-within > svg {
+    @apply text-[#42B9A6];
+}
+
+.profile-error {
+    @apply mt-0 text-xs text-red-400;
+}
+
+.profile-form-actions {
+    @apply mt-auto flex flex-col items-start gap-3 pt-2 sm:flex-row sm:items-center;
+}
+
+.profile-primary-button {
+    @apply inline-flex min-h-11 items-center justify-center rounded-lg bg-[#42B9A6] px-5 py-2.5 text-sm font-bold text-[#042434] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#52C8B5] hover:shadow-[0_8px_24px_rgba(66,185,166,0.22)] focus:outline-none focus:ring-2 focus:ring-[#42B9A6] focus:ring-offset-2 focus:ring-offset-[#031c29];
+}
+
+.profile-saved-message,
+.profile-success-message {
+    @apply text-sm font-semibold text-emerald-400;
+}
+
+.profile-saved-message {
+    @apply inline-flex items-center gap-2;
+}
+
+.profile-saved-message svg {
+    @apply h-4 w-4;
+}
+
+.profile-verification-warning {
+    @apply mt-1 rounded-lg border border-amber-400/25 bg-amber-400/10 p-3 text-xs leading-5 text-amber-200;
+}
+
+.profile-verification-warning button {
+    @apply mt-1 font-bold text-amber-300 underline decoration-amber-300/50 underline-offset-2 hover:text-amber-200;
+}
+
+.profile-danger-section {
+    @apply items-start sm:flex-row sm:items-center sm:justify-between sm:gap-8;
+}
+
+.profile-danger-section .profile-card-header {
+    @apply mb-0;
+}
+
+.profile-danger-button {
+    @apply inline-flex shrink-0 items-center justify-center rounded-lg border border-red-400/60 bg-transparent px-5 py-2.5 text-sm font-bold text-red-300 transition-all duration-200 hover:border-red-400 hover:bg-red-500/10 hover:text-red-200 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 focus:ring-offset-[#031c29];
+}
+
+.profile-delete-modal {
+    @apply flex flex-col items-center bg-[#031c29] p-6 text-center text-white sm:p-8;
+}
+
+.profile-modal-icon {
+    @apply mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-red-500/10 text-red-400;
+}
+
+.profile-modal-icon svg {
+    @apply h-7 w-7;
+}
+
+.profile-modal-title {
+    @apply font-league text-3xl tracking-wide text-white;
+}
+
+.profile-modal-description {
+    @apply mt-2 max-w-md text-sm leading-6 text-slate-400;
+}
+
+.profile-modal-field {
+    @apply mt-6 w-full text-left;
+}
+
+.profile-modal-input {
+    @apply pl-4;
+}
+
+.profile-modal-actions {
+    @apply mt-7 flex w-full flex-col-reverse justify-end gap-3 sm:flex-row;
+}
+
+.profile-cancel-button {
+    @apply inline-flex items-center justify-center rounded-lg border border-slate-600 px-5 py-2.5 text-sm font-bold text-slate-300 transition-colors duration-200 hover:border-slate-500 hover:bg-slate-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 focus:ring-offset-[#031c29];
+}
+
+.profile-danger-button-solid {
+    @apply border-red-500 bg-red-500 text-white hover:bg-red-400 hover:text-white;
 }
