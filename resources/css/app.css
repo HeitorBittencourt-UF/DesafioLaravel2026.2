@@ -1117,18 +1117,6 @@ html{
     @apply mt-2 text-[clamp(1.7rem,3.2vw,2.7rem)] font-[850] leading-[1.15] text-[var(--front-text)];
 }
 
-.front-rating {
-    @apply mt-3.5 text-[0.78rem] text-[#4f6973];
-}
-
-.front-rating > span {
-    @apply text-[#f1b81e];
-}
-
-.front-rating small {
-    @apply text-[#829299];
-}
-
 .front-detail-price {
     @apply mt-6 text-[2rem] font-black text-[#2aa38f];
 }

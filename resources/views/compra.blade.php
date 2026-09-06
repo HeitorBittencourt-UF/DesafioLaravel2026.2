@@ -31,7 +31,6 @@
 
                     <span class="front-eyebrow">{{ $produto->categoria?->nome ?? 'Sem categoria' }}</span>
                     <h1>{{ $produto->nome }}</h1>
-                    <div class="front-rating"><span>★</span> 4,7 <small>(218 avaliações)</small></div>
                     <p class="front-detail-price">
                         R$ {{ number_format((float) $produto->preco, 2, ',', '.') }}
                     </p>

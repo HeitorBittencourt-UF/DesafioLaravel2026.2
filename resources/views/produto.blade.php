@@ -1,6 +1,11 @@
 <x-app-layout>
     <main class="front-page">
         <div class="front-shell">
+            @php
+                $imagemPrincipal = $produto->foto
+                    ? asset($produto->foto)
+                    : asset('assets/Logo-1.png');
+            @endphp
 
             <!-- Navegação -->
             <div class="front-breadcrumb">
@@ -25,14 +30,17 @@
                 <!-- Imagens do produto -->
                 <div class="front-produto-gallery">
                     <div class="front-produto-main-image">
-                        <img src="{{ asset($produto->foto) }}" alt="{{ $produto->nome }}">
+                        <img src="{{ $imagemPrincipal }}" alt="{{ $produto->nome }}">
                     </div>
 
                     <div class="front-produto-thumbs">
                         @forelse ($produto->fotos->take(3) as $imagem)
-                            <img src="{{ asset($imagem->foto) }}" alt="Imagem complementar de {{ $produto->nome }}">
+                            <img
+                                src="{{ $imagem->foto ? asset($imagem->foto) : $imagemPrincipal }}"
+                                alt="Imagem complementar de {{ $produto->nome }}"
+                            >
                         @empty
-                            <img src="{{ asset($produto->foto) }}" alt="{{ $produto->nome }}">
+                            <img src="{{ $imagemPrincipal }}" alt="{{ $produto->nome }}">
                         @endforelse
                     </div>
                 </div>
@@ -45,20 +53,18 @@
 
                     <h1>{{ $produto->nome }}</h1>
 
-                    <div class="front-rating">
-                        <span>★</span>
-                        4,7
-                        <small>(218 avaliações)</small>
-                    </div>
-
                     <p class="front-detail-price">
                         R$
                         {{ number_format((float) $produto->preco, 2, ',', '.') }}
                     </p>
 
                     <p class="front-stock">
-                        {{ $produto->quantidade }}
-                        unidades em estoque
+                        @if ($produto->quantidade > 0)
+                            {{ $produto->quantidade }}
+                            {{ $produto->quantidade === 1 ? 'unidade disponível' : 'unidades disponíveis' }}
+                        @else
+                            Produto sem estoque
+                        @endif
                     </p>
 
                     <dl class="front-produto-facts">
@@ -74,7 +80,7 @@
                             <dt>Telefone</dt>
 
                             <dd>
-                                {{ $produto->usuario?->telefone ?? 'Não informado' }}
+                                {{ formatarTelefone($produto->usuario?->telefone) ?: 'Não informado' }}
                             </dd>
                         </div>
 
@@ -87,26 +93,35 @@
                         </div>
                     </dl>
 
-                    @if (!auth()->check() || auth()->user()->tipo !== 'administrador')
+                    @if ($podeComprar)
                         <div class="front-detail-actions">
-                            <a href="{{ route('compra.show', $produto->id) }}"
-                                class="front-button front-button-primary">
+                            <a
+                                href="{{ route('compra.show', $produto->id) }}"
+                                class="front-button front-button-primary"
+                            >
                                 Comprar agora
                             </a>
 
-                            @auth
-                                <form action="{{ route('cart.store', $produto) }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="front-button front-button-ghost">
-                                        Adicionar ao carrinho
-                                    </button>
-                                </form>
-                            @else
-                                <a href="{{ route('login') }}" class="front-button front-button-ghost">
-                                    Entrar para comprar
-                                </a>
-                            @endauth
+                            <form action="{{ route('cart.store', $produto) }}" method="POST">
+                                @csrf
+
+                                <button type="submit" class="front-button front-button-ghost">
+                                    Adicionar ao carrinho
+                                </button>
+                            </form>
                         </div>
+                    @elseif ($usuarioEhAdministrador)
+                        <p class="mt-7 rounded-lg border border-slate-300 bg-slate-50 p-3 text-sm font-semibold text-slate-700">
+                            Administradores podem visualizar produtos, mas não podem realizar compras.
+                        </p>
+                    @elseif ($produtoPertenceAoUsuario)
+                        <p class="mt-7 rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm font-semibold text-amber-800">
+                            Este produto foi anunciado por você e não pode ser comprado pela sua conta.
+                        </p>
+                    @else
+                        <p class="mt-7 rounded-lg border border-red-300 bg-red-50 p-3 text-sm font-semibold text-red-700">
+                            Este produto está sem estoque no momento.
+                        </p>
                     @endif
                 </article>
             </section>
@@ -147,7 +162,7 @@
 
                         <a
                             href="{{ route('produtos.index', [
-                                'categoria' => $produto->categoria?->nome,
+                                'categoria' => $produto->categoria_id,
                             ]) }}">
                             Ver mais
                         </a>
@@ -156,7 +171,10 @@
                     <div class="front-mini-produto-grid">
                         @foreach ($relacionados as $relacionado)
                             <a href="{{ route('produtos.show', $relacionado->id) }}" class="front-mini-produto">
-                                <img src="{{ asset($relacionado->foto) }}" alt="{{ $relacionado->nome }}">
+                                <img
+                                    src="{{ $relacionado->foto ? asset($relacionado->foto) : asset('assets/Logo-1.png') }}"
+                                    alt="{{ $relacionado->nome }}"
+                                >
 
                                 <span>
                                     {{ $relacionado->nome }}

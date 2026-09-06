@@ -35,6 +35,12 @@ class CarrinhoController extends Controller
             return back()->withErrors(['carrinho' => 'Administradores não podem realizar compras.']);
         }
 
+        if ((int) $produto->UsuarioId === (int) $usuario->getKey()) {
+            return back()->withErrors([
+                'carrinho' => 'Você não pode adicionar seu próprio produto ao carrinho.',
+            ]);
+        }
+
         if ($produto->quantidade < 1) {
             return back()->withErrors(['carrinho' => 'Este produto está sem estoque.']);
         }

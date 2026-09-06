@@ -61,22 +61,45 @@ class ProdutoController extends Controller
         ));
     }
 
-    public function show(Produto $produto)
+    public function show(Request $request, Produto $produto)
     {
+        $usuario = $request->user();
+
+        if (! $usuario instanceof Usuario) {
+            abort(401);
+        }
+
         $produto->load([
             'categoria',
             'usuario',
             'fotos',
         ]);
 
+        $usuarioEhAdministrador = $usuario->tipo === 'administrador';
+        $produtoPertenceAoUsuario =
+            (int) $produto->UsuarioId === (int) $usuario->getKey();
+
+        $podeComprar =
+            ! $usuarioEhAdministrador
+            && ! $produtoPertenceAoUsuario
+            && $produto->quantidade > 0;
+
         $relacionados = Produto::with(['categoria', 'usuario'])
             ->where('categoria_id', $produto->categoria_id)
             ->where('id', '!=', $produto->id)
+            ->where('UsuarioId', '!=', $usuario->getKey())
             ->where('quantidade', '>', 0)
+            ->latest()
             ->take(3)
             ->get();
 
-        return view('produto', compact('produto', 'relacionados'));
+        return view('produto', compact(
+            'produto',
+            'relacionados',
+            'usuarioEhAdministrador',
+            'produtoPertenceAoUsuario',
+            'podeComprar'
+        ));
     }
 
     public function gerenciar(Request $request)
