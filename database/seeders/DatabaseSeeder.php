@@ -14,13 +14,13 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // 1. Criar Categorias fixas
-        $categorias = Categoria::factory(5)->create();
+        $categorias = Categoria::factory(13)->create();
 
         // 2. Criar Usuários
         $usuarios = Usuario::factory(10)->create();
 
         // 3. Criar 20 Produtos sorteando aleatoriamente entre os Usuários e Categorias criados
-        Produto::factory(20)->create([
+        Produto::factory(60)->create([
             'categoria_id' => fn () => $categorias->random()->id,
             'UsuarioId' => fn () => $usuarios->random()->id,
         ]);

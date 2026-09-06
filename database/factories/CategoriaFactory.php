@@ -2,17 +2,36 @@
 
 namespace Database\Factories;
 
-use App\Models\Categoria;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CategoriaFactory extends Factory
 {
-    protected $model = Categoria::class;
-
     public function definition(): array
     {
+        static $indice = 0;
+
+        $categorias = [
+            'Tv',
+            'Pc',
+            'Games',
+            'Hardware',
+            'Relogio',
+            'Celular',
+            'Audio',
+            'Perifericos',
+            'GiftCard',
+            'Cameras',
+            'Casa',
+            'Eletrodomestico',
+            'Outros',
+        ];
+
+        $categoria = $categorias[$indice];
+
+        $indice++;
+
         return [
-            'nome' => ucfirst($this->faker->unique()->word()),
+            'nome' => $categoria,
         ];
     }
 }

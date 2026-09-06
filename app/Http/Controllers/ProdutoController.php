@@ -9,14 +9,14 @@ class ProdutoController extends Controller
 {
     public function index()
     {
-        $produtos = Produto::with('categoria')
-            ->where('quantidade', '>', 0)
-            ->latest()
-            ->take(4)
-            ->get();
+        $categorias = Categoria::with([
+            'produtos' => function ($query) {
+                $query
+                    ->where('quantidade', '>', 0)
+                    ->latest();
+            }
+        ])->get();
 
-        $categorias = Categoria::all();
-
-        return view('landing', compact('produtos', 'categorias'));
+        return view('landing', compact('categorias'));
     }
 }

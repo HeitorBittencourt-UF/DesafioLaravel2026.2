@@ -121,36 +121,15 @@ html{
   @apply w-4 h-4;
 }
 
-/* Wrapper da Lista + Setas */
-.carousel-wrapper {
-  @apply relative flex flex-row items-center;
-}
-
-/* Setas de Navegação */
-.carousel-arrow {
-  @apply absolute z-10 bg-white/90 border-none rounded-full p-2 cursor-pointer shadow-md flex items-center justify-center transition-colors duration-200 ease-in-out hover:bg-white;
-}
-
-.arrow-left {
-  @apply -left-5;
-}
-
-.arrow-right {
-  @apply -right-5;
-}
-
-.arrow-icon-left {
-  @apply rotate-180;
-}
 
 /* Container de Cards em Flexbox */
 .products-container {
-  @apply flex flex-row flex-wrap gap-6 w-full;
+  @apply flex flex-row flex-wrap gap-6 w-[100%];
 }
 
 /* Card Individual */
 .product-card {
-  @apply flex flex-col justify-between bg-white rounded-2xl p-4 border border-gray-100 shadow-sm flex-1 min-w-[220px] transition-shadow duration-200 ease-in-out hover:shadow-lg basis-[calc(25%-1.125rem)];
+  @apply flex flex-col justify-center items-center bg-white rounded-[5%] p-4 border border-gray-100 shadow-sm flex-1 min-w-[220px] transition-shadow duration-200 ease-in-out hover:shadow-lg basis-[calc(25%-1.125rem)];
 }
 
 /* Topo do Card */
@@ -175,24 +154,29 @@ html{
 }
 
 .action-btn {
-  @apply bg-transparent border-none cursor-pointer p-0 flex items-center text-gray-400 transition-colors duration-200 ease-in-out;
+    @apply bg-transparent border-none cursor-pointer p-0 flex items-center text-gray-400 transition-colors duration-200 ease-in-out;
+}
+
+.action-btn svg {
+    @apply w-6 h-6;
+}
+
+.icon-cart:hover {
+    @apply text-[#0d3446];
 }
 
 .icon-favorite {
   @apply hover:text-red-500;
 }
 
-.icon-cart {
-  @apply hover:text-[#0d3446];
-}
 
 /* Imagem */
 .product-image-box {
-  @apply flex flex-row justify-center items-center h-44 my-2;
+    @apply flex justify-center items-center h-52 w-52 overflow-hidden rounded-2xl;
 }
 
 .product-image {
-  @apply max-h-full object-contain;
+    @apply w-full h-full object-cover rounded-2xl;
 }
 
 /* Título */
