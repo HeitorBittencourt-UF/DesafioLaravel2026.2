@@ -1,22 +1,5 @@
 <x-app-layout>
     <div class="dash-body">
-        <!-- Dashboard Parte de Cima -->
-        <header class="dash-navbar">
-            <div class="flex items-center gap-3">
-                <img src="/logo.png" alt="HypeStore Logo" class="w-10 h-10">
-                <span class="dash-header-title">HYPESTORE</span>
-            </div>
-            <div class="flex items-center gap-4">
-                <span class="text-sm text-gray-300">Olá, <strong class="text-[#42B9A6]">{{ Auth::user()->nome ?? 'Usuário' }}</strong></span>
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="text-xs text-gray-400 hover:text-white underline transition-colors">
-                        {{ __('Sair') }}
-                    </button>
-                </form>
-            </div>
-        </header>
-
         <!-- Conteúdo Principal -->
         <main class="dash-main">
             <!-- Título -->
@@ -25,9 +8,9 @@
                     <h1 class="dash-header-title">PAINEL DE CONTROLE</h1>
                     <p class="text-gray-400 text-sm">Acompanhe suas vendas, pedidos e métricas de desempenho.</p>
                 </div>
-                <button class="dash-btn">
-                    + Novo Produto
-                </button>
+                @if (Auth::user()->tipo !== 'administrador')
+                    <a href="{{ route('produtos.create') }}" class="dash-btn">+ Novo Produto</a>
+                @endif
             </div>
 
             <!-- Cards  -->
@@ -49,11 +32,22 @@
                 </div>
             </div>
 
+            <nav class="front-dashboard-links" aria-label="Acessos rápidos">
+                <a href="{{ route('produtos.manage') }}"><strong>Meus produtos</strong><span>Gerenciar anúncios</span></a>
+                <a href="{{ route('history.purchases') }}"><strong>Compras</strong><span>Ver histórico</span></a>
+                <a href="{{ route('history.sales') }}"><strong>Vendas</strong><span>Histórico e gráfico</span></a>
+                @if (Auth::user()->tipo === 'administrador')
+                    <a href="{{ route('admin.users.index') }}"><strong>Usuários</strong><span>Gerenciar contas</span></a>
+                    <a href="{{ route('admin.admins.index') }}"><strong>Administradores</strong><span>Gerenciar equipe</span></a>
+                    <a href="{{ route('admin.email') }}"><strong>E-mail</strong><span>Enviar mensagem</span></a>
+                @endif
+            </nav>
+
             @if ($graficoProdutos !== null)
                 <!-- Gráfico visível para administradores -->
-                <section class="dash-panel dash-chart-panel" aria-labelledby="products-chart-title">
+                <section class="dash-panel dash-chart-panel" aria-labelledby="produto-chart-title">
                     <div class="dash-chart-header">
-                        <h2 id="products-chart-title" class="dash-chart-title">
+                        <h2 id="produto-chart-title" class="dash-chart-title">
                             PRODUTOS CADASTRADOS POR MÊS
                         </h2>
                         <span class="dash-chart-period">Últimos 12 meses</span>
@@ -62,7 +56,7 @@
                     <div class="dash-chart-scroll">
                         <div class="dash-chart-wrapper">
                             <canvas
-                                id="products-by-month-chart"
+                                id="produto-by-month-chart"
                                 data-labels='@json($graficoProdutos['labels'])'
                                 data-values='@json($graficoProdutos['valores'])'
                                 role="img"
@@ -76,6 +70,7 @@
                 <div class="dash-panel">
                     <h2 class="font-league text-2xl text-white mb-4">ÚLTIMOS PEDIDOS</h2>
 
+                    <div class="front-table-scroll">
                     <table class="dash-table">
                         <thead>
                             <tr>
@@ -110,6 +105,7 @@
                             </tr>
                         </tbody>
                     </table>
+                    </div>
                 </div>
             @endif
         </main>

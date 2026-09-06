@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,7 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=League+Gothic&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-
 <body class="front-landing-body">
     <x-navbar />
 
@@ -22,13 +20,13 @@
                 <h1>Eletrônicos para todos os momentos.</h1>
                 <p>Encontre produtos anunciados pela comunidade ou publique os seus em um só lugar.</p>
                 <div>
-                    <a href="{{ route('products.index') }}" class="front-button front-button-primary">Explorar produtos</a>
+                    <a href="{{ route('produtos.index') }}" class="front-button front-button-primary">Explorar produtos</a>
                     @auth
-                    @if (Auth::user()->tipo !== 'administrador')
-                    <a href="{{ route('products.create') }}" class="front-button front-button-light">Anunciar produto</a>
-                    @endif
+                        @if (Auth::user()->tipo !== 'administrador')
+                            <a href="{{ route('produtos.create') }}" class="front-button front-button-light">Anunciar produto</a>
+                        @endif
                     @else
-                    <a href="{{ route('register') }}" class="front-button front-button-light">Criar conta</a>
+                        <a href="{{ route('register') }}" class="front-button front-button-light">Criar conta</a>
                     @endauth
                 </div>
             </div>
@@ -39,133 +37,104 @@
         </section>
 
         @php
-        $rotulos = [
-        'Tv' => 'TV',
-        'Pc' => 'PC',
-        'Games' => 'Games',
-        'Hardware' => 'Hardware',
-        'Relogio' => 'Relógios',
-        'Celular' => 'Celular',
-        'Audio' => 'Áudio',
-        'Perifericos' => 'Periféricos',
-        'GiftCard' => 'Gift Cards',
-        'Cameras' => 'Câmeras',
-        'Casa' => 'Casa',
-        'Eletrodomestico' => 'Eletrodomésticos',
-        'Outros' => 'Outros',
-        ];
+            $rotulos = [
+                'Tv' => 'TV', 'Pc' => 'PC', 'Games' => 'Games', 'Hardware' => 'Hardware',
+                'Relogio' => 'Relógios', 'Celular' => 'Celular', 'Audio' => 'Áudio',
+                'Perifericos' => 'Periféricos', 'GiftCard' => 'Gift Cards', 'Cameras' => 'Câmeras',
+                'Casa' => 'Casa', 'Eletrodomestico' => 'Eletrodomésticos', 'Outros' => 'Outros',
+            ];
         @endphp
 
-        <section
-            class="front-home-categories"
-            aria-label="Categorias de produtos">
+        <section class="front-home-categories" aria-label="Categorias de produtos">
             <div class="front-shell">
                 @foreach ($categorias as $categoria)
-                <a
-                    href="{{ route('products.index', [
-                    'categoria' => $categoria->nome
-                ]) }}">
-                    <span>
-                        @switch($categoria->nome)
-                        @case('Tv')
-                        <x-tv-icon />
-                        @break
-
-                        @case('Pc')
-                        <x-pc-icon />
-                        @break
-
-                        @case('Games')
-                        <x-games-icon />
-                        @break
-
-                        @case('Hardware')
-                        <x-hardware-icon />
-                        @break
-
-                        @case('Relogio')
-                        <x-watch-icon />
-                        @break
-
-                        @case('Celular')
-                        <x-cellphone-icon />
-                        @break
-
-                        @case('Audio')
-                        <x-sound-icon />
-                        @break
-
-                        @case('Perifericos')
-                        <x-mouse-icon />
-                        @break
-
-                        @case('GiftCard')
-                        <x-giftcard-icon />
-                        @break
-
-                        @case('Cameras')
-                        <x-photo-icon />
-                        @break
-
-                        @case('Casa')
-                        <x-house-icon />
-                        @break
-
-                        @case('Eletrodomestico')
-                        <x-appliance-icon />
-                        @break
-
-                        @default
-                        <x-tag-icon />
-                        @endswitch
-                    </span>
-
-                    <small>
-                        {{ $rotulos[$categoria->nome] ?? $categoria->nome }}
-                    </small>
-                </a>
+                    <a href="{{ route('produtos.index', ['categoria' => $categoria->nome]) }}">
+                        <span>
+                            @switch($categoria->nome)
+                                @case('Tv')
+                                    <x-tv-icon />
+                                    @break
+                                @case('Pc')
+                                    <x-pc-icon />
+                                    @break
+                                @case('Games')
+                                    <x-games-icon />
+                                    @break
+                                @case('Hardware')
+                                    <x-hardware-icon />
+                                    @break
+                                @case('Relogio')
+                                    <x-watch-icon />
+                                    @break
+                                @case('Celular')
+                                    <x-cellphone-icon />
+                                    @break
+                                @case('Audio')
+                                    <x-sound-icon />
+                                    @break
+                                @case('Perifericos')
+                                    <x-mouse-icon />
+                                    @break
+                                @case('GiftCard')
+                                    <x-giftcard-icon />
+                                    @break
+                                @case('Cameras')
+                                    <x-photo-icon />
+                                    @break
+                                @case('Casa')
+                                    <x-house-icon />
+                                    @break
+                                @case('Eletrodomestico')
+                                    <x-appliance-icon />
+                                    @break
+                                @default
+                                    <x-tag-icon />
+                            @endswitch
+                        </span>
+                        <small>{{ $rotulos[$categoria->nome] ?? $categoria->nome }}</small>
+                    </a>
                 @endforeach
             </div>
         </section>
 
-        <section class="front-home-products">
+        <section class="front-home-produtos">
             <div class="front-shell">
-                @forelse ( $categorias->filter( fn ($categoria) => $categoria->produtos->isNotEmpty() ) as $categoria )
-                <section class="front-home-category-section">
-                    <div class="front-section-heading">
-                        <div>
-                            <span class="front-eyebrow">Departamento</span>
-                            <h2>{{ $rotulos[$categoria->nome] ?? $categoria->nome }}</h2>
-                        </div>
-                        <a href="{{ route('products.index', ['categoria' => $categoria->nome]) }}">Ver todos</a>
-                    </div>
-
-                    <div class="front-product-grid">
-                        @foreach ($categoria->produtos->take(4) as $produto)
-                        <article class="front-product-card">
-                            <a href="{{ route('products.show', $produto->id) }}" class="front-product-image-box">
-                                <img src="{{ asset($produto->foto) }}" alt="{{ $produto->nome }}">
-                            </a>
-                            <div class="front-product-content">
-                                <span class="front-product-category">{{ $rotulos[$categoria->nome] ?? $categoria->nome }}</span>
-                                <h2><a href="{{ route('products.show', $produto->id) }}">{{ $produto->nome }}</a></h2>
-                                <span class="front-product-price">R$ {{ number_format((float) $produto->preco, 2, ',', '.') }}</span>
-                                <div class="front-product-actions">
-                                    <a href="{{ route('products.show', $produto->id) }}" class="front-button front-button-ghost">Ver produto</a>
-                                    @if (! auth()->check() || auth()->user()->tipo !== 'administrador')
-                                    <a href="{{ route('purchase.show', $produto->id) }}" class="front-button front-button-primary">Comprar</a>
-                                    @endif
-                                </div>
+                @forelse ($categorias->filter(fn ($categoria) => $categoria->produtos->isNotEmpty()) as $categoria)
+                    <section class="front-home-category-section">
+                        <div class="front-section-heading">
+                            <div>
+                                <span class="front-eyebrow">Departamento</span>
+                                <h2>{{ $rotulos[$categoria->nome] ?? $categoria->nome }}</h2>
                             </div>
-                        </article>
-                        @endforeach
-                    </div>
-                </section>
+                            <a href="{{ route('produtos.index', ['categoria' => $categoria->nome]) }}">Ver todos</a>
+                        </div>
+
+                        <div class="front-produto-grid">
+                            @foreach ($categoria->produtos->take(4) as $produto)
+                                <article class="front-produto-card">
+                                    <a href="{{ route('produtos.show', $produto->id) }}" class="front-produto-image-box">
+                                        <img src="{{ asset($produto->foto) }}" alt="{{ $produto->nome }}">
+                                    </a>
+                                    <div class="front-produto-content">
+                                        <span class="front-produto-category">{{ $rotulos[$categoria->nome] ?? $categoria->nome }}</span>
+                                        <h2><a href="{{ route('produtos.show', $produto->id) }}">{{ $produto->nome }}</a></h2>
+                                        <span class="front-produto-price">R$ {{ number_format((float) $produto->preco, 2, ',', '.') }}</span>
+                                        <div class="front-produto-actions">
+                                            <a href="{{ route('produtos.show', $produto->id) }}" class="front-button front-button-ghost">Ver produto</a>
+                                            @if (! auth()->check() || auth()->user()->tipo !== 'administrador')
+                                                <a href="{{ route('purchase.show', $produto->id) }}" class="front-button front-button-primary">Comprar</a>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </article>
+                            @endforeach
+                        </div>
+                    </section>
                 @empty
-                <div class="front-empty-state">
-                    <h2>Nenhum produto disponível</h2>
-                    <p>Execute o seeder para visualizar os produtos na página inicial.</p>
-                </div>
+                    <div class="front-empty-state">
+                        <h2>Nenhum produto disponível</h2>
+                        <p>Execute o seeder para visualizar os produtos na página inicial.</p>
+                    </div>
                 @endforelse
             </div>
         </section>
@@ -173,5 +142,4 @@
 
     <x-footer />
 </body>
-
 </html>

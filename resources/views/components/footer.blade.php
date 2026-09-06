@@ -14,14 +14,14 @@
         <div>
             <h2>Conta</h2>
             <a href="{{ route('profile.edit') }}">Meu perfil</a>
-            <a href="{{ route('products.manage') }}">Meus produtos</a>
+            <a href="{{ route('produtos.manage') }}">Meus produtos</a>
             <a href="{{ route('history.purchases') }}">Histórico de compras</a>
             <a href="{{ route('history.sales') }}">Histórico de vendas</a>
         </div>
 
         <div>
             <h2>Navegação</h2>
-            <a href="{{ route('products.index') }}">Produtos</a>
+            <a href="{{ route('produtos.index') }}">Produtos</a>
             <a href="{{ route('cart.index') }}">Carrinho</a>
             <a href="{{ route('help') }}#sobre">Sobre nós</a>
             <a href="{{ route('help') }}#contato">Ajuda e contato</a>
