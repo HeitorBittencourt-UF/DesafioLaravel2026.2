@@ -60,7 +60,7 @@
                             <div class="front-produto-actions">
                                 <a href="{{ route('produtos.show', $produto->id) }}" class="front-button front-button-ghost">Ver produto</a>
 
-                                @if (! auth()->check() || auth()->user()->tipo !== 'administrador')
+                                @if (auth()->user()->tipo !== 'administrador')
                                     <a href="{{ route('compra.show', $produto->id) }}" class="front-button front-button-primary">Comprar</a>
                                 @endif
                             </div>

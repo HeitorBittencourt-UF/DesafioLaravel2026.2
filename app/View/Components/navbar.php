@@ -2,23 +2,24 @@
 
 namespace App\View\Components;
 
+use App\Models\Categoria;
 use Closure;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\View\Component;
 
-class navbar extends Component
+class Navbar extends Component
 {
-    /**
-     * Create a new component instance.
-     */
+    public Collection $categorias;
+
     public function __construct()
     {
-        //
+        $this->categorias = Categoria::query()
+            ->select(['id', 'nome'])
+            ->orderBy('nome')
+            ->get();
     }
 
-    /**
-     * Get the view / contents that represent the component.
-     */
     public function render(): View|Closure|string
     {
         return view('components.navbar');

@@ -13,11 +13,12 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [ProdutoController::class, 'index'])->name('landing');
-
-Route::get('/produtos', [ProdutoController::class, 'catalogo'])->name('produtos.index');
-Route::get('/produtos/{produto}',[ProdutoController::class, 'show'])->name('produtos.show');
-Route::get('/compra/{produto}', [CompraController::class, 'show'])->name('compra.show');
+Route::middleware('auth')->group(function () {
+    Route::get('/', [ProdutoController::class, 'index'])->name('landing');
+    Route::get('/produtos', [ProdutoController::class, 'catalogo'])->name('produtos.index');
+    Route::get('/produtos/{produto}', [ProdutoController::class, 'show'])->name('produtos.show');
+    Route::get('/compra/{produto}', [CompraController::class, 'show'])->name('compra.show');
+});
 
 Route::get('/meus-produtos',[ProdutoController::class, 'gerenciar'])->middleware('auth')->name('produtos.manage');
 Route::get('/meus-produtos/novo',[ProdutoController::class, 'criar'])->middleware('auth')->name('produtos.create');
@@ -25,14 +26,14 @@ Route::get('/meus-produtos/{produto}/editar',[ProdutoController::class, 'editar'
 
 Route::get('/admin/usuarios',[UsuarioController::class, 'usuarios'])->middleware('auth')->name('admin.users.index');
 
-Route::view('/admin/usuarios/novo','usuario-form',['tipo' => 'usuarios','modo' => 'criar'])->middleware('auth')->name('admin.users.create');
+Route::view('/admin/usuarios/novo','person-form',['tipo' => 'usuarios','modo' => 'criar'])->middleware('auth')->name('admin.users.create');
 Route::get('/admin/administradores',[UsuarioController::class, 'administradores'])->middleware('auth')->name('admin.admins.index');
-Route::view('/admin/usuarios/{usuario}/editar', 'usuario-form', ['tipo' => 'usuarios', 'modo' => 'editar'])->name('admin.users.edit');
-Route::view('/admin/usuarios/{usuario}', 'usuario-form', ['tipo' => 'usuarios', 'modo' => 'visualizar'])->name('admin.users.show');
+Route::view('/admin/usuarios/{usuario}/editar', 'person-form', ['tipo' => 'usuarios', 'modo' => 'editar'])->name('admin.users.edit');
+Route::view('/admin/usuarios/{usuario}', 'person-form', ['tipo' => 'usuarios', 'modo' => 'visualizar'])->name('admin.users.show');
 
-Route::view('/admin/administradores/novo', 'usuario-form', ['tipo' => 'administradores', 'modo' => 'criar'])->name('admin.admins.create');
-Route::view('/admin/administradores/{administrador}/editar', 'usuario-form', ['tipo' => 'administradores', 'modo' => 'editar'])->name('admin.admins.edit');
-Route::view('/admin/administradores/{administrador}', 'usuario-form', ['tipo' => 'administradores', 'modo' => 'visualizar'])->name('admin.admins.show');
+Route::view('/admin/administradores/novo', 'person-form', ['tipo' => 'administradores', 'modo' => 'criar'])->name('admin.admins.create');
+Route::view('/admin/administradores/{administrador}/editar', 'person-form', ['tipo' => 'administradores', 'modo' => 'editar'])->name('admin.admins.edit');
+Route::view('/admin/administradores/{administrador}', 'person-form', ['tipo' => 'administradores', 'modo' => 'visualizar'])->name('admin.admins.show');
 
 Route::get('/admin/email', [AdminEmailController::class, 'create'])
     ->middleware('auth')

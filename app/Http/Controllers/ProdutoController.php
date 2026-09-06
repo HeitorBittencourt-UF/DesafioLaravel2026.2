@@ -9,25 +9,36 @@ use Illuminate\Http\Request;
 
 class ProdutoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $usuarioId = $request->user()->getKey();
+
         $categorias = Categoria::with([
-            'produtos' => function ($query) {
-                $query->where('quantidade', '>', 0)->latest();
+            'produtos' => function ($query) use ($usuarioId) {
+                $query
+                    ->where('quantidade', '>', 0)
+                    ->where('UsuarioId', '!=', $usuarioId)
+                    ->latest()
+                    ->limit(4);
             },
-        ])->get();
+        ])
+            ->orderBy('nome')
+            ->get();
 
         return view('landing', compact('categorias'));
     }
 
     public function catalogo(Request $request)
     {
+        $usuarioId = $request->user()->getKey();
         $busca = trim((string) $request->get('busca', ''));
         $categoriaId = $request->get('categoria');
 
-        $query = Produto::with(['categoria', 'usuario'])->where('quantidade', '>', 0);
+        $query = Produto::with(['categoria', 'usuario'])
+            ->where('quantidade', '>', 0)
+            ->where('UsuarioId', '!=', $usuarioId);
 
-        if ($busca) {
+        if ($busca !== '') {
             $query->where('nome', 'like', '%' . $busca . '%');
         }
 
@@ -35,10 +46,19 @@ class ProdutoController extends Controller
             $query->where('categoria_id', $categoriaId);
         }
 
-        $produtosFiltrados = $query->latest()->paginate(12)->withQueryString();
+        $produtosFiltrados = $query
+            ->latest()
+            ->paginate(12)
+            ->withQueryString();
+
         $categorias = Categoria::orderBy('nome')->get();
 
-        return view('catalogo', compact('produtosFiltrados', 'categorias', 'busca', 'categoriaId'));
+        return view('catalogo', compact(
+            'produtosFiltrados',
+            'categorias',
+            'busca',
+            'categoriaId'
+        ));
     }
 
     public function show(Produto $produto)
@@ -75,16 +95,31 @@ class ProdutoController extends Controller
 
         $produtos = $query->get();
 
-        $produtosAtivos = $produtos->where('quantidade', '>', 0)->count();
-        $estoqueTotal = $produtos->sum('quantidade');
-        $categoriasTotal = $produtos->pluck('categoria_id')->filter()->unique()->count();
+        $produtosAtivos = $produtos
+            ->where('quantidade', '>', 0)
+            ->count();
 
-        return view('produtos-management', compact('produtos', 'produtosAtivos', 'estoqueTotal', 'categoriasTotal'));
+        $estoqueTotal = $produtos->sum('quantidade');
+
+        $categoriasTotal = $produtos
+            ->pluck('categoria_id')
+            ->filter()
+            ->unique()
+            ->count();
+
+        return view('produtos-management', compact(
+            'produtos',
+            'produtosAtivos',
+            'estoqueTotal',
+            'categoriasTotal'
+        ));
     }
 
     public function criar()
     {
-        $categorias = Categoria::query()->orderBy('nome')->get();
+        $categorias = Categoria::query()
+            ->orderBy('nome')
+            ->get();
 
         return view('produto-form', [
             'editando' => false,
@@ -101,13 +136,19 @@ class ProdutoController extends Controller
             abort(401);
         }
 
-        $produtoPertenceAoUsuario = (int) $produto->UsuarioId === (int) $usuario->getKey();
+        $produtoPertenceAoUsuario =
+            (int) $produto->UsuarioId === (int) $usuario->getKey();
 
-        if ($usuario->tipo !== 'administrador' && ! $produtoPertenceAoUsuario) {
+        if (
+            $usuario->tipo !== 'administrador'
+            && ! $produtoPertenceAoUsuario
+        ) {
             abort(403);
         }
 
-        $categorias = Categoria::query()->orderBy('nome')->get();
+        $categorias = Categoria::query()
+            ->orderBy('nome')
+            ->get();
 
         return view('produto-form', [
             'editando' => true,

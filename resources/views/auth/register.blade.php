@@ -31,7 +31,7 @@
 
             <!-- Telefone -->
             <div class="guest-fields">
-                <x-text-input class="guest-input" id="telefone" type="tel" name="telefone" :value="old('telefone', '+55')" placeholder=" " required autocomplete="tel" maxlength="16" inputmode="tel"/>
+                <x-text-input class="guest-input" id="telefone" type="tel" name="telefone" :value="old('telefone')" placeholder=" " required autocomplete="tel" maxlength="16" inputmode="tel"/>
                 <x-input-label for="telefone" :value="__('Telefone')" class="guest-label"/>
                 <x-input-error :messages="$errors->get('telefone')" class="mt-2"/>
             </div>

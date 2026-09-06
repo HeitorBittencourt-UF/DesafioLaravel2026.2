@@ -184,17 +184,74 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    function formatarTelefone(valor) {
-        const possuiCodigoInternacional = valor.trimStart().startsWith('+');
-        const numeros = valor.replace(/\D/g, '').slice(0, 15);
+    function formatarNumeroBrasileiro(numeros) {
+        const telefone = numeros.slice(0, 11);
 
-        return (possuiCodigoInternacional ? '+' : '') + numeros;
+        if (telefone.length === 0) {
+            return '';
+        }
+
+        if (telefone.length <= 2) {
+            return '(' + telefone;
+        }
+
+        const ddd = telefone.slice(0, 2);
+        const numero = telefone.slice(2);
+
+        if (numero.length <= 4) {
+            return '(' + ddd + ') ' + numero;
+        }
+
+        if (telefone.length <= 10) {
+            return (
+                '(' +
+                ddd +
+                ') ' +
+                numero.slice(0, 4) +
+                '-' +
+                numero.slice(4, 8)
+            );
+        }
+
+        return (
+            '(' +
+            ddd +
+            ') ' +
+            numero.slice(0, 5) +
+            '-' +
+            numero.slice(5, 9)
+        );
+    }
+
+    function formatarTelefone(valor) {
+        const possuiCodigoInternacional = valor
+            .trimStart()
+            .startsWith('+');
+
+        const numeros = valor
+            .replace(/\D/g, '')
+            .slice(0, 15);
+
+        if (!possuiCodigoInternacional) {
+            return formatarNumeroBrasileiro(numeros);
+        }
+
+        if (!numeros.startsWith('55')) {
+            return '+' + numeros;
+        }
+
+        const numeroBrasileiro = numeros.slice(2, 13);
+
+        if (numeroBrasileiro.length === 0) {
+            return '+55';
+        }
+
+        return '+55 ' + formatarNumeroBrasileiro(numeroBrasileiro);
     }
 
     telefoneInput.addEventListener('input', function () {
         this.value = formatarTelefone(this.value);
     });
 
-    // Formata valor que já veio do Laravel/banco
     telefoneInput.value = formatarTelefone(telefoneInput.value);
 });

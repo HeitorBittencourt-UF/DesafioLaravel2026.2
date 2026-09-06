@@ -21,13 +21,9 @@
                 <p>Encontre produtos anunciados pela comunidade ou publique os seus em um só lugar.</p>
                 <div>
                     <a href="{{ route('produtos.index') }}" class="front-button front-button-primary">Explorar produtos</a>
-                    @auth
-                        @if (Auth::user()->tipo !== 'administrador')
-                            <a href="{{ route('produtos.create') }}" class="front-button front-button-light">Anunciar produto</a>
-                        @endif
-                    @else
-                        <a href="{{ route('register') }}" class="front-button front-button-light">Criar conta</a>
-                    @endauth
+                    @if (auth()->user()->tipo !== 'administrador')
+                        <a href="{{ route('produtos.create') }}" class="front-button front-button-light">Anunciar produto</a>
+                    @endif
                 </div>
             </div>
             <div class="front-hero-art" aria-hidden="true">
@@ -110,7 +106,7 @@
                         </div>
 
                         <div class="front-produto-grid">
-                            @foreach ($categoria->produtos->take(4) as $produto)
+                            @foreach ($categoria->produtos as $produto)
                                 <article class="front-produto-card">
                                     <a href="{{ route('produtos.show', $produto->id) }}" class="front-produto-image-box">
                                         <img src="{{ asset($produto->foto) }}" alt="{{ $produto->nome }}">
@@ -121,7 +117,7 @@
                                         <span class="front-produto-price">R$ {{ number_format((float) $produto->preco, 2, ',', '.') }}</span>
                                         <div class="front-produto-actions">
                                             <a href="{{ route('produtos.show', $produto->id) }}" class="front-button front-button-ghost">Ver produto</a>
-                                            @if (! auth()->check() || auth()->user()->tipo !== 'administrador')
+                                            @if (auth()->user()->tipo !== 'administrador')
                                                 <a href="{{ route('compra.show', $produto->id) }}" class="front-button front-button-primary">Comprar</a>
                                             @endif
                                         </div>
@@ -133,7 +129,7 @@
                 @empty
                     <div class="front-empty-state">
                         <h2>Nenhum produto disponível</h2>
-                        <p>Execute o seeder para visualizar os produtos na página inicial.</p>
+                        <p>No momento, não há produtos de outros usuários disponíveis.</p>
                     </div>
                 @endforelse
             </div>

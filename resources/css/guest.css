@@ -131,3 +131,278 @@
 .guest-reset-mid {
     @apply flex flex-col w-[100%] gap-[50px] items-center;
 }
+
+/* REGISTER */
+
+.guest-card-register {
+    width: min(1100px, 82vw);
+    height: 650px;
+    overflow: hidden;
+    border: 1px solid rgba(66, 185, 166, 0.28);
+    border-radius: 28px;
+    background: #042434;
+    box-shadow:
+        0 28px 80px rgba(0, 10, 18, 0.52),
+        0 0 60px rgba(66, 185, 166, 0.22);
+}
+
+.guest-register-form {
+    position: relative;
+    width: 65%;
+    padding: 34px 42px 30px;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 22px;
+    border-radius: 28px 0 0 28px;
+    background:
+        radial-gradient(circle at top right, rgba(66, 185, 166, 0.12), transparent 34%),
+        linear-gradient(145deg, #062b3d 0%, #031d2a 100%);
+}
+
+.guest-register-header {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.guest-register-kicker,
+.guest-register-side-kicker {
+    font-family: Montserrat, sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
+.guest-register-kicker {
+    color: #42b9a6;
+}
+
+.guest-register-header h1 {
+    color: #ffffff;
+    font-family: "League Gothic", sans-serif;
+    font-size: 50px;
+    line-height: 0.95;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+.guest-register-header p {
+    max-width: 560px;
+    color: #9fb4bd;
+    font-family: Montserrat, sans-serif;
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+.guest-register-status {
+    margin: -8px 0 0;
+    color: #72e2ce;
+    font-family: Montserrat, sans-serif;
+    font-size: 13px;
+}
+
+.guest-register-grid {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px 16px;
+}
+
+.guest-register-field {
+    align-items: stretch;
+}
+
+.guest-register-field-full {
+    grid-column: 1 / -1;
+}
+
+.guest-register-field .guest-input {
+    width: 100%;
+    height: 48px;
+    padding: 0 14px;
+    border: 1px solid rgba(173, 206, 215, 0.3);
+    border-radius: 10px;
+    background: rgba(2, 24, 35, 0.68);
+    color: #ffffff;
+    font-family: Montserrat, sans-serif;
+    font-size: 14px;
+    transition:
+        border-color 180ms ease,
+        box-shadow 180ms ease,
+        background-color 180ms ease;
+}
+
+.guest-register-field .guest-input:hover {
+    border-color: rgba(114, 226, 206, 0.56);
+}
+
+.guest-register-field .guest-input:focus,
+.guest-register-field .guest-input:focus-visible {
+    border-color: #42b9a6;
+    background: rgba(4, 36, 52, 0.92);
+    box-shadow: 0 0 0 3px rgba(66, 185, 166, 0.14);
+}
+
+.guest-register-field .guest-label {
+    top: 50%;
+    left: 14px;
+    padding: 0 5px;
+    transform: translateY(-50%);
+    background: #042434;
+    color: #849aa4;
+    font-family: Montserrat, sans-serif;
+    font-size: 13px;
+    line-height: 1;
+}
+
+.guest-register-field .guest-input:focus + .guest-label,
+.guest-register-field .guest-input:not(:placeholder-shown) + .guest-label {
+    top: 0;
+    transform: translateY(-50%);
+    color: #72e2ce;
+    font-size: 11px;
+}
+
+.guest-register-field input[type="date"] {
+    color-scheme: dark;
+}
+
+.guest-register-field input:-webkit-autofill,
+.guest-register-field input:-webkit-autofill:hover,
+.guest-register-field input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #ffffff;
+    box-shadow: 0 0 0 1000px #082f41 inset;
+}
+
+.guest-register-field > ul {
+    margin: 6px 2px -9px;
+    color: #ff9e9e;
+    font-family: Montserrat, sans-serif;
+    font-size: 11px;
+    line-height: 1.25;
+}
+
+.guest-register-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin-top: auto;
+}
+
+.guest-register-submit {
+    width: 100%;
+    min-height: 48px;
+    justify-content: center;
+    border-radius: 10px;
+    box-shadow: 0 12px 28px rgba(66, 185, 166, 0.2);
+}
+
+.guest-register-actions small {
+    color: #708994;
+    font-family: Montserrat, sans-serif;
+    font-size: 10px;
+    line-height: 1.4;
+    text-align: center;
+}
+
+.guest-register-signin {
+    position: relative;
+    width: 35%;
+    padding: 52px 42px;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 0 28px 28px 0;
+    background:
+        linear-gradient(160deg, rgba(255, 255, 255, 0.08), transparent 42%),
+        linear-gradient(145deg, #49c8b3 0%, #2c9e91 100%);
+}
+
+.guest-register-signin::before,
+.guest-register-signin::after {
+    position: absolute;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 999px;
+    content: "";
+}
+
+.guest-register-signin::before {
+    top: -110px;
+    right: -105px;
+    width: 300px;
+    height: 300px;
+}
+
+.guest-register-signin::after {
+    bottom: -150px;
+    left: -130px;
+    width: 340px;
+    height: 340px;
+}
+
+.guest-register-side-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.guest-register-side-kicker {
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.guest-register-side-content h2 {
+    max-width: 280px;
+    color: #ffffff;
+    font-family: "League Gothic", sans-serif;
+    font-size: 54px;
+    line-height: 0.98;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+.guest-register-side-content p {
+    color: rgba(255, 255, 255, 0.84);
+    font-family: Montserrat, sans-serif;
+    font-size: 13px;
+    line-height: 1.65;
+}
+
+.guest-register-benefits {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    color: #ffffff;
+    font-family: Montserrat, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.guest-register-benefits li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.guest-register-benefits li span {
+    display: inline-flex;
+    width: 23px;
+    height: 23px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.42);
+    border-radius: 50%;
+    background: rgba(4, 36, 52, 0.16);
+    font-size: 12px;
+}
+
+.guest-register-login {
+    width: 100%;
+    min-height: 46px;
+    justify-content: center;
+    margin-top: 4px;
+    border-radius: 10px;
+}
