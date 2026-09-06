@@ -34,8 +34,8 @@
 
             <nav class="front-dashboard-links" aria-label="Acessos rápidos">
                 <a href="{{ route('produtos.manage') }}"><strong>Meus produtos</strong><span>Gerenciar anúncios</span></a>
-                <a href="{{ route('history.purchases') }}"><strong>Compras</strong><span>Ver histórico</span></a>
-                <a href="{{ route('history.sales') }}"><strong>Vendas</strong><span>Histórico e gráfico</span></a>
+                <a href="{{ route('historico.compras') }}"><strong>Compras</strong><span>Ver histórico</span></a>
+                <a href="{{ route('historico.vendas') }}"><strong>Vendas</strong><span>Histórico e gráfico</span></a>
                 @if (Auth::user()->tipo === 'administrador')
                     <a href="{{ route('admin.users.index') }}"><strong>Usuários</strong><span>Gerenciar contas</span></a>
                     <a href="{{ route('admin.admins.index') }}"><strong>Administradores</strong><span>Gerenciar equipe</span></a>

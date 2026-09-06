@@ -25,23 +25,14 @@
                 <!-- Imagens do produto -->
                 <div class="front-produto-gallery">
                     <div class="front-produto-main-image">
-                        <img
-                            src="{{ asset($produto->foto) }}"
-                            alt="{{ $produto->nome }}"
-                        >
+                        <img src="{{ asset($produto->foto) }}" alt="{{ $produto->nome }}">
                     </div>
 
                     <div class="front-produto-thumbs">
                         @forelse ($produto->fotos->take(3) as $imagem)
-                            <img
-                                src="{{ asset($imagem->foto) }}"
-                                alt="Imagem complementar de {{ $produto->nome }}"
-                            >
+                            <img src="{{ asset($imagem->foto) }}" alt="Imagem complementar de {{ $produto->nome }}">
                         @empty
-                            <img
-                                src="{{ asset($produto->foto) }}"
-                                alt="{{ $produto->nome }}"
-                            >
+                            <img src="{{ asset($produto->foto) }}" alt="{{ $produto->nome }}">
                         @endforelse
                     </div>
                 </div>
@@ -62,14 +53,7 @@
 
                     <p class="front-detail-price">
                         R$
-                        {{
-                            number_format(
-                                (float) $produto->preco,
-                                2,
-                                ',',
-                                '.'
-                            )
-                        }}
+                        {{ number_format((float) $produto->preco, 2, ',', '.') }}
                     </p>
 
                     <p class="front-stock">
@@ -82,10 +66,7 @@
                             <dt>Vendedor</dt>
 
                             <dd>
-                                {{
-                                    $produto->usuario?->nome
-                                    ?? 'Não informado'
-                                }}
+                                {{ $produto->usuario?->nome ?? 'Não informado' }}
                             </dd>
                         </div>
 
@@ -93,10 +74,7 @@
                             <dt>Telefone</dt>
 
                             <dd>
-                                {{
-                                    $produto->usuario?->telefone
-                                    ?? 'Não informado'
-                                }}
+                                {{ $produto->usuario?->telefone ?? 'Não informado' }}
                             </dd>
                         </div>
 
@@ -104,38 +82,30 @@
                             <dt>Categoria</dt>
 
                             <dd>
-                                {{
-                                    $produto->categoria?->nome
-                                    ?? 'Sem categoria'
-                                }}
+                                {{ $produto->categoria?->nome ?? 'Sem categoria' }}
                             </dd>
                         </div>
                     </dl>
 
-                    @if (
-                        ! auth()->check()
-                        || auth()->user()->tipo !== 'administrador'
-                    )
+                    @if (!auth()->check() || auth()->user()->tipo !== 'administrador')
                         <div class="front-detail-actions">
-                            <a
-                                href="{{ route(
-                                    'purchase.show',
-                                    $produto->id
-                                ) }}"
-                                class="front-button front-button-primary"
-                            >
+                            <a href="{{ route('compra.show', $produto->id) }}"
+                                class="front-button front-button-primary">
                                 Comprar agora
                             </a>
 
-                            <a
-                                href="{{ route(
-                                    'cart.index',
-                                    ['produto' => $produto->id]
-                                ) }}"
-                                class="front-button front-button-ghost"
-                            >
-                                Adicionar ao carrinho
-                            </a>
+                            @auth
+                                <form action="{{ route('cart.store', $produto) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="front-button front-button-ghost">
+                                        Adicionar ao carrinho
+                                    </button>
+                                </form>
+                            @else
+                                <a href="{{ route('login') }}" class="front-button front-button-ghost">
+                                    Entrar para comprar
+                                </a>
+                            @endauth
                         </div>
                     @endif
                 </article>
@@ -151,10 +121,7 @@
                     <h2>Descrição</h2>
 
                     <p>
-                        {{
-                            $produto->descricao
-                            ?? 'Este produto não possui descrição.'
-                        }}
+                        {{ $produto->descricao ?? 'Este produto não possui descrição.' }}
                     </p>
                 </div>
 
@@ -179,33 +146,17 @@
                         <h2>Produtos relacionados</h2>
 
                         <a
-                            href="{{ route(
-                                'produtos.index',
-                                [
-                                    'categoria' =>
-                                        $produto->categoria?->nome
-                                ]
-                            ) }}"
-                        >
+                            href="{{ route('produtos.index', [
+                                'categoria' => $produto->categoria?->nome,
+                            ]) }}">
                             Ver mais
                         </a>
                     </div>
 
                     <div class="front-mini-produto-grid">
                         @foreach ($relacionados as $relacionado)
-                            <a
-                                href="{{ route(
-                                    'produtos.show',
-                                    $relacionado->id
-                                ) }}"
-                                class="front-mini-produto"
-                            >
-                                <img
-                                    src="{{ asset(
-                                        $relacionado->foto
-                                    ) }}"
-                                    alt="{{ $relacionado->nome }}"
-                                >
+                            <a href="{{ route('produtos.show', $relacionado->id) }}" class="front-mini-produto">
+                                <img src="{{ asset($relacionado->foto) }}" alt="{{ $relacionado->nome }}">
 
                                 <span>
                                     {{ $relacionado->nome }}
@@ -213,15 +164,7 @@
 
                                 <strong>
                                     R$
-                                    {{
-                                        number_format(
-                                            (float)
-                                                $relacionado->preco,
-                                            2,
-                                            ',',
-                                            '.'
-                                        )
-                                    }}
+                                    {{ number_format((float) $relacionado->preco, 2, ',', '.') }}
                                 </strong>
                             </a>
                         @endforeach

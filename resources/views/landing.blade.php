@@ -48,7 +48,7 @@
         <section class="front-home-categories" aria-label="Categorias de produtos">
             <div class="front-shell">
                 @foreach ($categorias as $categoria)
-                    <a href="{{ route('produtos.index', ['categoria' => $categoria->nome]) }}">
+                    <a href="{{ route('produtos.index', ['categoria' => $categoria->id]) }}">
                         <span>
                             @switch($categoria->nome)
                                 @case('Tv')
@@ -106,7 +106,7 @@
                                 <span class="front-eyebrow">Departamento</span>
                                 <h2>{{ $rotulos[$categoria->nome] ?? $categoria->nome }}</h2>
                             </div>
-                            <a href="{{ route('produtos.index', ['categoria' => $categoria->nome]) }}">Ver todos</a>
+                            <a href="{{ route('produtos.index', ['categoria' => $categoria->id]) }}">Ver todos</a>
                         </div>
 
                         <div class="front-produto-grid">
@@ -122,7 +122,7 @@
                                         <div class="front-produto-actions">
                                             <a href="{{ route('produtos.show', $produto->id) }}" class="front-button front-button-ghost">Ver produto</a>
                                             @if (! auth()->check() || auth()->user()->tipo !== 'administrador')
-                                                <a href="{{ route('purchase.show', $produto->id) }}" class="front-button front-button-primary">Comprar</a>
+                                                <a href="{{ route('compra.show', $produto->id) }}" class="front-button front-button-primary">Comprar</a>
                                             @endif
                                         </div>
                                     </div>
