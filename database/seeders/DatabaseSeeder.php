@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
         $usuarios = Usuario::factory(10)->create();
 
         // 3. Criar 20 Produtos sorteando aleatoriamente entre os Usuários e Categorias criados
-        Produto::factory(60)->create([
+        Produto::factory(100)->create([
             'categoria_id' => fn () => $categorias->random()->id,
             'UsuarioId' => fn () => $usuarios->random()->id,
         ]);

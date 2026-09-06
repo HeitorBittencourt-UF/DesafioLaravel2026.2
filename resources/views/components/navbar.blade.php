@@ -17,9 +17,7 @@
                 </li>
             @endauth
             <li><a href="#">Departamentos</a></li>
-            <li><a href="#">Mais Curtidos</a></li>
             <li><a href="#">Mais Vendidos</a></li>
-            <li><a href="#">Ofertas</a></li>
             <li><a href="#">Ajuda</a></li>
         </ul>
 

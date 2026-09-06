@@ -32,9 +32,9 @@
             @endisset
 
             <!-- Page Content -->
-            <main>
+            <div>
                 {{ $slot }}
-            </main>
+            </div>
         </div>
     </body>
 </html>
