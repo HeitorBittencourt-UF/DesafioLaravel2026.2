@@ -20,9 +20,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/compra/{produto}', [CompraController::class, 'show'])->name('compra.show');
 });
 
-Route::get('/meus-produtos',[ProdutoController::class, 'gerenciar'])->middleware('auth')->name('produtos.manage');
-Route::get('/meus-produtos/novo',[ProdutoController::class, 'criar'])->middleware('auth')->name('produtos.create');
-Route::get('/meus-produtos/{produto}/editar',[ProdutoController::class, 'editar'])->middleware('auth')->name('produtos.edit');
+Route::middleware('auth')
+    ->prefix('meus-produtos')
+    ->name('produtos.')
+    ->group(function () {
+        Route::get('/', [ProdutoController::class, 'gerenciar'])->name('manage');
+        Route::get('/novo', [ProdutoController::class, 'criar'])->name('create');
+        Route::post('/', [ProdutoController::class, 'store'])->name('store');
+        Route::get('/{produto}/editar', [ProdutoController::class, 'editar'])->name('edit');
+        Route::put('/{produto}', [ProdutoController::class, 'update'])->name('update');
+        Route::delete('/{produto}', [ProdutoController::class, 'destroy'])->name('destroy');
+    });
 
 Route::get('/admin/usuarios',[UsuarioController::class, 'usuarios'])->middleware('auth')->name('admin.users.index');
 

@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProdutoRequest;
 use App\Models\Categoria;
 use App\Models\Produto;
 use App\Models\Usuario;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\View\View;
+use Throwable;
 
 class ProdutoController extends Controller
 {
@@ -102,44 +108,60 @@ class ProdutoController extends Controller
         ));
     }
 
-    public function gerenciar(Request $request)
+    public function gerenciar(Request $request): View
     {
-        $usuario = $request->user();
+        $usuario = $this->usuarioAutenticado($request);
+        $busca = trim((string) $request->query('busca', ''));
 
-        if (! $usuario instanceof Usuario) {
-            abort(401);
-        }
-
-        $query = Produto::with('categoria')->latest();
+        $query = Produto::query();
 
         if ($usuario->tipo !== 'administrador') {
             $query->where('UsuarioId', $usuario->getKey());
         }
 
-        $produtos = $query->get();
+        $produtosParaEstatisticas = (clone $query)->get([
+            'quantidade',
+            'categoria_id',
+        ]);
 
-        $produtosAtivos = $produtos
+        $produtosAtivos = $produtosParaEstatisticas
             ->where('quantidade', '>', 0)
             ->count();
 
-        $estoqueTotal = $produtos->sum('quantidade');
+        $estoqueTotal = $produtosParaEstatisticas->sum('quantidade');
 
-        $categoriasTotal = $produtos
+        $categoriasTotal = $produtosParaEstatisticas
             ->pluck('categoria_id')
             ->filter()
             ->unique()
             ->count();
 
+        $totalProdutos = $produtosParaEstatisticas->count();
+
+        if ($busca !== '') {
+            $query->where('nome', 'like', '%' . $busca . '%');
+        }
+
+        $produtos = $query
+            ->with('categoria')
+            ->latest()
+            ->get();
+
         return view('produtos-management', compact(
             'produtos',
             'produtosAtivos',
             'estoqueTotal',
-            'categoriasTotal'
+            'categoriasTotal',
+            'totalProdutos',
+            'busca'
         ));
     }
 
-    public function criar()
+    public function criar(Request $request): View
     {
+        $usuario = $this->usuarioAutenticado($request);
+        $this->garantirQuePodeCriar($usuario);
+
         $categorias = Categoria::query()
             ->orderBy('nome')
             ->get();
@@ -151,23 +173,49 @@ class ProdutoController extends Controller
         ]);
     }
 
-    public function editar(Request $request, Produto $produto)
+    public function store(ProdutoRequest $request): RedirectResponse
     {
-        $usuario = $request->user();
+        $usuario = $this->usuarioAutenticado($request);
+        $this->garantirQuePodeCriar($usuario);
 
-        if (! $usuario instanceof Usuario) {
-            abort(401);
+        $dados = $request->validated();
+        unset($dados['foto']);
+
+        $caminhoFoto = null;
+
+        if ($request->hasFile('foto')) {
+            $caminhoFoto = $request->file('foto')->store('produtos', 'public');
+
+            if (! $caminhoFoto) {
+                return back()
+                    ->withInput()
+                    ->withErrors(['foto' => 'Não foi possível salvar a foto do produto.']);
+            }
+
+            $dados['foto'] = 'storage/' . $caminhoFoto;
         }
 
-        $produtoPertenceAoUsuario =
-            (int) $produto->UsuarioId === (int) $usuario->getKey();
+        $dados['UsuarioId'] = $usuario->getKey();
 
-        if (
-            $usuario->tipo !== 'administrador'
-            && ! $produtoPertenceAoUsuario
-        ) {
-            abort(403);
+        try {
+            Produto::create($dados);
+        } catch (Throwable $erro) {
+            if ($caminhoFoto) {
+                Storage::disk('public')->delete($caminhoFoto);
+            }
+
+            throw $erro;
         }
+
+        return redirect()
+            ->route('produtos.manage')
+            ->with('success', 'Produto cadastrado com sucesso.');
+    }
+
+    public function editar(Request $request, Produto $produto): View
+    {
+        $usuario = $this->usuarioAutenticado($request);
+        $this->garantirQuePodeGerenciar($usuario, $produto);
 
         $categorias = Categoria::query()
             ->orderBy('nome')
@@ -178,5 +226,127 @@ class ProdutoController extends Controller
             'produto' => $produto,
             'categorias' => $categorias,
         ]);
+    }
+
+    public function update(
+        ProdutoRequest $request,
+        Produto $produto
+    ): RedirectResponse {
+        $usuario = $this->usuarioAutenticado($request);
+        $this->garantirQuePodeGerenciar($usuario, $produto);
+
+        $dados = $request->validated();
+        unset($dados['foto']);
+
+        $fotoAntiga = $produto->foto;
+        $caminhoFoto = null;
+
+        if ($request->hasFile('foto')) {
+            $caminhoFoto = $request->file('foto')->store('produtos', 'public');
+
+            if (! $caminhoFoto) {
+                return back()
+                    ->withInput()
+                    ->withErrors(['foto' => 'Não foi possível salvar a nova foto do produto.']);
+            }
+
+            $dados['foto'] = 'storage/' . $caminhoFoto;
+        }
+
+        try {
+            $produto->update($dados);
+        } catch (Throwable $erro) {
+            if ($caminhoFoto) {
+                Storage::disk('public')->delete($caminhoFoto);
+            }
+
+            throw $erro;
+        }
+
+        if ($caminhoFoto) {
+            $this->excluirFotoLocal($fotoAntiga);
+        }
+
+        return redirect()
+            ->route('produtos.manage')
+            ->with('success', 'Produto atualizado com sucesso.');
+    }
+
+    public function destroy(
+        Request $request,
+        Produto $produto
+    ): RedirectResponse {
+        $usuario = $this->usuarioAutenticado($request);
+        $this->garantirQuePodeGerenciar($usuario, $produto);
+
+        if ($produto->itensVendas()->exists()) {
+            return redirect()
+                ->route('produtos.manage')
+                ->withErrors([
+                    'produto' => 'Este produto possui vendas registradas e não pode ser excluído.',
+                ]);
+        }
+
+        $fotos = collect([$produto->foto])
+            ->merge($produto->fotos()->pluck('foto'))
+            ->filter()
+            ->values();
+
+        DB::transaction(function () use ($produto) {
+            $produto->itensCarrinho()->delete();
+            $produto->delete();
+        });
+
+        $fotos->each(fn (string $foto) => $this->excluirFotoLocal($foto));
+
+        return redirect()
+            ->route('produtos.manage')
+            ->with('success', 'Produto excluído com sucesso.');
+    }
+
+    private function usuarioAutenticado(Request $request): Usuario
+    {
+        $usuario = $request->user();
+
+        abort_unless($usuario instanceof Usuario, 401);
+
+        return $usuario;
+    }
+
+    private function garantirQuePodeCriar(Usuario $usuario): void
+    {
+        abort_if(
+            $usuario->tipo === 'administrador',
+            403,
+            'Administradores não podem cadastrar produtos.'
+        );
+    }
+
+    private function garantirQuePodeGerenciar(
+        Usuario $usuario,
+        Produto $produto
+    ): void {
+        $produtoPertenceAoUsuario =
+            (int) $produto->UsuarioId === (int) $usuario->getKey();
+
+        abort_unless(
+            $usuario->tipo === 'administrador' || $produtoPertenceAoUsuario,
+            403
+        );
+    }
+
+    private function excluirFotoLocal(?string $foto): void
+    {
+        $caminho = ltrim(trim((string) $foto), '/');
+
+        if (! str_starts_with($caminho, 'storage/')) {
+            return;
+        }
+
+        $caminho = substr($caminho, strlen('storage/'));
+
+        if ($caminho !== '') {
+            Storage::disk('public')->delete($caminho);
+        }
     }
 }
