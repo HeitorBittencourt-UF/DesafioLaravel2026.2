@@ -1,14 +1,10 @@
 <x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
     <!-- Parte escrita : Criar Conta -->
     <div class="guest-signin guest-signin-left">
         <h1 class="guest-signin-tittle">Não possui uma conta?</h1>
         <span class="guest-signin-text">Venha fazer parte desta comunidade incrível, junte-se a nós por aqui!</span>
-        <x-painted-area-button>
-            <a class="" href="{{ route('register') }}">
-                {{ __('Criar Conta') }}
-            </a>
+        <x-painted-area-button :href="route('register')">
+            {{ __('Criar Conta') }}
         </x-painted-area-button>
     </div>
     <!-- Parte de formulário : Logar -->
@@ -16,6 +12,7 @@
         @csrf
 
         <h1 class="guest-tittle">CONECTE-SE</h1>
+        <x-auth-session-status class="mb-4" :status="session('status')" />
 
         <div class="guest-mid">
             <!-- Email -->
@@ -35,15 +32,15 @@
                 <!-- Esqueceu a senha -->
                 <div class="guest-esqueceu">
                     @if (Route::has('password.request'))
-                    <a class="" href="{{ route('password.request') }}">
-                        {{ __('Esqueceu a senha?') }}
-                    </a>
+                        <a href="{{ route('password.request') }}">
+                            {{ __('Esqueceu a senha?') }}
+                        </a>
                     @endif
                 </div>
             </div>
 
         </div>
-        <x-nonpainted-area-button class="font-montserrat bg-[#42B9A6] text-[15px] font-bold transition-all duration-300 ease-in-out hover:scale-110 hover:bg-[#52C8B5]">
+        <x-nonpainted-area-button>
             {{ __('Entrar') }}
         </x-nonpainted-area-button>
     </form>

@@ -1,12 +1,10 @@
 <x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
-
     <!-- Parte Formulário : Criar Conta -->
     <form method="POST" action="{{ route('register') }}" class="guest-form guest-form-left">
         @csrf
 
         <h1 class="guest-tittle">CRIE SUA CONTA</h1>
+        <x-auth-session-status class="mb-4" :status="session('status')" />
 
         <div class="guest-mid">
 
@@ -33,14 +31,14 @@
 
             <!-- Telefone -->
             <div class="guest-fields">
-                <x-text-input class="guest-input" id="telefone" type="tel" name="telefone" :value="old('telefone')" placeholder=" " required autocomplete="tel" maxlength="20" inputmode="numeric"/>
+                <x-text-input class="guest-input" id="telefone" type="tel" name="telefone" :value="old('telefone', '+55')" placeholder=" " required autocomplete="tel" maxlength="16" inputmode="tel"/>
                 <x-input-label for="telefone" :value="__('Telefone')" class="guest-label"/>
                 <x-input-error :messages="$errors->get('telefone')" class="mt-2"/>
             </div>
 
             <!-- Data de Nascimento -->
             <div class="guest-fields">
-                <x-text-input class="guest-input" id="data_nascimento" type="date" name="data_nascimento" :value="old('data_nascimento')" required />
+                <x-text-input class="guest-input" id="data_nascimento" type="date" name="data_nascimento" :value="old('data_nascimento')" :max="now()->toDateString()" required />
                 <x-input-label for="data_nascimento" :value="__('Data de Nascimento')" class="guest-label" />
                 <x-input-error :messages="$errors->get('data_nascimento')" class="mt-2" />
             </div>
@@ -72,10 +70,8 @@
     <div class="guest-signin guest-signin-right">
         <h1 class="guest-signin-tittle">Seja Bem-Vindo!</h1>
         <span class="guest-signin-text">Já possui uma conta? Conecte-se para obter os benefícios!</span>
-        <x-painted-area-button>
-            <a class="" href="{{ route('login') }}">
-                {{ __('Login') }}
-            </a>
+        <x-painted-area-button :href="route('login')">
+            {{ __('Login') }}
         </x-painted-area-button>
     </div>
 </x-guest-layout>

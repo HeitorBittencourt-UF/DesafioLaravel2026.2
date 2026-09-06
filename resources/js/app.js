@@ -185,29 +185,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function formatarTelefone(valor) {
-        // Remove tudo que não for número
-        valor = valor.replace(/\D/g, '');
+        const possuiCodigoInternacional = valor.trimStart().startsWith('+');
+        const numeros = valor.replace(/\D/g, '').slice(0, 15);
 
-        // Limita em 11 números
-        valor = valor.slice(0, 11);
-
-        // Começa o DDD
-        if (valor.length <= 2) {
-            return valor.length > 0 ? `(${valor}` : '';
-        }
-
-        // DDD + começo do número
-        if (valor.length <= 6) {
-            return `(${valor.slice(0, 2)}) ${valor.slice(2)}`;
-        }
-
-        // Telefone fixo: (32) 9999-9999
-        if (valor.length <= 10) {
-            return `(${valor.slice(0, 2)}) ${valor.slice(2, 6)}-${valor.slice(6)}`;
-        }
-
-        // Celular: (32) 99999-9999
-        return `(${valor.slice(0, 2)}) ${valor.slice(2, 7)}-${valor.slice(7)}`;
+        return (possuiCodigoInternacional ? '+' : '') + numeros;
     }
 
     telefoneInput.addEventListener('input', function () {

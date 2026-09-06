@@ -33,7 +33,7 @@
                     <x-slot name="trigger">
                         <button class="nav-user-button">
                             <x-user-icon class="nav-user-icon" />
-                            <span class="nav-user-name">{{ Auth::user()->name }}</span>
+                            <span class="nav-user-name">{{ Auth::user()->nome }}</span>
                         </button>
                     </x-slot>
 

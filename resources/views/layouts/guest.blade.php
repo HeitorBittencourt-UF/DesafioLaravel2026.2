@@ -17,7 +17,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=League+Gothic&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/guest.css', 'resources/js/guest.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/guest.css'])
 </head>
 
 <body class="guest-body">
