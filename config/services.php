@@ -34,5 +34,10 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'pagbank' => [
+    'token' => env('PAGBANK_TOKEN'),
+    'url' => env('PAGBANK_URL', 'https://sandbox.api.pagseguro.com'),
+    'webhook_url' => env('PAGBANK_WEBHOOK_URL'),
+],
 
 ];
