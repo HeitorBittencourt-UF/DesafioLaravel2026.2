@@ -255,3 +255,184 @@ document.addEventListener('DOMContentLoaded', () => {
 
     telefoneInput.value = formatarTelefone(telefoneInput.value);
 });
+/*
+|--------------------------------------------------------------------------
+| Consulta automática de CEP
+|--------------------------------------------------------------------------
+*/
+
+document.addEventListener('DOMContentLoaded', () => {
+    const cepInput = document.getElementById('cep');
+
+    const logradouroInput = document.getElementById('logradouro');
+    const bairroInput = document.getElementById('bairro');
+    const cidadeInput = document.getElementById('cidade');
+    const estadoInput = document.getElementById('estado');
+    const numeroInput = document.getElementById('numero');
+
+    // Não estamos na página de usuário/admin
+    if (!cepInput) {
+        return;
+    }
+
+    // Página de visualização possui os campos desabilitados
+    if (cepInput.disabled) {
+        return;
+    }
+
+    let ultimoCepConsultado = '';
+    let temporizador = null;
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Máscara do CEP
+    |--------------------------------------------------------------------------
+    */
+
+    function formatarCep(valor) {
+        const numeros = valor
+            .replace(/\D/g, '')
+            .slice(0, 8);
+
+        if (numeros.length <= 5) {
+            return numeros;
+        }
+
+        return (
+            numeros.slice(0, 5) +
+            '-' +
+            numeros.slice(5)
+        );
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Limpa campos automáticos
+    |--------------------------------------------------------------------------
+    */
+
+    function limparEndereco() {
+        if (logradouroInput) {
+            logradouroInput.value = '';
+        }
+
+        if (bairroInput) {
+            bairroInput.value = '';
+        }
+
+        if (cidadeInput) {
+            cidadeInput.value = '';
+        }
+
+        if (estadoInput) {
+            estadoInput.value = '';
+        }
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Consulta nossa API Laravel
+    |--------------------------------------------------------------------------
+    */
+
+    async function consultarCep() {
+        const cep = cepInput.value.replace(/\D/g, '');
+
+        if (cep.length !== 8) {
+            return;
+        }
+
+        if (cep === ultimoCepConsultado) {
+            return;
+        }
+
+        ultimoCepConsultado = cep;
+
+        try {
+            cepInput.setCustomValidity('');
+
+            const response = await fetch(`/api/cep/${cep}`, {
+                headers: {
+                    Accept: 'application/json',
+                },
+            });
+
+            const dados = await response.json();
+
+            if (!response.ok) {
+                throw new Error(
+                    dados.message ?? 'Não foi possível consultar o CEP.'
+                );
+            }
+
+            if (logradouroInput) {
+                logradouroInput.value = dados.logradouro ?? '';
+            }
+
+            if (bairroInput) {
+                bairroInput.value = dados.bairro ?? '';
+            }
+
+            if (cidadeInput) {
+                cidadeInput.value = dados.localidade ?? '';
+            }
+
+            if (estadoInput) {
+                estadoInput.value = dados.uf ?? '';
+            }
+
+            cepInput.setCustomValidity('');
+
+            // Depois de localizar o endereço,
+            // o usuário normalmente precisa preencher o número.
+            if (numeroInput) {
+                numeroInput.focus();
+            }
+
+        } catch (erro) {
+            ultimoCepConsultado = '';
+
+            limparEndereco();
+
+            cepInput.setCustomValidity(
+                erro.message ?? 'CEP não encontrado.'
+            );
+
+            cepInput.reportValidity();
+        }
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Eventos
+    |--------------------------------------------------------------------------
+    */
+
+    cepInput.value = formatarCep(cepInput.value);
+
+    cepInput.addEventListener('input', () => {
+        cepInput.value = formatarCep(cepInput.value);
+
+        cepInput.setCustomValidity('');
+
+        const cep = cepInput.value.replace(/\D/g, '');
+
+        clearTimeout(temporizador);
+
+        if (cep.length !== 8) {
+            ultimoCepConsultado = '';
+            return;
+        }
+
+        // Pequeno intervalo para evitar chamadas repetidas
+        temporizador = setTimeout(() => {
+            consultarCep();
+        }, 350);
+    });
+
+    cepInput.addEventListener('blur', consultarCep);
+});
