@@ -1637,10 +1637,17 @@ html{
     @apply h-[42px] w-[46px] shrink-0 rounded-[7px] object-cover;
 }
 
-.front-person-cell > span {
-    @apply grid h-[34px] w-[34px] shrink-0 place-items-center rounded-full bg-[var(--front-mint)] font-black text-[#197766];
+
+/* Foto de usuário / administrador */
+.front-person-photo {
+    @apply h-[38px] w-[38px] shrink-0 rounded-full object-cover;
 }
 
+
+/* Letra mostrada quando o usuário não possui foto */
+.front-person-initial {
+    @apply grid h-[38px] w-[38px] shrink-0 place-items-center rounded-full bg-[var(--front-mint)] font-black text-[#197766];
+}
 .front-table-actions {
     @apply flex gap-2.5 whitespace-nowrap;
 }
