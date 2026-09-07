@@ -47,7 +47,9 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => { //carrega so dps do HTML
-    const canvas = document.getElementById('products-by-month-chart');  
+    const canvas =
+    document.getElementById('front-produtos-chart') ??
+    document.getElementById('produto-by-month-chart');  
 
     if (!canvas) {  //checa se ta na pagina certa por meio de ver se o canvas é nulo (só a dashboard tem valor)
         return;

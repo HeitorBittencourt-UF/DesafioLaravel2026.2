@@ -109,53 +109,176 @@ class ProdutoController extends Controller
     }
 
     public function gerenciar(Request $request): View
-    {
-        $usuario = $this->usuarioAutenticado($request);
-        $busca = trim((string) $request->query('busca', ''));
+{
+    $usuario = $this->usuarioAutenticado($request);
 
-        $query = Produto::query();
+    $busca = trim(
+        (string) $request->query('busca', '')
+    );
 
-        if ($usuario->tipo !== 'administrador') {
-            $query->where('UsuarioId', $usuario->getKey());
+    /*
+    |--------------------------------------------------------------------------
+    | Produtos que o usuário pode visualizar
+    |--------------------------------------------------------------------------
+    */
+
+    $query = Produto::query();
+
+    if ($usuario->tipo !== 'administrador') {
+        $query->where(
+            'UsuarioId',
+            $usuario->getKey()
+        );
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Estatísticas
+    |--------------------------------------------------------------------------
+    */
+
+    $produtosParaEstatisticas = (clone $query)->get([
+        'quantidade',
+        'categoria_id',
+    ]);
+
+    $produtosAtivos = $produtosParaEstatisticas
+        ->where('quantidade', '>', 0)
+        ->count();
+
+    $estoqueTotal = $produtosParaEstatisticas
+        ->sum('quantidade');
+
+    $categoriasTotal = $produtosParaEstatisticas
+        ->pluck('categoria_id')
+        ->filter()
+        ->unique()
+        ->count();
+
+    $totalProdutos = $produtosParaEstatisticas
+        ->count();
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | RF013 - Produtos cadastrados nos últimos 12 meses
+    |--------------------------------------------------------------------------
+    |
+    | Apenas administradores recebem os dados do gráfico.
+    |
+    */
+
+    $graficoProdutos = null;
+
+    if ($usuario->tipo === 'administrador') {
+
+        $inicioDoPeriodo = now()
+            ->startOfMonth()
+            ->subMonths(11);
+
+        $fimDoPeriodo = now()
+            ->endOfMonth();
+
+        $produtosPorMes = Produto::query()
+            ->whereBetween(
+                'created_at',
+                [
+                    $inicioDoPeriodo,
+                    $fimDoPeriodo,
+                ]
+            )
+            ->get(['created_at'])
+            ->countBy(
+                fn (Produto $produto) =>
+                    $produto->created_at->format('Y-m')
+            );
+
+        $nomesDosMeses = [
+            1 => 'Jan',
+            2 => 'Fev',
+            3 => 'Mar',
+            4 => 'Abr',
+            5 => 'Mai',
+            6 => 'Jun',
+            7 => 'Jul',
+            8 => 'Ago',
+            9 => 'Set',
+            10 => 'Out',
+            11 => 'Nov',
+            12 => 'Dez',
+        ];
+
+        $labels = [];
+        $valores = [];
+
+        for ($indice = 11; $indice >= 0; $indice--) {
+
+            $data = now()
+                ->startOfMonth()
+                ->subMonths($indice);
+
+            $chaveDoMes = $data->format('Y-m');
+
+            $numeroDoMes = (int) $data->format('n');
+
+            $labels[] =
+                $nomesDosMeses[$numeroDoMes];
+
+            $valores[] =
+                (int) $produtosPorMes->get(
+                    $chaveDoMes,
+                    0
+                );
         }
 
-        $produtosParaEstatisticas = (clone $query)->get([
-            'quantidade',
-            'categoria_id',
-        ]);
+        $graficoProdutos = [
+            'labels' => $labels,
+            'valores' => $valores,
+        ];
+    }
 
-        $produtosAtivos = $produtosParaEstatisticas
-            ->where('quantidade', '>', 0)
-            ->count();
 
-        $estoqueTotal = $produtosParaEstatisticas->sum('quantidade');
+    /*
+    |--------------------------------------------------------------------------
+    | Pesquisa
+    |--------------------------------------------------------------------------
+    */
 
-        $categoriasTotal = $produtosParaEstatisticas
-            ->pluck('categoria_id')
-            ->filter()
-            ->unique()
-            ->count();
+    if ($busca !== '') {
+        $query->where(
+            'nome',
+            'like',
+            '%' . $busca . '%'
+        );
+    }
 
-        $totalProdutos = $produtosParaEstatisticas->count();
 
-        if ($busca !== '') {
-            $query->where('nome', 'like', '%' . $busca . '%');
-        }
+    /*
+    |--------------------------------------------------------------------------
+    | Produtos da tabela
+    |--------------------------------------------------------------------------
+    */
 
-        $produtos = $query
-            ->with('categoria')
-            ->latest()
-            ->get();
+    $produtos = $query
+        ->with('categoria')
+        ->latest()
+        ->get();
 
-        return view('produtos-management', compact(
+
+    return view(
+        'produtos-management',
+        compact(
             'produtos',
             'produtosAtivos',
             'estoqueTotal',
             'categoriasTotal',
             'totalProdutos',
-            'busca'
-        ));
-    }
+            'busca',
+            'graficoProdutos'
+        )
+    );
+}
 
     public function criar(Request $request): View
     {

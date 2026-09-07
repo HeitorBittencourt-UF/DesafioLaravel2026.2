@@ -15,24 +15,24 @@
                 </div>
 
                 @if (auth()->user()->tipo !== 'administrador')
-                    <a href="{{ route('produtos.create') }}" class="front-button front-button-primary">
-                        + Novo produto
-                    </a>
+                <a href="{{ route('produtos.create') }}" class="front-button front-button-primary">
+                    + Novo produto
+                </a>
                 @endif
             </header>
 
             @if (session('success'))
-                <div class="front-alert-success" role="status">
-                    {{ session('success') }}
-                </div>
+            <div class="front-alert-success" role="status">
+                {{ session('success') }}
+            </div>
             @endif
 
             @if ($errors->any())
-                <div class="front-alert-error" role="alert">
-                    @foreach ($errors->all() as $erro)
-                        <p>{{ $erro }}</p>
-                    @endforeach
-                </div>
+            <div class="front-alert-error" role="alert">
+                @foreach ($errors->all() as $erro)
+                <p>{{ $erro }}</p>
+                @endforeach
+            </div>
             @endif
 
             <section class="front-stat-grid">
@@ -56,25 +56,46 @@
             </section>
 
             {{-- O gráfico será conectado ao banco durante a revisão do RF013. --}}
-            @if (auth()->user()->tipo === 'administrador')
-                <section class="front-chart-card">
-                    <div class="front-section-heading">
-                        <div>
-                            <span class="front-eyebrow">Relatório</span>
-                            <h2>Produtos cadastrados por mês</h2>
-                        </div>
+            {{-- RF013 - Gráfico de produtos cadastrados --}}
+            @if (
+            auth()->user()->tipo === 'administrador'
+            && $graficoProdutos !== null
+            )
 
-                        <small>Últimos 12 meses</small>
+            <section class="front-chart-card">
+
+                <div class="front-section-heading">
+
+                    <div>
+                        <span class="front-eyebrow">
+                            Relatório
+                        </span>
+
+                        <h2>
+                            Produtos cadastrados por mês
+                        </h2>
                     </div>
 
-                    <div class="front-chart-box">
-                        <canvas
-                            id="front-produtos-chart"
-                            data-labels='["Out","Nov","Dez","Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set"]'
-                            data-values='[4,7,5,9,8,12,10,14,13,17,15,20]'
-                        ></canvas>
-                    </div>
-                </section>
+                    <small>
+                        Últimos 12 meses
+                    </small>
+
+                </div>
+
+
+                <div class="front-chart-box">
+
+                    <canvas
+                        id="front-produtos-chart"
+                        data-labels='@json($graficoProdutos["labels"])'
+                        data-values='@json($graficoProdutos["valores"])'
+                        role="img"
+                        aria-label="Quantidade de produtos cadastrados por mês nos últimos 12 meses"></canvas>
+
+                </div>
+
+            </section>
+
             @endif
 
             <section class="front-table-card">
@@ -90,23 +111,21 @@
                     <form
                         action="{{ route('produtos.manage') }}"
                         method="GET"
-                        class="flex items-center gap-2"
-                    >
+                        class="flex items-center gap-2">
                         <input
                             type="search"
                             name="busca"
                             value="{{ $busca }}"
-                            placeholder="Pesquisar por nome"
-                        >
+                            placeholder="Pesquisar por nome">
 
                         <button type="submit" class="front-button front-button-primary">
                             Pesquisar
                         </button>
 
                         @if ($busca !== '')
-                            <a href="{{ route('produtos.manage') }}" class="front-button front-button-ghost">
-                                Limpar
-                            </a>
+                        <a href="{{ route('produtos.manage') }}" class="front-button front-button-ghost">
+                            Limpar
+                        </a>
                         @endif
                     </form>
                 </div>
@@ -125,54 +144,52 @@
 
                         <tbody>
                             @forelse ($produtos as $produto)
-                                <tr>
-                                    <td>
-                                        <div class="front-table-produto">
-                                            <img
-                                                src="{{ asset($produto->foto ?: 'assets/Logo-1.png') }}"
-                                                alt="{{ $produto->nome }}"
-                                            >
-                                            <strong>{{ $produto->nome }}</strong>
-                                        </div>
-                                    </td>
+                            <tr>
+                                <td>
+                                    <div class="front-table-produto">
+                                        <img
+                                            src="{{ asset($produto->foto ?: 'assets/Logo-1.png') }}"
+                                            alt="{{ $produto->nome }}">
+                                        <strong>{{ $produto->nome }}</strong>
+                                    </div>
+                                </td>
 
-                                    <td>{{ $produto->categoria?->nome ?? 'Sem categoria' }}</td>
-                                    <td>R$ {{ number_format((float) $produto->preco, 2, ',', '.') }}</td>
-                                    <td>{{ $produto->quantidade }}</td>
+                                <td>{{ $produto->categoria?->nome ?? 'Sem categoria' }}</td>
+                                <td>R$ {{ number_format((float) $produto->preco, 2, ',', '.') }}</td>
+                                <td>{{ $produto->quantidade }}</td>
 
-                                    <td>
-                                        <div class="front-table-actions">
-                                            <a href="{{ route('produtos.show', $produto) }}">
-                                                Ver
-                                            </a>
+                                <td>
+                                    <div class="front-table-actions">
+                                        <a href="{{ route('produtos.show', $produto) }}">
+                                            Ver
+                                        </a>
 
-                                            <a href="{{ route('produtos.edit', $produto) }}">
-                                                Editar
-                                            </a>
+                                        <a href="{{ route('produtos.edit', $produto) }}">
+                                            Editar
+                                        </a>
 
-                                            <form
-                                                action="{{ route('produtos.destroy', $produto) }}"
-                                                method="POST"
-                                                onsubmit="return confirm('Tem certeza que deseja excluir este produto?')"
-                                            >
-                                                @csrf
-                                                @method('DELETE')
+                                        <form
+                                            action="{{ route('produtos.destroy', $produto) }}"
+                                            method="POST"
+                                            onsubmit="return confirm('Tem certeza que deseja excluir este produto?')">
+                                            @csrf
+                                            @method('DELETE')
 
-                                                <button type="submit">
-                                                    Excluir
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </td>
-                                </tr>
+                                            <button type="submit">
+                                                Excluir
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
                             @empty
-                                <tr>
-                                    <td colspan="5">
-                                        {{ $busca !== ''
+                            <tr>
+                                <td colspan="5">
+                                    {{ $busca !== ''
                                             ? 'Nenhum produto foi encontrado para esta pesquisa.'
                                             : 'Nenhum produto cadastrado.' }}
-                                    </td>
-                                </tr>
+                                </td>
+                            </tr>
                             @endforelse
                         </tbody>
                     </table>
