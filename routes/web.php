@@ -347,6 +347,10 @@ Route::middleware('auth')->group(function () {
     | Relatórios
     |--------------------------------------------------------------------------
     */
+    Route::get(
+        '/relatorios/vendas/xlsx',
+        [ReportController::class, 'salesXlsx']
+    )->name('reports.sales.xlsx');
 
     Route::get(
         '/relatorios/{tipo}',
@@ -385,4 +389,4 @@ Route::middleware('auth')->group(function () {
 |--------------------------------------------------------------------------
 */
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

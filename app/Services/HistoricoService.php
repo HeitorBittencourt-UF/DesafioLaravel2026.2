@@ -257,16 +257,22 @@ class HistoricoService
             : $item->vendedor?->nome;
 
         return [
-            'produto' => $item->produto?->nome ?? 'Produto indisponível',
+            'produto' => $item->produto?->nome
+                ?? 'Produto indisponível',
+
+            'foto' => $item->produto?->foto,
 
             'category' => $item->produto?->categoria?->nome
                 ?? 'Sem categoria',
 
             'date' => $venda->created_at->format('d/m/Y'),
 
-            'other' => $outraPessoa ?? 'Não informado',
+            'other' => $outraPessoa
+                ?? 'Não informado',
 
             'value' => (float) $item->subtotal,
+
+            'quantidade' => (int) $item->quantidade,
 
             'comprador' => $venda->comprador?->nome
                 ?? 'Não informado',
