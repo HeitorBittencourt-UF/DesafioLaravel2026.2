@@ -19,11 +19,11 @@
             </header>
 
             @if ($errors->any())
-                <div class="front-alert-error">
-                    @foreach ($errors->all() as $erro)
-                        <p>{{ $erro }}</p>
-                    @endforeach
-                </div>
+            <div class="front-alert-error">
+                @foreach ($errors->all() as $erro)
+                <p>{{ $erro }}</p>
+                @endforeach
+            </div>
             @endif
 
             <form action="{{ $vendas ? route('historico.vendas') : route('historico.compras') }}" method="GET"
@@ -39,20 +39,43 @@
                 <button class="front-button front-button-primary" type="submit">Aplicar período</button>
             </form>
 
-            @if ($vendas)
-                <section class="front-chart-card">
-                    <div class="front-section-heading">
-                        <div>
-                            <span class="front-eyebrow">Desempenho</span>
-                            <h2>Unidades vendidas por mês</h2>
-                        </div>
-                        <small>Últimos 12 meses</small>
+            {{-- RF014 - Gráfico de vendas realizadas --}}
+            @if ($vendas && $mostrarGraficoVendas)
+
+            <section class="front-chart-card">
+
+                <div class="front-section-heading">
+
+                    <div>
+                        <span class="front-eyebrow">
+                            Desempenho
+                        </span>
+
+                        <h2>
+                            Vendas realizadas por mês
+                        </h2>
                     </div>
-                    <div class="front-chart-box">
-                        <canvas id="front-sales-chart" data-labels='@json($chartLabels)'
-                            data-values='@json($chartValues)'></canvas>
-                    </div>
-                </section>
+
+                    <small>
+                        Últimos 12 meses
+                    </small>
+
+                </div>
+
+
+                <div class="front-chart-box">
+
+                    <canvas
+                        id="front-sales-chart"
+                        data-labels='@json($chartLabels)'
+                        data-values='@json($chartValues)'
+                        role="img"
+                        aria-label="Quantidade de vendas realizadas por mês nos últimos 12 meses"></canvas>
+
+                </div>
+
+            </section>
+
             @endif
 
             <section class="front-table-card">
@@ -77,18 +100,18 @@
                         </thead>
                         <tbody>
                             @forelse ($registros as $registro)
-                                <tr>
-                                    <td><strong>{{ $registro['produto'] }}</strong></td>
-                                    <td>{{ $registro['category'] }}</td>
-                                    <td>{{ $registro['date'] }}</td>
-                                    <td>{{ $registro['other'] }}</td>
-                                    <td>R$ {{ number_format($registro['value'], 2, ',', '.') }}</td>
-                                    <td><span class="front-status">{{ ucfirst($registro['status']) }}</span></td>
-                                </tr>
+                            <tr>
+                                <td><strong>{{ $registro['produto'] }}</strong></td>
+                                <td>{{ $registro['category'] }}</td>
+                                <td>{{ $registro['date'] }}</td>
+                                <td>{{ $registro['other'] }}</td>
+                                <td>R$ {{ number_format($registro['value'], 2, ',', '.') }}</td>
+                                <td><span class="front-status">{{ ucfirst($registro['status']) }}</span></td>
+                            </tr>
                             @empty
-                                <tr>
-                                    <td colspan="6">Nenhuma transação encontrada no período informado.</td>
-                                </tr>
+                            <tr>
+                                <td colspan="6">Nenhuma transação encontrada no período informado.</td>
+                            </tr>
                             @endforelse
                         </tbody>
                     </table>

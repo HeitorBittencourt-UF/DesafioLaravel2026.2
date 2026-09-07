@@ -9,9 +9,7 @@ use Illuminate\View\View;
 
 class HistoricoController extends Controller
 {
-    public function __construct(private readonly HistoricoService $historico)
-    {
-    }
+    public function __construct(private readonly HistoricoService $historico) {}
 
     public function purchases(Request $request): View
     {
@@ -27,25 +25,82 @@ class HistoricoController extends Controller
             'registros' => $registros,
             'chartLabels' => [],
             'chartValues' => [],
+            'mostrarGraficoVendas' => false,
         ]);
     }
 
     public function sales(Request $request): View
     {
-        $usuario = $this->usuarioAutenticado($request);
-        $periodo = $this->validarPeriodo($request);
-        $registros = $this->historico->vendas(
-            $usuario,
-            $periodo['inicio'] ?? null,
-            $periodo['fim'] ?? null
-        );
-        $grafico = $this->historico->graficoVendas($usuario);
+        $usuario =
+            $this->usuarioAutenticado($request);
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | RF014 - gráfico somente para usuário comum
+    |--------------------------------------------------------------------------
+    */
+
+        $ehAdministrador =
+            $usuario->tipo === 'administrador';
+
+
+        $periodo =
+            $this->validarPeriodo($request);
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | Histórico
+    |--------------------------------------------------------------------------
+    |
+    | O RF009 permite que administrador visualize todas as vendas.
+    | Portanto NÃO bloqueamos a página inteira.
+    |
+    | Apenas escondemos o gráfico do administrador.
+    |
+    */
+
+        $registros =
+            $this->historico->vendas(
+                $usuario,
+                $periodo['inicio'] ?? null,
+                $periodo['fim'] ?? null
+            );
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | Gráfico
+    |--------------------------------------------------------------------------
+    */
+
+        $grafico = [
+            'labels' => [],
+            'values' => [],
+        ];
+
+        if (! $ehAdministrador) {
+            $grafico =
+                $this->historico
+                ->graficoVendas($usuario);
+        }
+
 
         return view('historico', [
             'vendas' => true,
-            'registros' => $registros,
-            'chartLabels' => $grafico['labels'],
-            'chartValues' => $grafico['values'],
+
+            'registros' =>
+            $registros,
+
+            'chartLabels' =>
+            $grafico['labels'],
+
+            'chartValues' =>
+            $grafico['values'],
+
+            'mostrarGraficoVendas' =>
+            ! $ehAdministrador,
         ]);
     }
 

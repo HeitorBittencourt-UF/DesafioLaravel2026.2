@@ -438,3 +438,299 @@ document.addEventListener('DOMContentLoaded', () => {
 
     cepInput.addEventListener('blur', consultarCep);
 });
+/*
+|--------------------------------------------------------------------------
+| RF014 - Gráfico de vendas realizadas
+|--------------------------------------------------------------------------
+*/
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    const canvas =
+        document.getElementById('front-sales-chart');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Página sem gráfico
+    |--------------------------------------------------------------------------
+    */
+
+    if (!canvas) {
+        return;
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Dados enviados pelo Laravel
+    |--------------------------------------------------------------------------
+    */
+
+    const labels = JSON.parse(
+        canvas.dataset.labels ?? '[]'
+    );
+
+    const values = JSON.parse(
+        canvas.dataset.values ?? '[]'
+    );
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Plugin para mostrar os números nos pontos
+    |--------------------------------------------------------------------------
+    */
+
+    const valueLabelsPlugin = {
+
+        id: 'salesValueLabels',
+
+        afterDatasetsDraw(chart) {
+
+            const { ctx } = chart;
+
+            const metadata =
+                chart.getDatasetMeta(0);
+
+            ctx.save();
+
+            ctx.fillStyle =
+                '#ffffff';
+
+            ctx.font =
+                '600 12px Montserrat, sans-serif';
+
+            ctx.textAlign =
+                'center';
+
+            ctx.textBaseline =
+                'bottom';
+
+
+            metadata.data.forEach(
+                (point, index) => {
+
+                    ctx.fillText(
+                        String(values[index]),
+                        point.x,
+                        point.y - 10
+                    );
+
+                }
+            );
+
+
+            ctx.restore();
+        },
+    };
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Criação do gráfico
+    |--------------------------------------------------------------------------
+    */
+
+    new Chart(canvas, {
+
+        type: 'line',
+
+        data: {
+
+            labels,
+
+            datasets: [
+                {
+                    label: 'Vendas',
+
+                    data: values,
+
+                    borderColor:
+                        '#42B9A6',
+
+                    backgroundColor:
+                        'rgba(66, 185, 166, 0.15)',
+
+                    pointBackgroundColor:
+                        '#42B9A6',
+
+                    pointBorderColor:
+                        '#ffffff',
+
+                    pointBorderWidth: 2,
+
+                    pointRadius: 5,
+
+                    pointHoverRadius: 7,
+
+                    borderWidth: 3,
+
+                    tension: 0.3,
+
+                    fill: true,
+                },
+            ],
+        },
+
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+
+            layout: {
+                padding: {
+                    top: 25,
+                },
+            },
+
+
+            interaction: {
+                intersect: false,
+                mode: 'index',
+            },
+
+
+            plugins: {
+
+                legend: {
+                    display: false,
+                },
+
+
+                tooltip: {
+
+                    backgroundColor:
+                        '#ffffff',
+
+                    titleColor:
+                        '#042434',
+
+                    bodyColor:
+                        '#042434',
+
+                    borderColor:
+                        '#42B9A6',
+
+                    borderWidth: 1,
+
+                    padding: 12,
+
+                    displayColors: false,
+
+
+                    callbacks: {
+
+                        label(context) {
+
+                            const total =
+                                context.parsed.y;
+
+                            const palavra =
+                                total === 1
+                                    ? 'venda'
+                                    : 'vendas';
+
+                            return `${total} ${palavra}`;
+                        },
+                    },
+                },
+            },
+
+
+            scales: {
+
+                x: {
+
+                    border: {
+                        color:
+                            'rgba(148, 163, 184, 0.25)',
+                    },
+
+                    grid: {
+                        display: false,
+                    },
+
+                    ticks: {
+
+                        color:
+                            '#d1d5db',
+
+                        font: {
+                            family:
+                                'Montserrat',
+
+                            size: 12,
+                        },
+                    },
+                },
+
+
+                y: {
+
+                    beginAtZero: true,
+
+
+                    border: {
+                        color:
+                            'rgba(148, 163, 184, 0.25)',
+                    },
+
+
+                    grid: {
+                        color:
+                            'rgba(148, 163, 184, 0.15)',
+                    },
+
+
+                    ticks: {
+
+                        color:
+                            '#d1d5db',
+
+                        precision: 0,
+
+                        stepSize: 1,
+
+                        font: {
+                            family:
+                                'Montserrat',
+
+                            size: 12,
+                        },
+                    },
+
+
+                    title: {
+
+                        display: true,
+
+                        text:
+                            'Quantidade de vendas',
+
+                        color:
+                            '#d1d5db',
+
+                        font: {
+                            family:
+                                'Montserrat',
+
+                            size: 12,
+
+                            weight:
+                                '500',
+                        },
+                    },
+                },
+            },
+        },
+
+
+        plugins: [
+            valueLabelsPlugin,
+        ],
+    });
+});

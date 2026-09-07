@@ -86,28 +86,98 @@ class HistoricoService
 
     public function graficoVendas(Usuario $usuario): array
     {
+        /*
+    |--------------------------------------------------------------------------
+    | RF014 - Apenas usuários comuns
+    |--------------------------------------------------------------------------
+    */
+
+        abort_if(
+            $usuario->tipo === 'administrador',
+            403,
+            'O gráfico de vendas está disponível apenas para usuários.'
+        );
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | Período - últimos 12 meses
+    |--------------------------------------------------------------------------
+    */
+
         $inicio = now()
             ->startOfMonth()
             ->subMonths(11);
 
-        $query = ItemVenda::query()
+        $fim = now()
+            ->endOfMonth();
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | Busca vendas do usuário logado
+    |--------------------------------------------------------------------------
+    |
+    | Uma mesma venda pode possuir vários ItemVenda.
+    |
+    | Por isso NÃO usamos sum('quantidade').
+    | Precisamos contar vendas distintas.
+    |
+    */
+
+        $vendasPorMes = ItemVenda::query()
+            ->where(
+                'VendedorId',
+                $usuario->getKey()
+            )
+            ->whereHas(
+                'venda',
+                function ($query) use ($inicio, $fim): void {
+                    $query->whereBetween(
+                        'created_at',
+                        [$inicio, $fim]
+                    );
+                }
+            )
             ->with('venda')
-            ->whereHas('venda', function ($consulta) use ($inicio): void {
-                $consulta->where('created_at', '>=', $inicio);
-            });
-
-        if ($usuario->tipo !== 'administrador') {
-            $query->where('VendedorId', $usuario->getKey());
-        }
-
-        $totais = $query
             ->get()
-            ->groupBy(function (ItemVenda $item): string {
-                return $item->venda->created_at->format('Y-m');
-            })
-            ->map(function (Collection $itens): int {
-                return $itens->sum('quantidade');
-            });
+            ->groupBy(
+                function (ItemVenda $item): string {
+                    return $item
+                        ->venda
+                        ->created_at
+                        ->format('Y-m');
+                }
+            )
+            ->map(
+                function (Collection $itens): int {
+
+                    /*
+                 * Conta IDs de vendas distintos.
+                 *
+                 * Exemplo:
+                 *
+                 * Venda 10:
+                 * - Produto A
+                 * - Produto B
+                 *
+                 * Isso conta como 1 venda,
+                 * e não como 2 produtos.
+                 */
+
+                    return $itens
+                        ->pluck('VendasId')
+                        ->unique()
+                        ->count();
+                }
+            );
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | Nomes dos meses
+    |--------------------------------------------------------------------------
+    */
 
         $nomesMeses = [
             1 => 'Jan',
@@ -124,20 +194,34 @@ class HistoricoService
             12 => 'Dez',
         ];
 
+
+        /*
+    |--------------------------------------------------------------------------
+    | Monta exatamente 12 meses
+    |--------------------------------------------------------------------------
+    */
+
         $labels = [];
         $values = [];
 
         for ($indice = 11; $indice >= 0; $indice--) {
+
             $mes = now()
                 ->startOfMonth()
                 ->subMonths($indice);
 
             $chaveDoMes = $mes->format('Y-m');
-            $numeroDoMes = (int) $mes->format('n');
 
-            $labels[] = $nomesMeses[$numeroDoMes];
-            $values[] = (int) ($totais[$chaveDoMes] ?? 0);
+            $numeroDoMes =
+                (int) $mes->format('n');
+
+            $labels[] =
+                $nomesMeses[$numeroDoMes];
+
+            $values[] =
+                (int) ($vendasPorMes[$chaveDoMes] ?? 0);
         }
+
 
         return [
             'labels' => $labels,
