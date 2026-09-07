@@ -15,12 +15,6 @@ use Throwable;
 
 class UsuarioController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | LISTAGENS
-    |--------------------------------------------------------------------------
-    */
-
     public function usuarios(Request $request): View
     {
         $this->garantirAdministrador($request);
@@ -36,12 +30,8 @@ class UsuarioController extends Controller
             'total' => $pessoas->count(),
             'ativos' => $pessoas->count(),
             'novosEsteMes' => $pessoas
-                ->filter(fn ($pessoa) =>
-                    $pessoa->created_at &&
-                    $pessoa->created_at->isCurrentMonth()
-                )
+                ->filter(fn ($pessoa) => $pessoa->created_at && $pessoa->created_at->isCurrentMonth())
                 ->count(),
-
             'createRoute' => 'admin.users.create',
             'showRoute' => 'admin.users.show',
             'editRoute' => 'admin.users.edit',
@@ -64,24 +54,14 @@ class UsuarioController extends Controller
             'total' => $pessoas->count(),
             'ativos' => $pessoas->count(),
             'novosEsteMes' => $pessoas
-                ->filter(fn ($pessoa) =>
-                    $pessoa->created_at &&
-                    $pessoa->created_at->isCurrentMonth()
-                )
+                ->filter(fn ($pessoa) => $pessoa->created_at && $pessoa->created_at->isCurrentMonth())
                 ->count(),
-
             'createRoute' => 'admin.admins.create',
             'showRoute' => 'admin.admins.show',
             'editRoute' => 'admin.admins.edit',
             'destroyRoute' => 'admin.admins.destroy',
         ]);
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | USUÁRIOS
-    |--------------------------------------------------------------------------
-    */
 
     public function createUsuario(Request $request): View
     {
@@ -97,7 +77,6 @@ class UsuarioController extends Controller
     public function storeUsuario(Request $request): RedirectResponse
     {
         $this->garantirAdministrador($request);
-
         $this->normalizarDados($request);
 
         $dados = $this->validarPessoa(
@@ -118,10 +97,8 @@ class UsuarioController extends Controller
             ->with('success', 'Usuário criado com sucesso.');
     }
 
-    public function showUsuario(
-        Request $request,
-        Usuario $usuario
-    ): View {
+    public function showUsuario(Request $request, Usuario $usuario): View
+    {
         $this->garantirAdministrador($request);
         $this->garantirTipo($usuario, 'usuario');
 
@@ -134,10 +111,8 @@ class UsuarioController extends Controller
         );
     }
 
-    public function editUsuario(
-        Request $request,
-        Usuario $usuario
-    ): View {
+    public function editUsuario(Request $request, Usuario $usuario): View
+    {
         $this->garantirAdministrador($request);
         $this->garantirTipo($usuario, 'usuario');
 
@@ -150,13 +125,10 @@ class UsuarioController extends Controller
         );
     }
 
-    public function updateUsuario(
-        Request $request,
-        Usuario $usuario
-    ): RedirectResponse {
+    public function updateUsuario(Request $request, Usuario $usuario): RedirectResponse
+    {
         $this->garantirAdministrador($request);
         $this->garantirTipo($usuario, 'usuario');
-
         $this->normalizarDados($request);
 
         $dados = $this->validarPessoa(
@@ -177,10 +149,8 @@ class UsuarioController extends Controller
             ->with('success', 'Usuário atualizado com sucesso.');
     }
 
-    public function destroyUsuario(
-        Request $request,
-        Usuario $usuario
-    ): RedirectResponse {
+    public function destroyUsuario(Request $request, Usuario $usuario): RedirectResponse
+    {
         $this->garantirAdministrador($request);
         $this->garantirTipo($usuario, 'usuario');
 
@@ -190,12 +160,6 @@ class UsuarioController extends Controller
             ->route('admin.users.index')
             ->with('success', 'Usuário excluído com sucesso.');
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | ADMINISTRADORES
-    |--------------------------------------------------------------------------
-    */
 
     public function createAdministrador(Request $request): View
     {
@@ -208,11 +172,9 @@ class UsuarioController extends Controller
         );
     }
 
-    public function storeAdministrador(
-        Request $request
-    ): RedirectResponse {
+    public function storeAdministrador(Request $request): RedirectResponse
+    {
         $adminLogado = $this->garantirAdministrador($request);
-
         $this->normalizarDados($request);
 
         $dados = $this->validarPessoa(
@@ -234,10 +196,8 @@ class UsuarioController extends Controller
             ->with('success', 'Administrador criado com sucesso.');
     }
 
-    public function showAdministrador(
-        Request $request,
-        Usuario $administrador
-    ): View {
+    public function showAdministrador(Request $request, Usuario $administrador): View
+    {
         $this->garantirAdministrador($request);
         $this->garantirTipo($administrador, 'administrador');
 
@@ -250,21 +210,12 @@ class UsuarioController extends Controller
         );
     }
 
-    public function editAdministrador(
-        Request $request,
-        Usuario $administrador
-    ): View {
+    public function editAdministrador(Request $request, Usuario $administrador): View
+    {
         $adminLogado = $this->garantirAdministrador($request);
 
-        $this->garantirTipo(
-            $administrador,
-            'administrador'
-        );
-
-        $this->garantirGerenciamentoAdministrador(
-            $adminLogado,
-            $administrador
-        );
+        $this->garantirTipo($administrador, 'administrador');
+        $this->garantirGerenciamentoAdministrador($adminLogado, $administrador);
 
         $administrador->load('enderecos');
 
@@ -275,22 +226,12 @@ class UsuarioController extends Controller
         );
     }
 
-    public function updateAdministrador(
-        Request $request,
-        Usuario $administrador
-    ): RedirectResponse {
+    public function updateAdministrador(Request $request, Usuario $administrador): RedirectResponse
+    {
         $adminLogado = $this->garantirAdministrador($request);
 
-        $this->garantirTipo(
-            $administrador,
-            'administrador'
-        );
-
-        $this->garantirGerenciamentoAdministrador(
-            $adminLogado,
-            $administrador
-        );
-
+        $this->garantirTipo($administrador, 'administrador');
+        $this->garantirGerenciamentoAdministrador($adminLogado, $administrador);
         $this->normalizarDados($request);
 
         $dados = $this->validarPessoa(
@@ -311,25 +252,14 @@ class UsuarioController extends Controller
             ->with('success', 'Administrador atualizado com sucesso.');
     }
 
-    public function destroyAdministrador(
-        Request $request,
-        Usuario $administrador
-    ): RedirectResponse {
+    public function destroyAdministrador(Request $request, Usuario $administrador): RedirectResponse
+    {
         $adminLogado = $this->garantirAdministrador($request);
 
-        $this->garantirTipo(
-            $administrador,
-            'administrador'
-        );
+        $this->garantirTipo($administrador, 'administrador');
+        $this->garantirGerenciamentoAdministrador($adminLogado, $administrador);
 
-        $this->garantirGerenciamentoAdministrador(
-            $adminLogado,
-            $administrador
-        );
-
-        $excluindoPropriaConta =
-            (int) $adminLogado->getKey() ===
-            (int) $administrador->getKey();
+        $excluindoPropriaConta = (int) $adminLogado->getKey() === (int) $administrador->getKey();
 
         $administrador->delete();
 
@@ -349,51 +279,32 @@ class UsuarioController extends Controller
             ->with('success', 'Administrador excluído com sucesso.');
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | FUNÇÕES AUXILIARES
-    |--------------------------------------------------------------------------
-    */
-
-    private function formulario(
-        ?Usuario $pessoa,
-        bool $administrador,
-        string $modo
-    ): View {
+    private function formulario(?Usuario $pessoa, bool $administrador, string $modo): View
+    {
         $criando = $modo === 'criar';
         $visualizando = $modo === 'visualizar';
-
-        $prefixo = $administrador
-            ? 'admin.admins'
-            : 'admin.users';
+        $prefixo = $administrador ? 'admin.admins' : 'admin.users';
 
         return view('usuario-form', [
             'pessoa' => $pessoa,
             'endereco' => $pessoa?->enderecos->first(),
-
             'administrador' => $administrador,
             'modo' => $modo,
             'criando' => $criando,
             'visualizando' => $visualizando,
-
             'indexRoute' => $prefixo . '.index',
             'storeRoute' => $prefixo . '.store',
             'updateRoute' => $prefixo . '.update',
             'editRoute' => $prefixo . '.edit',
-
             'id' => $pessoa?->getKey(),
         ]);
     }
 
-    private function garantirAdministrador(
-        Request $request
-    ): Usuario {
+    private function garantirAdministrador(Request $request): Usuario
+    {
         $usuario = $request->user();
 
-        abort_unless(
-            $usuario instanceof Usuario,
-            401
-        );
+        abort_unless($usuario instanceof Usuario, 401);
 
         abort_unless(
             $usuario->tipo === 'administrador',
@@ -404,27 +315,15 @@ class UsuarioController extends Controller
         return $usuario;
     }
 
-    private function garantirTipo(
-        Usuario $usuario,
-        string $tipo
-    ): void {
-        abort_unless(
-            $usuario->tipo === $tipo,
-            404
-        );
+    private function garantirTipo(Usuario $usuario, string $tipo): void
+    {
+        abort_unless($usuario->tipo === $tipo, 404);
     }
 
-    private function garantirGerenciamentoAdministrador(
-        Usuario $adminLogado,
-        Usuario $administradorAlvo
-    ): void {
-        $ehProprioPerfil =
-            (int) $adminLogado->getKey() ===
-            (int) $administradorAlvo->getKey();
-
-        $foiCriadoPeloAdmin =
-            (int) $administradorAlvo->criador_id ===
-            (int) $adminLogado->getKey();
+    private function garantirGerenciamentoAdministrador(Usuario $adminLogado, Usuario $administradorAlvo): void
+    {
+        $ehProprioPerfil = (int) $adminLogado->getKey() === (int) $administradorAlvo->getKey();
+        $foiCriadoPeloAdmin = (int) $administradorAlvo->criador_id === (int) $adminLogado->getKey();
 
         abort_unless(
             $ehProprioPerfil || $foiCriadoPeloAdmin,
@@ -436,21 +335,9 @@ class UsuarioController extends Controller
     private function normalizarDados(Request $request): void
     {
         $request->merge([
-            'cpf' => preg_replace(
-                '/\D/',
-                '',
-                (string) $request->input('cpf')
-            ),
-
-            'cep' => preg_replace(
-                '/\D/',
-                '',
-                (string) $request->input('cep')
-            ),
-
-            'estado' => strtoupper(
-                trim((string) $request->input('estado'))
-            ),
+            'cpf' => preg_replace('/\D/', '', (string) $request->input('cpf')),
+            'cep' => preg_replace('/\D/', '', (string) $request->input('cep')),
+            'estado' => strtoupper(trim((string) $request->input('estado'))),
         ]);
     }
 
@@ -469,92 +356,33 @@ class UsuarioController extends Controller
             : ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'];
 
         $regras = [
-            'nome' => [
-                'required',
-                'string',
-                'max:150',
-            ],
-
+            'nome' => ['required', 'string', 'max:150'],
             'email' => [
                 'required',
                 'email',
                 'max:150',
-                Rule::unique('Usuarios', 'email')
-                    ->ignore($pessoa?->getKey()),
+                Rule::unique('Usuarios', 'email')->ignore($pessoa?->getKey()),
             ],
-
             'senha' => $senha,
-
             'cpf' => [
                 'required',
                 'digits:11',
-                Rule::unique('Usuarios', 'cpf')
-                    ->ignore($pessoa?->getKey()),
+                Rule::unique('Usuarios', 'cpf')->ignore($pessoa?->getKey()),
             ],
-
-            'telefone' => [
-                'required',
-                'string',
-                'max:20',
-            ],
-
-            'data_nascimento' => [
-                'required',
-                'date',
-                'before_or_equal:today',
-            ],
-
+            'telefone' => ['required', 'string', 'max:20'],
+            'data_nascimento' => ['required', 'date', 'before_or_equal:today'],
             'foto' => $foto,
-
-            'cep' => [
-                'required',
-                'digits:8',
-            ],
-
-            'logradouro' => [
-                'required',
-                'string',
-                'max:150',
-            ],
-
-            'numero' => [
-                'required',
-                'string',
-                'max:10',
-            ],
-
-            'bairro' => [
-                'required',
-                'string',
-                'max:100',
-            ],
-
-            'cidade' => [
-                'required',
-                'string',
-                'max:100',
-            ],
-
-            'estado' => [
-                'required',
-                'string',
-                'size:2',
-            ],
-
-            'complemento' => [
-                'nullable',
-                'string',
-                'max:100',
-            ],
+            'cep' => ['required', 'digits:8'],
+            'logradouro' => ['required', 'string', 'max:150'],
+            'numero' => ['required', 'string', 'max:10'],
+            'bairro' => ['required', 'string', 'max:100'],
+            'cidade' => ['required', 'string', 'max:100'],
+            'estado' => ['required', 'string', 'size:2'],
+            'complemento' => ['nullable', 'string', 'max:100'],
         ];
 
         if (! $administrador) {
-            $regras['saldo'] = [
-                'nullable',
-                'numeric',
-                'min:0',
-                'max:99999999.99',
-            ];
+            $regras['saldo'] = ['nullable', 'numeric', 'min:0', 'max:99999999.99'];
         }
 
         return $request->validate($regras);
@@ -569,18 +397,11 @@ class UsuarioController extends Controller
         $caminhoFoto = null;
 
         if ($request->hasFile('foto')) {
-            $caminhoFoto = $request
-                ->file('foto')
-                ->store('usuarios', 'public');
+            $caminhoFoto = $request->file('foto')->store('usuarios', 'public');
         }
 
         try {
-            return DB::transaction(function () use (
-                $dados,
-                $tipo,
-                $criadorId,
-                $caminhoFoto
-            ) {
+            return DB::transaction(function () use ($dados, $tipo, $criadorId, $caminhoFoto) {
                 $usuario = Usuario::create([
                     'nome' => $dados['nome'],
                     'email' => $dados['email'],
@@ -589,12 +410,8 @@ class UsuarioController extends Controller
                     'cpf' => $dados['cpf'],
                     'data_nascimento' => $dados['data_nascimento'],
                     'telefone' => $dados['telefone'],
-                    'saldo' => $tipo === 'usuario'
-                        ? ($dados['saldo'] ?? 0)
-                        : 0,
-                    'foto' => $caminhoFoto
-                        ? 'storage/' . $caminhoFoto
-                        : null,
+                    'saldo' => $tipo === 'usuario' ? ($dados['saldo'] ?? 0) : 0,
+                    'foto' => $caminhoFoto ? 'storage/' . $caminhoFoto : null,
                     'criador_id' => $criadorId,
                 ]);
 
@@ -608,43 +425,31 @@ class UsuarioController extends Controller
                     'estado' => $dados['estado'],
                 ]);
 
-                $usuario
-                    ->enderecos()
-                    ->attach($endereco->getKey());
+                $usuario->enderecos()->attach($endereco->getKey());
 
                 return $usuario;
             });
         } catch (Throwable $erro) {
             if ($caminhoFoto) {
-                Storage::disk('public')
-                    ->delete($caminhoFoto);
+                Storage::disk('public')->delete($caminhoFoto);
             }
 
             throw $erro;
         }
     }
 
-    private function atualizarPessoa(
-        Request $request,
-        Usuario $pessoa,
-        array $dados
-    ): void {
+    private function atualizarPessoa(Request $request, Usuario $pessoa, array $dados): void
+    {
         $caminhoFotoNova = null;
 
         if ($request->hasFile('foto')) {
-            $caminhoFotoNova = $request
-                ->file('foto')
-                ->store('usuarios', 'public');
+            $caminhoFotoNova = $request->file('foto')->store('usuarios', 'public');
         }
 
         $fotoAntiga = $pessoa->foto;
 
         try {
-            DB::transaction(function () use (
-                $pessoa,
-                $dados,
-                $caminhoFotoNova
-            ) {
+            DB::transaction(function () use ($pessoa, $dados, $caminhoFotoNova) {
                 $dadosUsuario = [
                     'nome' => $dados['nome'],
                     'email' => $dados['email'],
@@ -654,25 +459,20 @@ class UsuarioController extends Controller
                 ];
 
                 if ($pessoa->tipo === 'usuario') {
-                    $dadosUsuario['saldo'] =
-                        $dados['saldo'] ?? $pessoa->saldo;
+                    $dadosUsuario['saldo'] = $dados['saldo'] ?? $pessoa->saldo;
                 }
 
                 if (! empty($dados['senha'])) {
-                    $dadosUsuario['senha'] =
-                        $dados['senha'];
+                    $dadosUsuario['senha'] = $dados['senha'];
                 }
 
                 if ($caminhoFotoNova) {
-                    $dadosUsuario['foto'] =
-                        'storage/' . $caminhoFotoNova;
+                    $dadosUsuario['foto'] = 'storage/' . $caminhoFotoNova;
                 }
 
                 $pessoa->update($dadosUsuario);
 
-                $endereco = $pessoa
-                    ->enderecos()
-                    ->first();
+                $endereco = $pessoa->enderecos()->first();
 
                 $dadosEndereco = [
                     'cep' => $dados['cep'],
@@ -687,18 +487,13 @@ class UsuarioController extends Controller
                 if ($endereco) {
                     $endereco->update($dadosEndereco);
                 } else {
-                    $novoEndereco =
-                        Endereco::create($dadosEndereco);
-
-                    $pessoa
-                        ->enderecos()
-                        ->attach($novoEndereco->getKey());
+                    $novoEndereco = Endereco::create($dadosEndereco);
+                    $pessoa->enderecos()->attach($novoEndereco->getKey());
                 }
             });
         } catch (Throwable $erro) {
             if ($caminhoFotoNova) {
-                Storage::disk('public')
-                    ->delete($caminhoFotoNova);
+                Storage::disk('public')->delete($caminhoFotoNova);
             }
 
             throw $erro;
@@ -711,23 +506,16 @@ class UsuarioController extends Controller
 
     private function excluirFotoLocal(?string $foto): void
     {
-        $caminho = ltrim(
-            trim((string) $foto),
-            '/'
-        );
+        $caminho = ltrim(trim((string) $foto), '/');
 
         if (! str_starts_with($caminho, 'storage/')) {
             return;
         }
 
-        $caminho = substr(
-            $caminho,
-            strlen('storage/')
-        );
+        $caminho = substr($caminho, strlen('storage/'));
 
         if ($caminho !== '') {
-            Storage::disk('public')
-                ->delete($caminho);
+            Storage::disk('public')->delete($caminho);
         }
     }
 }

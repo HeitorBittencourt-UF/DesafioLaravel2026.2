@@ -75,18 +75,12 @@ class ProdutoController extends Controller
             abort(401);
         }
 
-        $produto->load([
-            'categoria',
-            'usuario',
-            'fotos',
-        ]);
+        $produto->load(['categoria', 'usuario', 'fotos']);
 
         $usuarioEhAdministrador = $usuario->tipo === 'administrador';
-        $produtoPertenceAoUsuario =
-            (int) $produto->UsuarioId === (int) $usuario->getKey();
+        $produtoPertenceAoUsuario = (int) $produto->UsuarioId === (int) $usuario->getKey();
 
-        $podeComprar =
-            ! $usuarioEhAdministrador
+        $podeComprar = ! $usuarioEhAdministrador
             && ! $produtoPertenceAoUsuario
             && $produto->quantidade > 0;
 
@@ -109,166 +103,85 @@ class ProdutoController extends Controller
     }
 
     public function gerenciar(Request $request): View
-{
-    $usuario = $this->usuarioAutenticado($request);
+    {
+        $usuario = $this->usuarioAutenticado($request);
+        $busca = trim((string) $request->query('busca', ''));
 
-    $busca = trim(
-        (string) $request->query('busca', '')
-    );
+        $query = Produto::query();
 
-    /*
-    |--------------------------------------------------------------------------
-    | Produtos que o usuário pode visualizar
-    |--------------------------------------------------------------------------
-    */
-
-    $query = Produto::query();
-
-    if ($usuario->tipo !== 'administrador') {
-        $query->where(
-            'UsuarioId',
-            $usuario->getKey()
-        );
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Estatísticas
-    |--------------------------------------------------------------------------
-    */
-
-    $produtosParaEstatisticas = (clone $query)->get([
-        'quantidade',
-        'categoria_id',
-    ]);
-
-    $produtosAtivos = $produtosParaEstatisticas
-        ->where('quantidade', '>', 0)
-        ->count();
-
-    $estoqueTotal = $produtosParaEstatisticas
-        ->sum('quantidade');
-
-    $categoriasTotal = $produtosParaEstatisticas
-        ->pluck('categoria_id')
-        ->filter()
-        ->unique()
-        ->count();
-
-    $totalProdutos = $produtosParaEstatisticas
-        ->count();
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | RF013 - Produtos cadastrados nos últimos 12 meses
-    |--------------------------------------------------------------------------
-    |
-    | Apenas administradores recebem os dados do gráfico.
-    |
-    */
-
-    $graficoProdutos = null;
-
-    if ($usuario->tipo === 'administrador') {
-
-        $inicioDoPeriodo = now()
-            ->startOfMonth()
-            ->subMonths(11);
-
-        $fimDoPeriodo = now()
-            ->endOfMonth();
-
-        $produtosPorMes = Produto::query()
-            ->whereBetween(
-                'created_at',
-                [
-                    $inicioDoPeriodo,
-                    $fimDoPeriodo,
-                ]
-            )
-            ->get(['created_at'])
-            ->countBy(
-                fn (Produto $produto) =>
-                    $produto->created_at->format('Y-m')
-            );
-
-        $nomesDosMeses = [
-            1 => 'Jan',
-            2 => 'Fev',
-            3 => 'Mar',
-            4 => 'Abr',
-            5 => 'Mai',
-            6 => 'Jun',
-            7 => 'Jul',
-            8 => 'Ago',
-            9 => 'Set',
-            10 => 'Out',
-            11 => 'Nov',
-            12 => 'Dez',
-        ];
-
-        $labels = [];
-        $valores = [];
-
-        for ($indice = 11; $indice >= 0; $indice--) {
-
-            $data = now()
-                ->startOfMonth()
-                ->subMonths($indice);
-
-            $chaveDoMes = $data->format('Y-m');
-
-            $numeroDoMes = (int) $data->format('n');
-
-            $labels[] =
-                $nomesDosMeses[$numeroDoMes];
-
-            $valores[] =
-                (int) $produtosPorMes->get(
-                    $chaveDoMes,
-                    0
-                );
+        if ($usuario->tipo !== 'administrador') {
+            $query->where('UsuarioId', $usuario->getKey());
         }
 
-        $graficoProdutos = [
-            'labels' => $labels,
-            'valores' => $valores,
-        ];
-    }
+        $produtosParaEstatisticas = (clone $query)->get(['quantidade', 'categoria_id']);
 
+        $produtosAtivos = $produtosParaEstatisticas
+            ->where('quantidade', '>', 0)
+            ->count();
 
-    /*
-    |--------------------------------------------------------------------------
-    | Pesquisa
-    |--------------------------------------------------------------------------
-    */
+        $estoqueTotal = $produtosParaEstatisticas->sum('quantidade');
 
-    if ($busca !== '') {
-        $query->where(
-            'nome',
-            'like',
-            '%' . $busca . '%'
-        );
-    }
+        $categoriasTotal = $produtosParaEstatisticas
+            ->pluck('categoria_id')
+            ->filter()
+            ->unique()
+            ->count();
 
+        $totalProdutos = $produtosParaEstatisticas->count();
+        $graficoProdutos = null;
 
-    /*
-    |--------------------------------------------------------------------------
-    | Produtos da tabela
-    |--------------------------------------------------------------------------
-    */
+        if ($usuario->tipo === 'administrador') {
+            $inicioDoPeriodo = now()->startOfMonth()->subMonths(11);
+            $fimDoPeriodo = now()->endOfMonth();
 
-    $produtos = $query
-        ->with('categoria')
-        ->latest()
-        ->get();
+            $produtosPorMes = Produto::query()
+                ->whereBetween('created_at', [$inicioDoPeriodo, $fimDoPeriodo])
+                ->get(['created_at'])
+                ->countBy(fn (Produto $produto) => $produto->created_at->format('Y-m'));
 
+            $nomesDosMeses = [
+                1 => 'Jan',
+                2 => 'Fev',
+                3 => 'Mar',
+                4 => 'Abr',
+                5 => 'Mai',
+                6 => 'Jun',
+                7 => 'Jul',
+                8 => 'Ago',
+                9 => 'Set',
+                10 => 'Out',
+                11 => 'Nov',
+                12 => 'Dez',
+            ];
 
-    return view(
-        'produtos-management',
-        compact(
+            $labels = [];
+            $valores = [];
+
+            for ($indice = 11; $indice >= 0; $indice--) {
+                $data = now()->startOfMonth()->subMonths($indice);
+                $chaveDoMes = $data->format('Y-m');
+                $numeroDoMes = (int) $data->format('n');
+
+                $labels[] = $nomesDosMeses[$numeroDoMes];
+                $valores[] = (int) $produtosPorMes->get($chaveDoMes, 0);
+            }
+
+            $graficoProdutos = [
+                'labels' => $labels,
+                'valores' => $valores,
+            ];
+        }
+
+        if ($busca !== '') {
+            $query->where('nome', 'like', '%' . $busca . '%');
+        }
+
+        $produtos = $query
+            ->with('categoria')
+            ->latest()
+            ->get();
+
+        return view('produtos-management', compact(
             'produtos',
             'produtosAtivos',
             'estoqueTotal',
@@ -276,9 +189,8 @@ class ProdutoController extends Controller
             'totalProdutos',
             'busca',
             'graficoProdutos'
-        )
-    );
-}
+        ));
+    }
 
     public function criar(Request $request): View
     {
@@ -351,10 +263,8 @@ class ProdutoController extends Controller
         ]);
     }
 
-    public function update(
-        ProdutoRequest $request,
-        Produto $produto
-    ): RedirectResponse {
+    public function update(ProdutoRequest $request, Produto $produto): RedirectResponse
+    {
         $usuario = $this->usuarioAutenticado($request);
         $this->garantirQuePodeGerenciar($usuario, $produto);
 
@@ -395,10 +305,8 @@ class ProdutoController extends Controller
             ->with('success', 'Produto atualizado com sucesso.');
     }
 
-    public function destroy(
-        Request $request,
-        Produto $produto
-    ): RedirectResponse {
+    public function destroy(Request $request, Produto $produto): RedirectResponse
+    {
         $usuario = $this->usuarioAutenticado($request);
         $this->garantirQuePodeGerenciar($usuario, $produto);
 
@@ -445,12 +353,9 @@ class ProdutoController extends Controller
         );
     }
 
-    private function garantirQuePodeGerenciar(
-        Usuario $usuario,
-        Produto $produto
-    ): void {
-        $produtoPertenceAoUsuario =
-            (int) $produto->UsuarioId === (int) $usuario->getKey();
+    private function garantirQuePodeGerenciar(Usuario $usuario, Produto $produto): void
+    {
+        $produtoPertenceAoUsuario = (int) $produto->UsuarioId === (int) $usuario->getKey();
 
         abort_unless(
             $usuario->tipo === 'administrador' || $produtoPertenceAoUsuario,

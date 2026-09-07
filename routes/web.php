@@ -352,11 +352,15 @@ Route::middleware('auth')->group(function () {
         [ReportController::class, 'salesXlsx']
     )->name('reports.sales.xlsx');
 
+
     Route::get(
         '/relatorios/{tipo}',
         [ReportController::class, 'show']
     )
-        ->whereIn('tipo', ['compras', 'vendas'])
+        ->whereIn(
+            'tipo',
+            ['compras', 'vendas']
+        )
         ->name('reports.show');
 
 

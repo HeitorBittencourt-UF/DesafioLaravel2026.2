@@ -10,11 +10,7 @@ class CepController extends Controller
 {
     public function show(string $cep): JsonResponse
     {
-        /*
-        |--------------------------------------------------------------------------
-        | Limpa e valida o CEP
-        |--------------------------------------------------------------------------
-        */
+        
 
         $cep = preg_replace('/\D/', '', $cep);
 
@@ -24,13 +20,8 @@ class CepController extends Controller
             ], 422);
         }
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | Consulta o ViaCEP
-        |--------------------------------------------------------------------------
-        */
-
+        
+        // Olha o Cep pela API
         try {
             $response = Http::acceptJson()
                 ->timeout(5)
@@ -41,13 +32,7 @@ class CepController extends Controller
             ], 503);
         }
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | Verifica erro de comunicação
-        |--------------------------------------------------------------------------
-        */
-
+        //  ve se deu merda
         if ($response->failed()) {
             return response()->json([
                 'message' => 'O ViaCEP não pôde processar a consulta.',
@@ -55,13 +40,7 @@ class CepController extends Controller
         }
 
         $dados = $response->json();
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | CEP não encontrado
-        |--------------------------------------------------------------------------
-        */
+   
 
         if (
             ($dados['erro'] ?? false) === true ||
@@ -71,14 +50,6 @@ class CepController extends Controller
                 'message' => 'CEP não encontrado.',
             ], 404);
         }
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | Retorno padronizado
-        |--------------------------------------------------------------------------
-        */
-
         return response()->json([
             'cep' => $dados['cep'] ?? '',
             'logradouro' => $dados['logradouro'] ?? '',

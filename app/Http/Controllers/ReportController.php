@@ -11,42 +11,30 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
 {
-    public function __construct(
-        private readonly HistoricoService $historico
-    ) {
+    public function __construct(private readonly HistoricoService $historico)
+    {
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | PDF - compras ou vendas
-    |--------------------------------------------------------------------------
-    */
-
-    public function show(
-        Request $request,
-        string $tipo
-    ) {
+    public function show(Request $request, string $tipo)
+    {
         $periodo = $request->validate([
-            'inicio' => [
-                'nullable',
-                'date',
-            ],
-
-            'fim' => [
-                'nullable',
-                'date',
-                'after_or_equal:inicio',
-            ],
+            'inicio' => ['nullable', 'date'],
+            'fim' => ['nullable', 'date', 'after_or_equal:inicio'],
         ]);
 
         $usuario = $request->user();
 
-        abort_unless(
-            $usuario instanceof Usuario,
-            401
-        );
+        abort_unless($usuario instanceof Usuario, 401);
 
         $vendas = $tipo === 'vendas';
+
+        if (! $vendas) {
+            abort_if(
+                $usuario->tipo === 'administrador',
+                403,
+                'O relatório de compras está disponível apenas para usuários.'
+            );
+        }
 
         $registros = $vendas
             ? $this->historico->vendas(
@@ -60,56 +48,24 @@ class ReportController extends Controller
                 $periodo['fim'] ?? null
             );
 
-        $pdf = Pdf::loadView(
-            'report',
-            [
-                'vendas' => $vendas,
-                'registros' => $registros,
+        $pdf = Pdf::loadView('report', [
+            'vendas' => $vendas,
+            'registros' => $registros,
+            'inicio' => $periodo['inicio'] ?? null,
+            'fim' => $periodo['fim'] ?? null,
+            'total' => $registros->sum('value'),
+        ])->setPaper('a4', 'landscape');
 
-                'inicio' =>
-                    $periodo['inicio'] ?? null,
+        $nomeArquivo = 'historico-' . $tipo . '-' . now()->format('Y-m-d') . '.pdf';
 
-                'fim' =>
-                    $periodo['fim'] ?? null,
-
-                'total' =>
-                    $registros->sum('value'),
-            ]
-        )->setPaper(
-            'a4',
-            'landscape'
-        );
-
-        $nomeArquivo =
-            'historico-'
-            . $tipo
-            . '-'
-            . now()->format('Y-m-d')
-            . '.pdf';
-
-        return $pdf->download(
-            $nomeArquivo
-        );
+        return $pdf->stream($nomeArquivo);
     }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | XLSX - todas as vendas
-    |--------------------------------------------------------------------------
-    |
-    | Somente administrador.
-    |
-    */
 
     public function salesXlsx(Request $request)
     {
         $usuario = $request->user();
 
-        abort_unless(
-            $usuario instanceof Usuario,
-            401
-        );
+        abort_unless($usuario instanceof Usuario, 401);
 
         abort_unless(
             $usuario->tipo === 'administrador',
@@ -118,31 +74,19 @@ class ReportController extends Controller
         );
 
         $periodo = $request->validate([
-            'inicio' => [
-                'nullable',
-                'date',
-            ],
-
-            'fim' => [
-                'nullable',
-                'date',
-                'after_or_equal:inicio',
-            ],
+            'inicio' => ['nullable', 'date'],
+            'fim' => ['nullable', 'date', 'after_or_equal:inicio'],
         ]);
 
-        $registros =
-            $this->historico->vendas(
-                $usuario,
-                $periodo['inicio'] ?? null,
-                $periodo['fim'] ?? null
-            );
+        $registros = $this->historico->vendas(
+            $usuario,
+            $periodo['inicio'] ?? null,
+            $periodo['fim'] ?? null
+        );
 
         return Excel::download(
             new VendasExport($registros),
-
-            'historico-vendas-'
-            . now()->format('Y-m-d')
-            . '.xlsx'
+            'historico-vendas-' . now()->format('Y-m-d') . '.xlsx'
         );
     }
 }

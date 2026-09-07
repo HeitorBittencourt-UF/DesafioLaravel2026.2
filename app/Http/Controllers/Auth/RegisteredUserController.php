@@ -19,11 +19,6 @@ class RegisteredUserController extends Controller
         return view('auth.register');
     }
 
-    /**
-     * Handle an incoming registration request.
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
     public function store(Request $request): RedirectResponse
     {
         $request->merge([
@@ -62,14 +57,10 @@ class RegisteredUserController extends Controller
 
                     if (! preg_match('/^\+[1-9]\d{7,14}$/', $telefone)) {
                         $fail('Informe um telefone válido com código do país e DDD.');
-
                         return;
                     }
 
-                    if (
-                        str_starts_with($telefone, '+55') &&
-                        ! preg_match('/^\+55\d{10,11}$/', $telefone)
-                    ) {
+                    if (str_starts_with($telefone, '+55') && ! preg_match('/^\+55\d{10,11}$/', $telefone)) {
                         $fail('Informe um telefone brasileiro válido com DDD.');
                     }
                 },
@@ -90,7 +81,6 @@ class RegisteredUserController extends Controller
         ]);
 
         event(new Registered($user));
-
         Auth::login($user);
 
         return redirect()->route('dashboard');
@@ -105,10 +95,7 @@ class RegisteredUserController extends Controller
             return '+' . $numeros;
         }
 
-        if (
-            str_starts_with($numeros, '55') &&
-            in_array(strlen($numeros), [12, 13], true)
-        ) {
+        if (str_starts_with($numeros, '55') && in_array(strlen($numeros), [12, 13], true)) {
             return '+' . $numeros;
         }
 

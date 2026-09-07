@@ -8,15 +8,10 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 
-class VendasExport implements
-    FromCollection,
-    WithHeadings,
-    WithMapping,
-    ShouldAutoSize
+class VendasExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize
 {
-    public function __construct(
-        private readonly Collection $registros
-    ) {
+    public function __construct(private readonly Collection $registros)
+    {
     }
 
     public function collection(): Collection

@@ -8,20 +8,23 @@
     @apply w-screen h-screen bg-[#042434] flex flex-col items-center justify-start;
 }
 
-.guest-container{
+.guest-container {
     @apply flex flex-col items-center justify-center gap-[40px] pt-[20px];
 }
+
 /* Logo em cima do Card */
-.guest-logo-a{
+.guest-logo-a {
     @apply flex w-[106.52px] h-[106.52px];
 }
 
 .guest-logo {
     @apply w-20 h-20;
 }
+
 /* Efeitos de luz do card(sombras claras) */
 .guest-card {
-    @apply flex flex-row w-[45vw] h-[60vh]  bg-white rounded-[3%] shadow-[0_0_60px_rgba(66,185,166,0.45)];;
+    @apply flex flex-row w-[45vw] h-[60vh] bg-white rounded-[3%] shadow-[0_0_60px_rgba(66, 185, 166, 0.45)];
+    ;
 }
 
 /* LOGIN E REGISTER */
@@ -39,10 +42,11 @@
 .guest-signin-right {
     @apply rounded-r-[3%];
 }
+
 /* Parte de Formulario */
 .guest-form {
     @apply flex flex-col w-[50%] h-[100%] bg-[#042434] items-center justify-between py-[40px];
-} 
+}
 
 .guest-form-left {
     @apply rounded-l-[3%] py-[];
@@ -83,11 +87,15 @@
     @apply flex w-[80%] rounded-[8px] outline-none bg-transparent border-[1px] border-solid border-white text-white;
 }
 
-.guest-input:focus, .guest-input:focus-visible {    /*Faz com que tire a bordinha que vem por padrao*/
+.guest-input:focus,
+.guest-input:focus-visible {
+    /*Faz com que tire a bordinha que vem por padrao*/
     @apply outline-none ring-0 border-[#42B9A6];
 }
 
-.guest-input:focus + .guest-label, .guest-input:not(:placeholder-shown) + .guest-label { /*Modo para fazer com que caso o placeholder nao esteja aparecendo o label suba */
+.guest-input:focus+.guest-label,
+.guest-input:not(:placeholder-shown)+.guest-label {
+    /*Modo para fazer com que caso o placeholder nao esteja aparecendo o label suba */
     @apply -top-[8px] translate-y-0 text-xs text-[#42B9A6];
 }
 
@@ -117,7 +125,7 @@
 /* RESET PASSWORD*/
 
 .guest-reset-card {
-    @apply flex flex-row w-[45vw] h-[60vh] bg-white rounded-[3%] shadow-[0_0_60px_rgba(66,185,166,0.45)];
+    @apply flex flex-row w-[45vw] h-[60vh] bg-white rounded-[3%] shadow-[0_0_60px_rgba(66, 185, 166, 0.45)];
 }
 
 .guest-reset-info {
@@ -135,134 +143,147 @@
 /* REGISTER */
 
 .guest-card-register {
-    width: min(1100px, 82vw);
-    height: 650px;
-    overflow: hidden;
-    border: 1px solid rgba(66, 185, 166, 0.28);
-    border-radius: 28px;
-    background: #042434;
-    box-shadow:
-        0 28px 80px rgba(0, 10, 18, 0.52),
-        0 0 60px rgba(66, 185, 166, 0.22);
+    @apply w-[min(1100px, 82vw)] h-[650px] overflow-hidden rounded-[28px] border border-[rgba(66, 185, 166, 0.28)] bg-[#042434];
+    box-shadow: 0 28px 80px rgba(0, 10, 18, 0.52), 0 0 60px rgba(66, 185, 166, 0.22);
 }
 
 .guest-register-form {
-    position: relative;
-    width: 65%;
-    padding: 34px 42px 30px;
-    align-items: stretch;
-    justify-content: flex-start;
-    gap: 22px;
-    border-radius: 28px 0 0 28px;
+    @apply relative w-[65%] items-stretch justify-start gap-[22px] rounded-l-[28px] rounded-r-none px-[42px] pb-[30px] pt-[34px];
     background:
         radial-gradient(circle at top right, rgba(66, 185, 166, 0.12), transparent 34%),
         linear-gradient(145deg, #062b3d 0%, #031d2a 100%);
 }
 
 .guest-register-header {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
+    @apply flex flex-col gap-[5px];
 }
 
 .guest-register-kicker,
 .guest-register-side-kicker {
-    font-family: Montserrat, sans-serif;
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
+    @apply font-['Montserrat', sans-serif] text-[11px] font-extrabold uppercase tracking-[0.2em];
 }
 
 .guest-register-kicker {
-    color: #42b9a6;
+    @apply text-[#42b9a6];
 }
 
 .guest-register-header h1 {
-    color: #ffffff;
-    font-family: "League Gothic", sans-serif;
-    font-size: 50px;
-    line-height: 0.95;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
+    @apply font-['League_Gothic', sans-serif] text-[50px] uppercase leading-[0.95] tracking-[0.02em] text-white;
 }
 
 .guest-register-header p {
-    max-width: 560px;
-    color: #9fb4bd;
-    font-family: Montserrat, sans-serif;
-    font-size: 13px;
-    line-height: 1.55;
+    @apply max-w-[560px] font-['Montserrat', sans-serif] text-[13px] leading-[1.55] text-[#9fb4bd];
 }
 
 .guest-register-status {
-    margin: -8px 0 0;
-    color: #72e2ce;
-    font-family: Montserrat, sans-serif;
-    font-size: 13px;
+    @apply -mt-2 font-['Montserrat', sans-serif] text-[13px] text-[#72e2ce];
 }
 
 .guest-register-grid {
-    display: grid;
-    width: 100%;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 18px 16px;
+    @apply grid w-full grid-cols-2 gap-x-4 gap-y-[18px];
 }
 
 .guest-register-field {
-    align-items: stretch;
+    @apply items-stretch;
 }
 
 .guest-register-field-full {
-    grid-column: 1 / -1;
+    @apply col-span-2;
 }
 
 .guest-register-field .guest-input {
-    width: 100%;
-    height: 48px;
-    padding: 0 14px;
-    border: 1px solid rgba(173, 206, 215, 0.3);
-    border-radius: 10px;
-    background: rgba(2, 24, 35, 0.68);
-    color: #ffffff;
-    font-family: Montserrat, sans-serif;
-    font-size: 14px;
-    transition:
-        border-color 180ms ease,
-        box-shadow 180ms ease,
-        background-color 180ms ease;
+    @apply h-12 w-full rounded-[10px] border border-[rgba(173, 206, 215, 0.3)] bg-[rgba(2, 24, 35, 0.68)] px-[14px] font-['Montserrat', sans-serif] text-sm text-white transition-[border-color, box-shadow, background-color] duration-200;
 }
 
 .guest-register-field .guest-input:hover {
-    border-color: rgba(114, 226, 206, 0.56);
+    @apply border-[rgba(114, 226, 206, 0.56)];
 }
 
 .guest-register-field .guest-input:focus,
 .guest-register-field .guest-input:focus-visible {
-    border-color: #42b9a6;
-    background: rgba(4, 36, 52, 0.92);
+    @apply border-[#42b9a6] bg-[rgba(4, 36, 52, 0.92)] outline-none ring-0;
     box-shadow: 0 0 0 3px rgba(66, 185, 166, 0.14);
 }
 
 .guest-register-field .guest-label {
-    top: 50%;
-    left: 14px;
-    padding: 0 5px;
-    transform: translateY(-50%);
-    background: #042434;
-    color: #849aa4;
-    font-family: Montserrat, sans-serif;
-    font-size: 13px;
-    line-height: 1;
+    @apply absolute left-[14px] top-1/2 -translate-y-1/2 bg-[#042434] px-[5px] font-['Montserrat', sans-serif] text-[13px] leading-none text-[#849aa4];
 }
 
-.guest-register-field .guest-input:focus + .guest-label,
-.guest-register-field .guest-input:not(:placeholder-shown) + .guest-label {
-    top: 0;
-    transform: translateY(-50%);
-    color: #72e2ce;
-    font-size: 11px;
+.guest-register-field .guest-input:focus+.guest-label,
+.guest-register-field .guest-input:not(:placeholder-shown)+.guest-label {
+    @apply top-0 -translate-y-1/2 text-[11px] text-[#72e2ce];
 }
+
+.guest-register-field>ul {
+    @apply mx-[2px] mb-[-9px] mt-[6px] font-['Montserrat', sans-serif] text-[11px] leading-[1.25] text-[#ff9e9e];
+}
+
+.guest-register-actions {
+    @apply mt-auto flex flex-col gap-[9px];
+}
+
+.guest-register-submit {
+    @apply min-h-12 w-full justify-center rounded-[10px];
+    box-shadow: 0 12px 28px rgba(66, 185, 166, 0.2);
+}
+
+.guest-register-actions small {
+    @apply text-center font-['Montserrat', sans-serif] text-[10px] leading-[1.4] text-[#708994];
+}
+
+.guest-register-signin {
+    @apply relative w-[35%] justify-center overflow-hidden rounded-r-[28px] px-[42px] py-[52px];
+    background:
+        linear-gradient(160deg, rgba(255, 255, 255, 0.08), transparent 42%),
+        linear-gradient(145deg, #49c8b3 0%, #2c9e91 100%);
+}
+
+.guest-register-signin::before,
+.guest-register-signin::after {
+    @apply absolute rounded-full border border-[rgba(255, 255, 255, 0.15)];
+    content: "";
+}
+
+.guest-register-signin::before {
+    @apply -right-[105px] -top-[110px] h-[300px] w-[300px];
+}
+
+.guest-register-signin::after {
+    @apply -bottom-[150px] -left-[130px] h-[340px] w-[340px];
+}
+
+.guest-register-side-content {
+    @apply relative z-[1] flex w-full flex-col items-start gap-5;
+}
+
+.guest-register-side-kicker {
+    @apply text-[rgba(255, 255, 255, 0.72)];
+}
+
+.guest-register-side-content h2 {
+    @apply max-w-[280px] font-['League_Gothic', sans-serif] text-[54px] uppercase leading-[0.98] tracking-[0.02em] text-white;
+}
+
+.guest-register-side-content p {
+    @apply font-['Montserrat', sans-serif] text-[13px] leading-[1.65] text-[rgba(255, 255, 255, 0.84)];
+}
+
+.guest-register-benefits {
+    @apply flex flex-col gap-3 font-['Montserrat', sans-serif] text-[13px] font-semibold text-white;
+}
+
+.guest-register-benefits li {
+    @apply flex items-center gap-[10px];
+}
+
+.guest-register-benefits li span {
+    @apply inline-flex h-[23px] w-[23px] items-center justify-center rounded-full border border-[rgba(255, 255, 255, 0.42)] bg-[rgba(4, 36, 52, 0.16)] text-xs;
+}
+
+.guest-register-login {
+    @apply mt-1 min-h-[46px] w-full justify-center rounded-[10px];
+}
+
 
 .guest-register-field input[type="date"] {
     color-scheme: dark;
@@ -273,136 +294,4 @@
 .guest-register-field input:-webkit-autofill:focus {
     -webkit-text-fill-color: #ffffff;
     box-shadow: 0 0 0 1000px #082f41 inset;
-}
-
-.guest-register-field > ul {
-    margin: 6px 2px -9px;
-    color: #ff9e9e;
-    font-family: Montserrat, sans-serif;
-    font-size: 11px;
-    line-height: 1.25;
-}
-
-.guest-register-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 9px;
-    margin-top: auto;
-}
-
-.guest-register-submit {
-    width: 100%;
-    min-height: 48px;
-    justify-content: center;
-    border-radius: 10px;
-    box-shadow: 0 12px 28px rgba(66, 185, 166, 0.2);
-}
-
-.guest-register-actions small {
-    color: #708994;
-    font-family: Montserrat, sans-serif;
-    font-size: 10px;
-    line-height: 1.4;
-    text-align: center;
-}
-
-.guest-register-signin {
-    position: relative;
-    width: 35%;
-    padding: 52px 42px;
-    justify-content: center;
-    overflow: hidden;
-    border-radius: 0 28px 28px 0;
-    background:
-        linear-gradient(160deg, rgba(255, 255, 255, 0.08), transparent 42%),
-        linear-gradient(145deg, #49c8b3 0%, #2c9e91 100%);
-}
-
-.guest-register-signin::before,
-.guest-register-signin::after {
-    position: absolute;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 999px;
-    content: "";
-}
-
-.guest-register-signin::before {
-    top: -110px;
-    right: -105px;
-    width: 300px;
-    height: 300px;
-}
-
-.guest-register-signin::after {
-    bottom: -150px;
-    left: -130px;
-    width: 340px;
-    height: 340px;
-}
-
-.guest-register-side-content {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    width: 100%;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 20px;
-}
-
-.guest-register-side-kicker {
-    color: rgba(255, 255, 255, 0.72);
-}
-
-.guest-register-side-content h2 {
-    max-width: 280px;
-    color: #ffffff;
-    font-family: "League Gothic", sans-serif;
-    font-size: 54px;
-    line-height: 0.98;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
-}
-
-.guest-register-side-content p {
-    color: rgba(255, 255, 255, 0.84);
-    font-family: Montserrat, sans-serif;
-    font-size: 13px;
-    line-height: 1.65;
-}
-
-.guest-register-benefits {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    color: #ffffff;
-    font-family: Montserrat, sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-.guest-register-benefits li {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.guest-register-benefits li span {
-    display: inline-flex;
-    width: 23px;
-    height: 23px;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid rgba(255, 255, 255, 0.42);
-    border-radius: 50%;
-    background: rgba(4, 36, 52, 0.16);
-    font-size: 12px;
-}
-
-.guest-register-login {
-    width: 100%;
-    min-height: 46px;
-    justify-content: center;
-    margin-top: 4px;
-    border-radius: 10px;
 }

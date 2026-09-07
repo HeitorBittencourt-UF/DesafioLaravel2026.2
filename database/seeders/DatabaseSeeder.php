@@ -11,63 +11,21 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        /*
-        |--------------------------------------------------------------------------
-        | Categorias
-        |--------------------------------------------------------------------------
-        */
+        $categorias = Categoria::factory(13)->create();
 
-        $categorias =
-            Categoria::factory(13)
-            ->create();
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | Usuários
-        |--------------------------------------------------------------------------
-        */
-
-        $usuarios =
-            Usuario::factory(8)
-            ->create([
-                'tipo' => 'usuario',
-            ]);
-
-            Usuario::factory(2)
-            ->create([
-                'tipo' => 'administrador',
-            ]);
-
-        /*
-        |--------------------------------------------------------------------------
-        | Produtos
-        |--------------------------------------------------------------------------
-        */
-
-        Produto::factory(100)->create([
-            'categoria_id' =>
-            fn() =>
-            $categorias
-                ->random()
-                ->id,
-
-            'UsuarioId' =>
-            fn() =>
-            $usuarios
-                ->random()
-                ->id,
+        $usuarios = Usuario::factory(8)->create([
+            'tipo' => 'usuario',
         ]);
 
+        Usuario::factory(2)->create([
+            'tipo' => 'administrador',
+        ]);
 
-        /*
-        |--------------------------------------------------------------------------
-        | Vendas
-        |--------------------------------------------------------------------------
-        */
+        Produto::factory(100)->create([
+            'categoria_id' => fn () => $categorias->random()->id,
+            'UsuarioId' => fn () => $usuarios->random()->id,
+        ]);
 
-        $this->call(
-            VendaSeeder::class
-        );
+        $this->call(VendaSeeder::class);
     }
 }
